@@ -1,0 +1,32 @@
+<mat-list class="image-list">
+  @defer {
+  <li *ngFor="let image of images$ | ngrxPush; index as i">
+    <img
+      src="{{ imageUrl }}{{ image.url }}"
+      alt="User uploaded image"
+      class="img-fluid img-thumbnail mt-4 mb-2"
+      style="max-height: 150px; max-width: 150px"
+    />
+  </li>
+  }
+</mat-list>
+<input
+  type="file"
+  class="file-input"
+  (change)="onFileSelected($event)"
+  #fileUpload
+/>
+<button [disabled]="loading" class="btn btn-primary" (click)="onSubmit()">
+  <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
+  Upload file
+</button>
+<div *ngIf="imgFile">
+  <section class="file-info">
+    File details:
+    <ul>
+      <li>Name: {{ imgFile.name }}</li>
+      <li>Type: {{ imgFile.type }}</li>
+      <li>Size: {{ imgFile.size }} bytes</li>
+    </ul>
+  </section>
+</div>

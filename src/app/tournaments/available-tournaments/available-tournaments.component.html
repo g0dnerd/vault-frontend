@@ -1,0 +1,16 @@
+<h1>Available Tournaments</h1>
+<ul class="event-list">
+  @defer {
+  <li *ngFor="let tournament of availableTournaments$ | ngrxPush; index as i">
+    <app-enroll-panel
+      [tournamentId]="tournament.id"
+      [tournamentName]="tournament.name"
+      [tournamentCapacity]="tournament.playerCapacity"
+      (enrollInTournament)="enrollInTournament($event)"
+    />
+  </li>
+  }
+  <p *ngIf="!(availableTournaments$ | ngrxPush)?.length">
+    There are currently no tournaments available.
+  </p>
+</ul>

@@ -1,0 +1,22 @@
+<mat-card class="draft-card" appearance="outlined">
+  <mat-card-header>
+    <mat-card-title *ngIf="draft$ | ngrxPush as draft">
+      Drafting the
+      <span>
+        <a routerLink="/cubes/{{ draft.cube?.id }}" class="card-link">{{
+          draft.cube?.name
+        }}</a>
+        cube</span
+      >
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <ng-container *ngIf="draft$ | ngrxPush; else noDraft">
+      <app-my-pool />
+      <app-match-panel />
+    </ng-container>
+    <ng-template #noDraft>
+      <p class="no-draft">Waiting for a draft to start</p>
+    </ng-template>
+  </mat-card-content>
+</mat-card>

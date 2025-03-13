@@ -1,1 +1,1818 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+@include mat.core();
+
+$color_1: var(--black);
+$color_2: white;
+$color_3: #444;
+$color_4: var(--main-color);
+$color_5: black;
+$color_6: transparent;
+$color_7: var(--gray);
+$color_8: #ccc;
+$color_9: var(--text-gray);
+$color_10: #000;
+$color_11: #9da4b2;
+$color_12: #f7f8f9;
+$color_13: var(--yellow);
+$color_14: #eee;
+$font-family_1: 'GeneralSans-Variable', 'Helvetica Neue', Helvetica, Arial,
+  sans-serif;
+$background-color_1: var(--yellow);
+$background-color_2: var(--main-color);
+$background-color_3: white;
+$background-color_4: lightgreen;
+$background-color_5: #fff;
+$background-color_6: #e9ecef;
+$background-color_7: #161b27;
+$background-color_8: #f7f8f9;
+$background-color_9: RGBA(255, 255, 255, 0.2);
+$background-color_10: RGBA(255, 255, 255, 0.1);
+$background-color_11: transparent;
+$border-color_1: var(--main-color);
+
+@font-face {
+  font-family: 'GeneralSans-Variable';
+  src: url('/fonts/GeneralSans-Variable.woff2') format('woff2'),
+    url('/fonts/GeneralSans-Variable.ttf') format('truetype');
+  font-weight: 200 700;
+  font-display: swap;
+  font-style: normal;
+}
+
+/* Base */
+/* GLOBAL */
+/* TYPO */
+/* HOME */
+/* EVENTDASHBOARD */
+/*  PAIRINGS */
+/*  Standings */
+/* Check In & Out */
+/* Upload */
+html {
+  --flow-small: 10px;
+  --flow-medium: 20px;
+  --black: #161b27;
+  --true-black: #111;
+  --main-color: #00a5d6;
+  --secondary-color: #273582;
+  --text-gray: #4a5056;
+  --gray: #9da4b2;
+  --yellow: #ffce00;
+  --border: 1px solid RGBA(0, 0, 0, 0.2);
+  --radius: 5px;
+  --inner-padding: 5px;
+  color-scheme: dark;
+  @include mat.theme(
+    (
+      color: mat.$violet-palette,
+      typography: 'GeneralSans-Variable',
+      density: 0,
+    )
+  );
+}
+body.vault-app {
+  color: $color_1;
+  font-family: $font-family_1;
+}
+.mat-expansion-panel-header-title {
+  font-family: $font-family_1;
+  margin-right: 0;
+}
+.mat-expansion-panel-content {
+  font-family: $font-family_1;
+}
+.alert-error {
+  border: 1px solid var(--red);
+}
+.alert-warning {
+  border: 1px solid var(--yellow);
+}
+.alert-success {
+  border: 1px solid var(--green);
+}
+.form-text {
+  color: $color_2;
+}
+.box {
+  border: var(--border);
+  border-radius: var(--radius);
+  padding: var(--inner-padding);
+}
+.pool-info-check-in-missing {
+  border: var(--border);
+  border-radius: var(--radius);
+  padding: var(--inner-padding);
+  background: red;
+  padding: 10px;
+  h5 {
+    margin: 0;
+    a {
+      color: $color_2;
+    }
+  }
+}
+.pool-info-check-out-missing {
+  border: var(--border);
+  border-radius: var(--radius);
+  padding: var(--inner-padding);
+  background: red;
+  padding: 10px;
+  h5 {
+    a {
+      margin: 0;
+      color: $color_2;
+    }
+  }
+}
+.vault-app {
+  ul {
+    .draft-info {
+      a {
+        border: var(--border);
+        border-radius: var(--radius);
+        padding: var(--inner-padding);
+        text-align: center;
+        display: block;
+        text-decoration: none;
+        color: $color_1;
+        color: $color_2;
+        background-color: $background-color_1;
+        background-color: $background-color_2;
+        padding: 7px 5px;
+        font-weight: 500;
+        font-size: 1em;
+        font-weight: 500;
+        font-size: 1em;
+        &:hover {
+          background-color: $background-color_3;
+          color: $color_4;
+        }
+        &:active {
+          background-color: $background-color_3;
+          color: $color_4;
+        }
+        &:focus {
+          background-color: $background-color_3;
+          color: $color_4;
+        }
+        &:after {
+          content: '';
+          display: inline-block;
+          margin-left: 15px;
+          left: 0;
+          position: relative;
+          width: 25px;
+          height: 10px;
+          transform: translateX(0);
+          background: url('/images/sprite-arrows.svg') 0 0px/25px no-repeat;
+        }
+      }
+      padding: 10px 0;
+      border: none;
+      h5 {
+        margin: 0;
+      }
+    }
+    li.pool-info {
+      h5 {
+        font-size: 1em;
+        + {
+          a {
+            font-weight: 500;
+            border: var(--border);
+            border-color: $border-color_1;
+            padding: 7px 10px;
+            text-decoration: none;
+            color: $color_5;
+            display: inline-block;
+            margin: 5px 0;
+            width: 100%;
+            text-align: center;
+            border-radius: var(--radius);
+            background: none;
+            &:active {
+              background: var(--main-color);
+              color: $color_2;
+            }
+            &:hover {
+              background: var(--main-color);
+              color: $color_2;
+            }
+          }
+        }
+      }
+    }
+    list-style: none;
+    padding-left: 0;
+    &:not(.navbar-nav) {
+      > li {
+        &:last-child {
+          border: none;
+        }
+      }
+    }
+  }
+  .event-dashboard {
+    .player-info-list {
+      #timetable- {
+        border: var(--border);
+        border-radius: var(--radius);
+        padding: var(--inner-padding);
+        padding: 5px 10px 10px;
+      }
+      .draft-info {
+        border: none;
+      }
+      .cube-info {
+        border: none;
+      }
+      .match-info {
+        border-bottom: var(--border);
+        padding-bottom: 20px;
+      }
+      .current-match-panel {
+        border-bottom: var(--border);
+        padding-bottom: 20px;
+      }
+      .standings {
+        margin-top: 20px;
+      }
+      .draft-timetable {
+        margin-top: 20px;
+      }
+    }
+  }
+  .event-list {
+    a {
+      border: var(--border);
+      border-radius: var(--radius);
+      padding: var(--inner-padding);
+      text-align: center;
+      display: block;
+      text-decoration: none;
+      color: $color_1;
+      color: $color_2;
+      background-color: $background-color_1;
+      background-color: $background-color_2;
+      padding: 7px 5px;
+      font-weight: 500;
+      font-size: 1em;
+      &:hover {
+        background-color: $background-color_3;
+        color: $color_4;
+      }
+      &:active {
+        background-color: $background-color_3;
+        color: $color_4;
+      }
+      &:focus {
+        background-color: $background-color_3;
+        color: $color_4;
+      }
+      &:after {
+        content: '';
+        display: inline-block;
+        margin-left: 15px;
+        left: 0;
+        position: relative;
+        width: 25px;
+        height: 10px;
+        transform: translateX(0);
+        background: url('/images/sprite-arrows.svg') 0 0px/25px no-repeat;
+      }
+    }
+    border: none;
+    margin-top: 10px;
+  }
+  .mb-1 {
+    .navbar-brand {
+      font-weight: 600;
+      color: $color_1;
+      color: $color_6;
+      font-size: 0;
+      display: inline-block;
+      width: 60px;
+      height: 56px;
+      background: url('/images/logo-vault-1.svg') 0 0 / contain no-repeat;
+    }
+  }
+  li {
+    ul {
+      li {
+        border: none;
+      }
+    }
+  }
+  .btn-outline-dark {
+    background-color: $background-color_5;
+  }
+}
+.navbar {
+  background-color: $background-color_1 !important;
+  padding-left: 10px;
+  padding-right: 10px;
+  li {
+    a {
+      color: $color_1;
+    }
+  }
+}
+.event-announcement {
+  border: var(--border);
+  border-radius: var(--radius);
+  padding: var(--inner-padding);
+  background-color: $background-color_4;
+}
+.checkin-status {
+  border: var(--border);
+  border-radius: var(--radius);
+  padding: var(--inner-padding);
+  background-color: $background-color_4;
+  h5 {
+    font-size: 1em;
+    display: inline-block;
+  }
+  a {
+    font-size: 1em;
+    display: inline-block;
+  }
+}
+.highlight-button {
+  text-align: center;
+  display: block;
+  text-decoration: none;
+  color: $color_1;
+  color: $color_2;
+  background-color: $background-color_1;
+  background-color: $background-color_2;
+  padding: 7px 5px;
+  font-weight: 500;
+  font-size: 1em;
+  &:hover {
+    background-color: $background-color_3;
+    color: $color_4;
+  }
+  &:active {
+    background-color: $background-color_3;
+    color: $color_4;
+  }
+  &:focus {
+    background-color: $background-color_3;
+    color: $color_4;
+  }
+  &:after {
+    content: '';
+    display: inline-block;
+    margin-left: 15px;
+    left: 0;
+    position: relative;
+    width: 25px;
+    height: 10px;
+    transform: translateX(0);
+    background: url('/images/sprite-arrows.svg') 0 0px/25px no-repeat;
+  }
+}
+.regular-button {
+  font-weight: 500;
+  border: var(--border);
+  border-color: $border-color_1;
+  padding: 7px 10px;
+  text-decoration: none;
+  color: $color_5;
+  display: inline-block;
+  margin: 5px 0;
+  width: 100%;
+  text-align: center;
+  border-radius: var(--radius);
+  background: none;
+  &:active {
+    background: var(--main-color);
+    color: $color_2;
+  }
+  &:hover {
+    background: var(--main-color);
+    color: $color_2;
+  }
+}
+.player-welcome {
+  p {
+    a {
+      font-weight: 500;
+      border: var(--border);
+      border-color: $border-color_1;
+      padding: 7px 10px;
+      text-decoration: none;
+      color: $color_5;
+      display: inline-block;
+      margin: 5px 0;
+      width: 100%;
+      text-align: center;
+      border-radius: var(--radius);
+      background: none;
+      display: block;
+      &:active {
+        background: var(--main-color);
+        color: $color_2;
+      }
+      &:hover {
+        background: var(--main-color);
+        color: $color_2;
+      }
+    }
+    .vault-app.darkmode {
+      a {
+        border: none;
+        color: $color_2;
+        background: #444;
+        &:active {
+          background: var(--main-color);
+          color: $color_2;
+        }
+        &:hover {
+          background: var(--main-color);
+          color: $color_2;
+        }
+      }
+      a.already-registered {
+        pointer-events: none;
+        color: $color_8;
+        background: transparent;
+        border: var(--border);
+        &::before {
+          content: '';
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          background: transparent;
+          margin-right: 5px;
+          position: relative;
+          top: 2px;
+          opacity: 0.3;
+          background: url('/images/icons/icon-check-white.svg') 0 0 / contain
+            no-repeat;
+          top: 6px;
+          opacity: 1;
+        }
+      }
+    }
+  }
+}
+.upload-more {
+  a {
+    font-weight: 500;
+    border: var(--border);
+    border-color: $border-color_1;
+    padding: 7px 10px;
+    text-decoration: none;
+    color: $color_5;
+    display: inline-block;
+    margin: 5px 0;
+    width: 100%;
+    text-align: center;
+    border-radius: var(--radius);
+    background: none;
+    &:active {
+      background: var(--main-color);
+      color: $color_2;
+    }
+    &:hover {
+      background: var(--main-color);
+      color: $color_2;
+    }
+  }
+  .vault-app.darkmode {
+    a {
+      border: none;
+      color: $color_2;
+      background: #444;
+      &:active {
+        background: var(--main-color);
+        color: $color_2;
+      }
+      &:hover {
+        background: var(--main-color);
+        color: $color_2;
+      }
+    }
+    a.already-registered {
+      pointer-events: none;
+      color: $color_8;
+      background: transparent;
+      border: var(--border);
+      &::before {
+        content: '';
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background: transparent;
+        margin-right: 5px;
+        position: relative;
+        top: 2px;
+        opacity: 0.3;
+        background: url('/images/icons/icon-check-white.svg') 0 0 / contain
+          no-repeat;
+        top: 6px;
+        opacity: 1;
+      }
+    }
+  }
+}
+#upload-form {
+  button {
+    font-weight: 500;
+    border: var(--border);
+    border-color: $border-color_1;
+    padding: 7px 10px;
+    text-decoration: none;
+    color: $color_5;
+    display: inline-block;
+    margin: 5px 0;
+    width: 100%;
+    text-align: center;
+    border-radius: var(--radius);
+    background: none;
+    &:active {
+      background: var(--main-color);
+      color: $color_2;
+    }
+    &:hover {
+      background: var(--main-color);
+      color: $color_2;
+    }
+  }
+  .vault-app.darkmode {
+    button {
+      border: none;
+      color: $color_2;
+      background: #444;
+      &:active {
+        background: var(--main-color);
+        color: $color_2;
+      }
+      &:hover {
+        background: var(--main-color);
+        color: $color_2;
+      }
+    }
+    button.already-registered {
+      pointer-events: none;
+      color: $color_8;
+      background: transparent;
+      border: var(--border);
+      &::before {
+        content: '';
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background: transparent;
+        margin-right: 5px;
+        position: relative;
+        top: 2px;
+        opacity: 0.3;
+        background: url('/images/icons/icon-check-white.svg') 0 0 / contain
+          no-repeat;
+        top: 6px;
+        opacity: 1;
+      }
+    }
+  }
+}
+.btn {
+  font-weight: 500;
+  border: var(--border);
+  border-color: $border-color_1;
+  padding: 7px 10px;
+  text-decoration: none;
+  color: $color_5;
+  display: inline-block;
+  margin: 5px 0;
+  width: 100%;
+  text-align: center;
+  border-radius: var(--radius);
+  background: none;
+  &:active {
+    background: var(--main-color);
+    color: $color_2;
+  }
+  &:hover {
+    background: var(--main-color);
+    color: $color_2;
+  }
+}
+.btn-primary {
+  font-weight: 500;
+  border: var(--border);
+  border-color: $border-color_1;
+  padding: 7px 10px;
+  text-decoration: none;
+  color: $color_5;
+  display: inline-block;
+  margin: 5px 0;
+  width: 100%;
+  text-align: center;
+  border-radius: var(--radius);
+  background: none;
+  &:active {
+    background: var(--main-color);
+    color: $color_2;
+  }
+  &:hover {
+    background: var(--main-color);
+    color: $color_2;
+  }
+}
+.home-nav-button {
+  font-weight: 500;
+  border: var(--border);
+  border-color: $border-color_1;
+  padding: 7px 10px;
+  text-decoration: none;
+  color: $color_5;
+  display: inline-block;
+  margin: 5px 0;
+  width: 100%;
+  text-align: center;
+  border-radius: var(--radius);
+  background: none;
+  &:active {
+    background: var(--main-color);
+    color: $color_2;
+  }
+  &:hover {
+    background: var(--main-color);
+    color: $color_2;
+  }
+}
+#tc-terms-form {
+  input[type='submit'] {
+    font-weight: 500;
+    border: var(--border);
+    border-color: $border-color_1;
+    padding: 7px 10px;
+    text-decoration: none;
+    color: $color_5;
+    display: inline-block;
+    margin: 5px 0;
+    width: 100%;
+    text-align: center;
+    border-radius: var(--radius);
+    background: none;
+    &:active {
+      background: var(--main-color);
+      color: $color_2;
+    }
+    &:hover {
+      background: var(--main-color);
+      color: $color_2;
+    }
+  }
+  .vault-app.darkmode {
+    input[type='submit'] {
+      border: none;
+      color: $color_2;
+      background: #444;
+      &:active {
+        background: var(--main-color);
+        color: $color_2;
+      }
+      &:hover {
+        background: var(--main-color);
+        color: $color_2;
+      }
+    }
+    input.already-registered[type='submit'] {
+      pointer-events: none;
+      color: $color_8;
+      background: transparent;
+      border: var(--border);
+      &::before {
+        content: '';
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background: transparent;
+        margin-right: 5px;
+        position: relative;
+        top: 2px;
+        opacity: 0.3;
+        background: url('/images/icons/icon-check-white.svg') 0 0 / contain
+          no-repeat;
+        top: 6px;
+        opacity: 1;
+      }
+    }
+  }
+}
+button {
+  &:not(.navbar-toggler, .mat-button-toggle-button) {
+    font-weight: 500;
+    border: var(--border);
+    border-color: $border-color_1;
+    padding: 7px 10px;
+    text-decoration: none;
+    color: $color_5;
+    display: inline-block;
+    margin: 5px 0;
+    width: 100%;
+    text-align: center;
+    border-radius: var(--radius);
+    background: none;
+    color: $color_8;
+  }
+  &:active {
+    &:not(.navbar-toggler) {
+      background: var(--main-color);
+      color: $color_2;
+    }
+  }
+  &:hover {
+    &:not(.navbar-toggler) {
+      background: var(--main-color);
+      color: $color_2;
+    }
+  }
+  &:not(.navbar-toggler).already-registered {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: transparent;
+    margin-right: 5px;
+    position: relative;
+    top: 2px;
+    opacity: 0.3;
+    background: url('/images/icons/icon-check-white.svg') 0 0 / contain
+      no-repeat;
+    top: 6px;
+    opacity: 1;
+    pointer-events: none;
+  }
+}
+.btn-close {
+  font-weight: 500;
+  border: var(--border);
+  border-color: $border-color_1;
+  padding: 7px 10px;
+  text-decoration: none;
+  color: $color_5;
+  display: inline-block;
+  margin: 5px 0;
+  width: 100%;
+  text-align: center;
+  border-radius: var(--radius);
+  background: none;
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: transparent;
+  margin-right: 5px;
+  position: relative;
+  top: 2px;
+  opacity: 0.3;
+  background: url('/images/icons/icon-check-white.svg') 0 0 / contain no-repeat;
+  top: 6px;
+  opacity: 1;
+  border: none;
+  color: $color_2;
+  background: #444;
+}
+.btn-close {
+  background: var(--main-color);
+  background: var(--main-color);
+  color: $color_2;
+  color: $color_2;
+  background: var(--main-color);
+  background: var(--main-color);
+  color: $color_2;
+  color: $color_2;
+  pointer-events: none;
+  color: $color_8;
+  background: transparent;
+  border: var(--border);
+  &::before {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    background: transparent;
+    margin-right: 5px;
+    position: relative;
+    top: 2px;
+    opacity: 0.3;
+    background: url('/images/icons/icon-check-white.svg') 0 0 / contain
+      no-repeat;
+    top: 6px;
+    opacity: 1;
+  }
+}
+h1 {
+  font-size: 1.8em;
+  border-bottom: 2px solid var(--black);
+  padding-bottom: 5px;
+  margin-top: 0.3em;
+  font-weight: 600;
+}
+h2 {
+  font-size: 1.6em;
+}
+h3 {
+  font-size: 1.4em;
+}
+h4 {
+  font-size: 0.8em;
+  text-transform: uppercase;
+  color: $color_7;
+  font-weight: 400;
+}
+h5 {
+  margin-top: 0.3em;
+}
+.checkout-status {
+  h5 {
+    font-size: 1em;
+    display: inline-block;
+  }
+  a {
+    font-size: 1em;
+    display: inline-block;
+  }
+}
+a {
+  color: $color_4;
+}
+select {
+  padding: 4px;
+}
+.btn-close.already-registered {
+  pointer-events: none;
+  color: $color_8;
+}
+.btn-outline {
+  .already-registered {
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background: transparent;
+      margin-right: 5px;
+      position: relative;
+      top: 2px;
+      opacity: 0.3;
+      background: url('/images/icons/icon-check-white.svg') 0 0 / contain
+        no-repeat;
+      top: 6px;
+      opacity: 1;
+    }
+  }
+}
+.mb-1 {
+  margin-bottom: 0 !important;
+}
+.my-1 {
+  margin-bottom: 0 !important;
+}
+.breadcrumb {
+  border-radius: 0;
+  text-transform: uppercase;
+  font-size: 0.8em;
+  background: #e9ecef;
+  border: none;
+}
+.breadcrumb.alert {
+  border-radius: 0;
+  text-transform: uppercase;
+  font-size: 0.8em;
+  background: #e9ecef;
+  border: none;
+}
+.event-dashboard {
+  > div {
+    &:not(.event-title) {
+      margin-top: 1em;
+    }
+  }
+}
+#signup-status {
+  padding-bottom: 5px;
+  color: $color_9;
+  border-bottom: 1px solid RGBA(0, 0, 0, 0.2);
+  color: $color_7;
+  h5 {
+    font-size: 1em;
+    margin-bottom: 0.3em;
+  }
+}
+.draft-title {
+  h1 {
+    a {
+      text-decoration: none;
+    }
+  }
+}
+.player-info-list {
+  .pool-info {
+    margin-top: 20px;
+  }
+  .current-match-panel {
+    margin-top: 20px;
+    padding: 20px 0;
+    border-top: var(--border);
+    border-bottom: var(--border);
+  }
+  .match-info {
+    margin-top: 20px;
+    padding: 20px 0;
+    border-top: var(--border);
+    border-bottom: var(--border);
+  }
+  .standings {
+    margin-top: 20px;
+  }
+  .seatings-info {
+    margin-top: 20px;
+  }
+}
+.seatings-info {
+  padding: 10px 0;
+  border-top: var(--border);
+  border-bottom: var(--border);
+}
+#match-details {
+  h5 {
+    &:first-of-type {
+      background-color: $background-color_1;
+      color: $color_10;
+    }
+  }
+}
+.my-opponent {
+  font-weight: 400;
+}
+.match-result {
+  margin: 0;
+  font-weight: 600;
+}
+.pairings-info {
+  border: none;
+  ul {
+    li {
+      padding: 3px 5px;
+      &:nth-child(odd) {
+        background-color: $background-color_6;
+      }
+    }
+  }
+}
+.standings-info {
+  border: none;
+}
+.standings-table {
+  border-bottom: var(--border);
+  margin-bottom: 10px;
+  thead {
+    background-color: $background-color_2;
+    border-bottom: var(--border);
+    th {
+      padding: 5px;
+      color: $color_2;
+      font-weight: 500;
+    }
+  }
+  tbody {
+    tr {
+      &:nth-child(odd) {
+        background-color: $background-color_7;
+      }
+    }
+  }
+}
+.form-input.player-wins {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+#report-result-form {
+  select {
+    + {
+      button {
+        margin: 10px 0;
+      }
+    }
+  }
+  label {
+    min-width: fit-content;
+    margin-right: 2rem;
+  }
+}
+img {
+  max-width: 100%;
+  width: auto;
+}
+.vault-app.darkmode {
+  background: #252525;
+  color: $color_2;
+  --border: 1px solid RGBA(255, 255, 255, 0.2);
+  .mb-1 {
+    .navbar {
+      background-color: $background-color_8 !important;
+    }
+    .navbar-brand {
+      width: 44px;
+      height: 56px;
+      background: url('/images/logo-vault-clean.svg') center center/contain
+        no-repeat;
+    }
+  }
+  h1 {
+    border-bottom: 1px solid white;
+  }
+  ul.admin-match-list {
+    li {
+      border-bottom: 5px solid #ddd;
+    }
+  }
+  ul.event-info {
+    padding: 5px 10px 10px;
+    border: var(--border);
+    border-radius: 5px;
+    background: #000;
+    display: flex;
+    flex-direction: column;
+    color: $color_11;
+    .main-event-link {
+      order: 2;
+      margin-top: 10px;
+    }
+    .side-event-link {
+      order: 2;
+      margin-top: 10px;
+    }
+    li {
+      margin-top: 3px;
+      strong {
+        font-weight: 500;
+        color: $color_12;
+      }
+    }
+    .event-title {
+      font-size: 1.4em;
+      border-bottom: 1px solid RGBA(255, 255, 255, 0.2);
+      font-weight: 500;
+      margin-top: 0;
+      color: $color_2;
+    }
+  }
+  .upload-more {
+    a {
+      background: #444;
+      color: $color_2;
+      border: none;
+      border: none;
+      color: $color_2;
+      background: #444;
+      &:active {
+        background: var(--main-color);
+        color: $color_2;
+      }
+      &:hover {
+        background: var(--main-color);
+        color: $color_2;
+      }
+    }
+    a.already-registered {
+      pointer-events: none;
+      color: $color_8;
+      background: transparent;
+      border: var(--border);
+      &::before {
+        content: '';
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background: transparent;
+        margin-right: 5px;
+        position: relative;
+        top: 2px;
+        opacity: 0.3;
+        background: url('/images/icons/icon-check-white.svg') 0 0 / contain
+          no-repeat;
+        top: 6px;
+        opacity: 1;
+      }
+    }
+  }
+  #upload-form {
+    button {
+      background: #444;
+      color: $color_2;
+      border: none;
+      border: none;
+      color: $color_2;
+      background: #444;
+      &:active {
+        background: var(--main-color);
+        color: $color_2;
+      }
+      &:hover {
+        background: var(--main-color);
+        color: $color_2;
+      }
+    }
+    button.already-registered {
+      pointer-events: none;
+      color: $color_8;
+      background: transparent;
+      border: var(--border);
+      &::before {
+        content: '';
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background: transparent;
+        margin-right: 5px;
+        position: relative;
+        top: 2px;
+        opacity: 0.3;
+        background: url('/images/icons/icon-check-white.svg') 0 0 / contain
+          no-repeat;
+        top: 6px;
+        opacity: 1;
+      }
+    }
+  }
+  .btn {
+    &:not(.btn-outline-light) {
+      background: #444;
+      color: $color_2;
+      border: none;
+      border: none;
+      color: $color_2;
+      background: #444;
+    }
+    &:active {
+      background: var(--main-color);
+      color: $color_2;
+    }
+    &:hover {
+      background: var(--main-color);
+      color: $color_2;
+    }
+  }
+  .btn-primary {
+    background: #444;
+    color: $color_2;
+    border: none;
+    border: none;
+    color: $color_2;
+    background: #444;
+    &:active {
+      background: var(--main-color);
+      color: $color_2;
+    }
+    &:hover {
+      background: var(--main-color);
+      color: $color_2;
+    }
+  }
+  .home-nav-button {
+    background: #444;
+    color: $color_2;
+    border: none;
+    border: none;
+    color: $color_2;
+    background: #444;
+    &:active {
+      background: var(--main-color);
+      color: $color_2;
+    }
+    &:hover {
+      background: var(--main-color);
+      color: $color_2;
+    }
+  }
+  #tc-terms-form {
+    input[type='submit'] {
+      background: #444;
+      color: $color_2;
+      border: none;
+      border: none;
+      color: $color_2;
+      background: #444;
+      &:active {
+        background: var(--main-color);
+        color: $color_2;
+      }
+      &:hover {
+        background: var(--main-color);
+        color: $color_2;
+      }
+    }
+    input.already-registered[type='submit'] {
+      pointer-events: none;
+      color: $color_8;
+      background: transparent;
+      border: var(--border);
+      &::before {
+        content: '';
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background: transparent;
+        margin-right: 5px;
+        position: relative;
+        top: 2px;
+        opacity: 0.3;
+        background: url('/images/icons/icon-check-white.svg') 0 0 / contain
+          no-repeat;
+        top: 6px;
+        opacity: 1;
+      }
+    }
+  }
+  .standings-table {
+    tbody {
+      tr {
+        background-color: $background-color_9;
+        &:nth-child(odd) {
+          background-color: $background-color_10;
+        }
+      }
+    }
+  }
+  .pairings-info {
+    ul {
+      li {
+        background-color: $background-color_9;
+        &:nth-child(odd) {
+          background-color: $background-color_10;
+        }
+      }
+    }
+    h5 {
+      h5 {
+        &::before {
+          content: '';
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          background: transparent;
+          margin-right: 5px;
+          position: relative;
+          top: 2px;
+          opacity: 0.3;
+          background: url('/images/icons/icon-pairing-white.svg') 0 0 / contain
+            no-repeat;
+          top: 4px;
+        }
+      }
+    }
+  }
+  .regular-button {
+    border: none;
+    color: $color_2;
+    background: #444;
+    &:active {
+      background: var(--main-color);
+      color: $color_2;
+    }
+    &:hover {
+      background: var(--main-color);
+      color: $color_2;
+    }
+  }
+  button {
+    &:not(.navbar-toggler) {
+      border: none;
+      color: $color_2;
+      background: #444;
+    }
+    &:active {
+      &:not(.navbar-toggler) {
+        background: var(--main-color);
+        color: $color_2;
+      }
+    }
+    &:hover {
+      &:not(.navbar-toggler) {
+        background: var(--main-color);
+        color: $color_2;
+      }
+    }
+  }
+  ul {
+    li.pool-info {
+      h5 {
+        + {
+          a {
+            border: none;
+            color: $color_2;
+            background: #444;
+            border: none;
+            color: $color_2;
+            background: #444;
+            &:active {
+              background: var(--main-color);
+              color: $color_2;
+              background: var(--main-color);
+              color: $color_2;
+            }
+            &:hover {
+              background: var(--main-color);
+              color: $color_2;
+            }
+          }
+          a.already-registered {
+            pointer-events: none;
+            color: $color_8;
+            background: transparent;
+            border: var(--border);
+            &::before {
+              content: '';
+              display: inline-block;
+              width: 20px;
+              height: 20px;
+              background: transparent;
+              margin-right: 5px;
+              position: relative;
+              top: 2px;
+              opacity: 0.3;
+              background: url('/images/icons/icon-check-white.svg') 0 0 /
+                contain no-repeat;
+              top: 6px;
+              opacity: 1;
+            }
+          }
+        }
+      }
+    }
+  }
+  .player-welcome {
+    p {
+      a {
+        border: none;
+        color: $color_2;
+        background: #444;
+        &:active {
+          background: var(--main-color);
+          color: $color_2;
+        }
+        &:hover {
+          background: var(--main-color);
+          color: $color_2;
+        }
+      }
+      a.already-registered {
+        pointer-events: none;
+        color: $color_8;
+        background: transparent;
+        border: var(--border);
+        &::before {
+          content: '';
+          display: inline-block;
+          width: 20px;
+          height: 20px;
+          background: transparent;
+          margin-right: 5px;
+          position: relative;
+          top: 2px;
+          opacity: 0.3;
+          background: url('/images/icons/icon-check-white.svg') 0 0 / contain
+            no-repeat;
+          top: 6px;
+          opacity: 1;
+        }
+      }
+    }
+  }
+  .regular-button.already-registered {
+    pointer-events: none;
+    color: $color_8;
+    background: transparent;
+    border: var(--border);
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background: transparent;
+      margin-right: 5px;
+      position: relative;
+      top: 2px;
+      opacity: 0.3;
+      background: url('/images/icons/icon-check-white.svg') 0 0 / contain
+        no-repeat;
+      top: 6px;
+      opacity: 1;
+    }
+  }
+  button.already-registered {
+    &:not(.navbar-toggler) {
+      pointer-events: none;
+      color: $color_8;
+      background: transparent;
+      border: var(--border);
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background: transparent;
+      margin-right: 5px;
+      position: relative;
+      top: 2px;
+      opacity: 0.3;
+      background: url('/images/icons/icon-check-white.svg') 0 0 / contain
+        no-repeat;
+      top: 6px;
+      opacity: 1;
+    }
+  }
+  .already-registered.btn {
+    pointer-events: none;
+    color: $color_8;
+    background: transparent;
+    border: var(--border);
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background: transparent;
+      margin-right: 5px;
+      position: relative;
+      top: 2px;
+      opacity: 0.3;
+      background: url('/images/icons/icon-check-white.svg') 0 0 / contain
+        no-repeat;
+      top: 6px;
+      opacity: 1;
+    }
+  }
+  .already-registered.btn-primary {
+    pointer-events: none;
+    color: $color_8;
+    background: transparent;
+    border: var(--border);
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background: transparent;
+      margin-right: 5px;
+      position: relative;
+      top: 2px;
+      opacity: 0.3;
+      background: url('/images/icons/icon-check-white.svg') 0 0 / contain
+        no-repeat;
+      top: 6px;
+      opacity: 1;
+    }
+  }
+  .already-registered.home-nav-button {
+    pointer-events: none;
+    color: $color_8;
+    background: transparent;
+    border: var(--border);
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      background: transparent;
+      margin-right: 5px;
+      position: relative;
+      top: 2px;
+      opacity: 0.3;
+      background: url('/images/icons/icon-check-white.svg') 0 0 / contain
+        no-repeat;
+      top: 6px;
+      opacity: 1;
+    }
+  }
+  .breadcrumb {
+    background: black;
+    border-bottom: var(--border);
+  }
+  .breadcrumb.alert {
+    background: black;
+    border-bottom: var(--border);
+  }
+  .breadcrumb-item {
+    + {
+      .breadcrumb-item {
+        &::before {
+          color: $color_8 !important;
+        }
+      }
+    }
+  }
+  .breadcrumb-item.active {
+    color: $color_8 !important;
+  }
+  #match-details {
+    h5 {
+      &:first-of-type {
+        background-color: $background-color_11;
+        color: $color_13;
+        color: $color_2;
+        border: 1px solid var(--yellow);
+        padding: 7px 10px 10px;
+        border-radius: 5px;
+      }
+      &::before {
+        content: '';
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background: transparent;
+        margin-right: 5px;
+        position: relative;
+        top: 2px;
+        opacity: 0.3;
+      }
+    }
+  }
+  .event-list {
+    mat-card-title {
+      margin-bottom: 0.3em;
+      &::before {
+        content: '';
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background: transparent;
+        margin-right: 5px;
+        position: relative;
+        top: 2px;
+        opacity: 0.3;
+        background: url('/images/icons/icon-calender-white.svg') 0 0 / contain
+          no-repeat;
+      }
+    }
+  }
+  .draft-info {
+    a {
+      &::before {
+        content: '';
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background: transparent;
+        margin-right: 5px;
+        position: relative;
+        top: 2px;
+        opacity: 0.3;
+      }
+    }
+    &::before {
+      background: url('/images/icons/icon-draft-white.svg') 0 0 / contain
+        no-repeat;
+      width: 10px;
+      height: 10px;
+      opacity: 1;
+    }
+  }
+  .event-dashboard {
+    .current-match-panel {
+      &::before {
+        content: '';
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background: transparent;
+        margin-right: 5px;
+        position: relative;
+        top: 2px;
+        opacity: 0.3;
+        background: url('/images/icons/icon-match-white.svg') 0 0 / contain
+          no-repeat;
+        top: 4px;
+      }
+    }
+    .event-name {
+      &::before {
+        content: '';
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background: transparent;
+        margin-right: 5px;
+        position: relative;
+        top: 2px;
+        opacity: 0.3;
+        background: url('/images/icons/icon-trophy-white.svg') 0 0 / contain
+          no-repeat;
+        width: 30px;
+        height: 30px;
+        margin-right: 10px;
+        top: 5px;
+      }
+    }
+  }
+  .standings {
+    h5 {
+      &::before {
+        content: '';
+        content: '';
+        display: inline-block;
+        display: inline-block;
+        width: 20px;
+        width: 20px;
+        height: 20px;
+        height: 20px;
+        background: transparent;
+        background: transparent;
+        margin-right: 5px;
+        margin-right: 5px;
+        position: relative;
+        position: relative;
+        top: 2px;
+        top: 2px;
+        opacity: 0.3;
+        opacity: 0.3;
+        background: url('/images/icons/icon-standings-white.svg') 0 0 / contain
+          no-repeat;
+        top: 4px;
+      }
+    }
+  }
+  .draft-timetable {
+    h5 {
+      &::before {
+        content: '';
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background: transparent;
+        margin-right: 5px;
+        position: relative;
+        top: 2px;
+        opacity: 0.3;
+        background: url('/images/icons/icon-date-b-white.svg') 0 0 / contain
+          no-repeat;
+      }
+    }
+  }
+  .pool-info {
+    h5 {
+      + {
+        a {
+          &::before {
+            content: '';
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            background: transparent;
+            margin-right: 5px;
+            position: relative;
+            top: 2px;
+            opacity: 0.3;
+            background: url('/images/icons/icon-pool-white.svg') 0 0 / contain
+              no-repeat;
+            top: 4px;
+          }
+        }
+      }
+    }
+  }
+  .pool-info-checked-in {
+    h5 {
+      &::before {
+        content: '';
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background: transparent;
+        margin-right: 5px;
+        position: relative;
+        top: 2px;
+        opacity: 0.3;
+        background: url('/images/icons/icon-check-white.svg') 0 0 / contain
+          no-repeat;
+        top: 6px;
+        opacity: 1;
+      }
+    }
+  }
+  .seatings-info {
+    h5 {
+      &::before {
+        content: '';
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        background: transparent;
+        margin-right: 5px;
+        position: relative;
+        top: 2px;
+        opacity: 0.3;
+        background: url('/images/icons/icon-seatings-white.svg') 0 0 / contain
+          no-repeat;
+      }
+    }
+  }
+  .cube-info {
+    &::before {
+      background: url('/images/icons/icon-cube-white.svg') 0 0 / contain
+        no-repeat;
+      top: 4px;
+    }
+  }
+  .match-details {
+    h5 {
+      &::before {
+        background: url('/images/icons/icon-match-white.svg') 0 0 / contain
+          no-repeat;
+        top: 4px;
+      }
+    }
+  }
+  .toc-container {
+    max-width: 70ch;
+    color: $color_14;
+    margin-top: 20px;
+    h2 {
+      border-bottom: var(--border);
+      color: $color_2;
+      margin-top: 30px;
+    }
+    h3 {
+      margin-top: 30px;
+    }
+  }
+  .single-cube {
+    .image-container {
+      margin-top: 20px;
+    }
+    h5 {
+      margin-top: 20px;
+      border-bottom: var(--border);
+    }
+  }
+}
+.btn-outline-light {
+  border: none;
+  color: $color_2;
+  background: #444;
+}
+.breadcrumb-nav {
+  position: sticky;
+  top: 0;
+}
+.mat-button-toggle-group {
+  margin-left: 15px;
+}
+
+mat-card-content {
+  a.dashboard-link {
+    border: var(--border);
+    border-radius: var(--radius);
+    padding: var(--inner-padding);
+    text-align: center;
+    display: block;
+    text-decoration: none;
+    color: $color_1;
+    color: $color_2;
+    background-color: $background-color_1;
+    background-color: $background-color_2;
+    padding: 7px 5px;
+    font-weight: 500;
+    font-size: 1em;
+    margin: 10px 0;
+
+    &:hover {
+      background-color: $background-color_3;
+      color: $color_4;
+    }
+    &:active {
+      background-color: $background-color_3;
+      color: $color_4;
+    }
+    &:focus {
+      background-color: $background-color_3;
+      color: $color_4;
+    }
+    &:after {
+      content: '';
+      display: inline-block;
+      margin-left: 15px;
+      left: 0;
+      position: relative;
+      width: 25px;
+      height: 10px;
+      transform: translateX(0);
+      background: url('/images/sprite-arrows.svg') 0 0px/25px no-repeat;
+    }
+  }
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}

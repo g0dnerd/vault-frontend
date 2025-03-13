@@ -1,0 +1,40 @@
+$color_2: white;
+
+mat-card-title {
+  margin-bottom: 10px;
+}
+
+mat-label {
+  width: 100%;
+}
+
+.form-field-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+mat-card-content {
+  a.register-button {
+    border: none;
+    color: $color_2;
+    background: #444;
+    font-weight: 500;
+    text-align: center;
+    padding: 7px 10px;
+    text-decoration: none;
+    display: inline-block;
+    margin: 5px 0;
+    width: 100%;
+    text-align: center;
+    border-radius: 5px;
+    &:hover {
+      background: #00a5d6;
+      color: white;
+    }
+  }
+}

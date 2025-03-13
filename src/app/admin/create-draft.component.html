@@ -1,0 +1,62 @@
+<h1>Create a draft</h1>
+<mat-card>
+  <mat-card-content>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <mat-form-field>
+        <mat-label>Cube</mat-label>
+        <mat-select
+          formControlName="cube"
+          [ngClass]="{ 'is-invalid': submitted && f['cube'].errors }"
+        >
+          @for (cube of cubes$ | ngrxPush; track cube) {
+          <mat-option [value]="cube.id">{{ cube.name }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <div *ngIf="submitted && f['cube'].errors" class="invalid-feedback">
+        <div *ngIf="f['cube'].errors['required']">Cube is required</div>
+      </div>
+      <mat-form-field>
+        <mat-label>Rounds</mat-label>
+        <input
+          [value]="roundNumber()"
+          matInput
+          type="number"
+          formControlName="rounds"
+          class="form-control"
+          [ngClass]="{ 'is-invalid': submitted && f['rounds'].errors }"
+        />
+      </mat-form-field>
+      <div *ngIf="submitted && f['rounds'].errors" class="invalid-feedback">
+        <div *ngIf="f['rounds'].errors['required']">
+          Number of rounds is required
+        </div>
+      </div>
+      <mat-form-field>
+        <mat-label>Players</mat-label>
+        <mat-select
+          formControlName="players"
+          multiple
+          (ngModelChange)="playersChanged($event)"
+          [ngClass]="{ 'is-invalid': submitted && f['players'].errors }"
+        >
+          @for (enrollment of enrollments$ | ngrxPush; track enrollment) {
+          <mat-option [value]="enrollment.id">{{
+            enrollment.user.username
+          }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <div *ngIf="submitted && f['players'].errors" class="invalid-feedback">
+        <div *ngIf="f['players'].errors['required']">Players are required</div>
+      </div>
+      <button [disabled]="loading" class="btn btn-primary">
+        <span
+          *ngIf="loading"
+          class="spinner-border spinner-border-sm me-1"
+        ></span>
+        Create
+      </button>
+    </form>
+  </mat-card-content>
+</mat-card>

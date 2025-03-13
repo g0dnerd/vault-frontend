@@ -1,0 +1,20 @@
+<mat-expansion-panel class="pool-panel">
+  <mat-expansion-panel-header>
+    <mat-panel-title>Decklist</mat-panel-title>
+    <ng-template *ngIf="(poolStatus$ | ngrxPush)?.checkedIn; else notCheckedIn">
+      <mat-panel-description> I am checked in. </mat-panel-description>
+      <mat-panel-description
+        *ngIf="(poolStatus$ | ngrxPush)?.checkedOut; else notCheckedOut"
+      >
+        I am checked out.
+      </mat-panel-description>
+    </ng-template>
+    <ng-template #notCheckedIn>
+      <mat-panel-description>I am not checked in.</mat-panel-description>
+    </ng-template>
+    <ng-template #notCheckedOut>
+      <mat-panel-description>I am not checked out.</mat-panel-description>
+    </ng-template>
+  </mat-expansion-panel-header>
+  <app-manage-pool />
+</mat-expansion-panel>

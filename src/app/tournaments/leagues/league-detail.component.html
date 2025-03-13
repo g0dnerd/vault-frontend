@@ -1,0 +1,29 @@
+<h1>Tournament Dashboard</h1>
+<mat-card class="event-dashboard" appearance="outlined">
+  <mat-card-header>
+    <mat-card-title-group>
+      <mat-card-title class="tournament-name">{{
+        (league$ | ngrxPush)?.name
+      }}</mat-card-title>
+    </mat-card-title-group>
+  </mat-card-header>
+  <mat-card-content>
+    <p class="elo-panel">Your elo: {{ (enrollment$ | ngrxPush)?.elo }}</p>
+    <table class="standings-table">
+      <thead>
+        <tr>
+          <th style="text-align: center; padding-right: 40px">#</th>
+          <th style="text-align: center; padding-right: 40px">Name</th>
+          <th style="text-align: center; padding-right: 40px">Elo</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let player of players$ | ngrxPush; index as i">
+          <td>{{ i + 1 }}</td>
+          <td>{{ player?.user?.username }}</td>
+          <td>{{ player?.elo }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </mat-card-content>
+</mat-card>

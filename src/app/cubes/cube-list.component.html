@@ -1,0 +1,23 @@
+<mat-card class="cube-list-card" appearance="outlined">
+  <mat-card-header>
+    <mat-card-title-group>
+      <mat-card-title>All cubes</mat-card-title>
+    </mat-card-title-group>
+  </mat-card-header>
+  <mat-list class="cube-list">
+    <mat-list-item
+      *ngFor="let cube of cubes$ | ngrxPush; index as i"
+      class="cube-detail-preview"
+    >
+      <span matListItemTitle>
+        <a class="cube-link-internal" routerLink="/cubes/{{ cube.id }}">{{
+          cube.name
+        }}</a>
+      </span>
+      <span matListItemLine
+        >{{ cube.cardNumber }} card cube
+        <span *ngIf="cube.creator">by {{ cube.creator.username }}</span>
+      </span>
+    </mat-list-item>
+  </mat-list>
+</mat-card>

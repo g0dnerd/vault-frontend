@@ -1,0 +1,61 @@
+<mat-card
+  class="profile-card"
+  appearance="outlined"
+  *ngIf="user$ | ngrxPush as user"
+>
+  <mat-card-header>
+    <mat-card-title-group>
+      <mat-card-title>{{ user.username }}</mat-card-title>
+      <mat-card-subtitle>{{ user.email }}</mat-card-subtitle>
+      <img mat-card-md-image src="/images/frogger.jpeg" alt="Profile Picture" />
+    </mat-card-title-group>
+  </mat-card-header>
+  <mat-card-actions>
+    <a mat-stroked-button routerLink="/profile/edit">Edit Profile</a>
+  </mat-card-actions>
+  <mat-card-footer class="profile-card-footer">
+    <mat-chip-set aria-label="Profile facts">
+      <mat-chip>
+        <mat-icon
+          matChipAvatar
+          aria-label="pronouns"
+          class="material-symbols-outlined"
+        >
+          person </mat-icon
+        >he/him</mat-chip
+      >
+      <mat-chip>
+        <mat-icon
+          matChipAvatar
+          aria-label="tournament count"
+          class="material-symbols-outlined"
+        >
+          event_available
+        </mat-icon>
+        999 Tournaments
+      </mat-chip>
+      <mat-chip>
+        <mat-icon
+          matChipAvatar
+          aria-label="cube count"
+          class="material-symbols-outlined"
+        >
+          deployed_code
+        </mat-icon>
+        3 Cubes
+      </mat-chip>
+      <mat-chip *ngIf="isAdmin$ | ngrxPush">
+        <mat-icon
+          matChipAvatar
+          aria-label="pronouns"
+          class="material-symbols-outlined"
+        >
+          shield_person </mat-icon
+        >Staff Member</mat-chip
+      >
+    </mat-chip-set>
+  </mat-card-footer>
+  <mat-card-content>
+    <p>Test Description 1234</p>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,53 @@
+<mat-card
+  class="edit-profile-card"
+  appearance="outlined"
+  *ngIf="user$ | ngrxPush as user"
+>
+  <mat-card-header>
+    <mat-card-title>Edit Profile</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="card-body edit-profile">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <label class="form-label">Email</label>
+        <input
+          type="text"
+          formControlName="email"
+          class="form-control"
+          [defaultValue]="user.email"
+          [ngClass]="{ 'is-invalid': submitted && f['email'].errors }"
+        />
+        <div *ngIf="submitted && f['email'].errors" class="invalid-feedback">
+          <div *ngIf="f['email'].errors['required']">Email is required</div>
+        </div>
+        <label class="form-label">Username</label>
+        <input
+          type="text"
+          formControlName="username"
+          class="form-control"
+          [defaultValue]="user.username"
+          my-tournaments.component.html
+          [ngClass]="{ 'is-invalid': submitted && f['username'].errors }"
+        />
+        <div *ngIf="submitted && f['username'].errors" class="invalid-feedback">
+          <div *ngIf="f['username'].errors['required']">
+            Username is required
+          </div>
+        </div>
+        <div>
+          <button
+            mat-stroked-button
+            [disabled]="loading"
+            class="btn btn-primary"
+          >
+            <span
+              *ngIf="loading"
+              class="spinner-border spinner-border-sm me-1"
+            ></span>
+            Update profile information
+          </button>
+        </div>
+      </form>
+    </div>
+  </mat-card-content>
+</mat-card>

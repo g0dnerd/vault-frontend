@@ -1,0 +1,19 @@
+<div class="card">
+  <div class="card-body text-white" style="background-color: #000">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <h5 class="card-title">
+        {{ tournamentName() }}
+      </h5>
+      <p class="card-subtitle mb-2">
+        Player Capacity: {{ tournamentCapacity() }}
+      </p>
+      <button [disabled]="loading" class="btn btn-primary">
+        <span
+          *ngIf="loading"
+          class="spinner-border spinner-border-sm me-1"
+        ></span>
+        Enroll
+      </button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,65 @@
+<mat-card class="cube-card" appearance="outlined">
+  <mat-card-header>
+    <mat-card-title-group>
+      <mat-card-title>{{ (cube$ | ngrxPush)?.name }}</mat-card-title>
+      <mat-card-subtitle>{{
+        (cube$ | ngrxPush)?.description
+      }}</mat-card-subtitle>
+    </mat-card-title-group>
+  </mat-card-header>
+
+  @defer {
+  <img
+    *ngIf="(cube$ | ngrxPush)?.imageUrl"
+    mat-card-image
+    src="/images/{{ (cube$ | ngrxPush)?.imageUrl }}"
+    alt="Cube Thumbnail"
+  />
+  <mat-card-content>
+    <p>{{ (cube$ | ngrxPush)?.longDescription }}</p>
+  </mat-card-content>
+  } @loading {
+  <mat-spinner mode="indeterminate"></mat-spinner>
+  } @placeholder {
+  <mat-spinner mode="indeterminate"></mat-spinner>
+  }
+  <mat-card-footer class="cube-card-footer">
+    <mat-chip-set aria-label="Cube facts">
+      <mat-chip>
+        <mat-icon
+          matChipAvatar
+          aria-label="created by"
+          class="material-symbols-outlined"
+        >
+          person
+        </mat-icon>
+        created by {{ (cube$ | ngrxPush)?.creator?.username }}
+      </mat-chip>
+      <mat-chip>
+        <mat-icon
+          matChipAvatar
+          aria-label="number of cards"
+          class="material-symbols-outlined"
+        >
+          playing_cards
+        </mat-icon>
+        {{ (cube$ | ngrxPush)?.cardNumber }} cards
+      </mat-chip>
+      <mat-chip>
+        <mat-icon
+          matChipAvatar
+          aria-label="view on CubeCobra (external)"
+          class="material-symbols-outlined"
+        >
+          open_in_new
+        </mat-icon>
+        <a
+          class="cube-link-external"
+          href="{{ (cube$ | ngrxPush)?.url }}"
+          target="_blank"
+          >View on CubeCobra</a
+        >
+      </mat-chip>
+    </mat-chip-set>
+  </mat-card-footer>
+</mat-card>
