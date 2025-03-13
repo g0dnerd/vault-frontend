@@ -1,24 +1,24 @@
-<mat-card class="draft-card admin">
+<h1>Draft playing {{ (draft$ | ngrxPush)?.cube?.name }}</h1>
+<ng-container *ngIf="!(matches$ | ngrxPush)?.length">
+  <mat-card class="seatings-card admin" *ngIf="(draft$ | ngrxPush)?.seated">
+    <mat-card-header>
+      <mat-card-title>Seatings</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <ol class="seatings-list">
+        <li *ngFor="let player of (draft$ | ngrxPush)?.players; index as i">
+          {{ player.enrollment?.user?.username }}
+        </li>
+      </ol>
+    </mat-card-content>
+  </mat-card>
+</ng-container>
+<mat-card class="matches-card admin">
   <mat-card-header>
-    <mat-card-title-group>
-      <mat-card-title>
-        Draft playing {{ (draft$ | ngrxPush)?.cube?.name }}
-      </mat-card-title>
-    </mat-card-title-group>
+    <mat-card-title>Matches</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div *ngIf="(draft$ | ngrxPush)?.seated; else notSeated">
-      <div *ngIf="!(matches$ | ngrxPush)?.length">
-        <h5 class="card-subtitle mb-2">Seatings:</h5>
-        <ol class="seatings-list">
-          <li *ngFor="let player of (draft$ | ngrxPush)?.players; index as i">
-            {{ player.enrollment?.user?.username }}
-          </li>
-        </ol>
-      </div>
-    </div>
     <div *ngIf="(matches$ | ngrxPush)?.length; else noMatches">
-      <h5 class="card-subtitle mb-2">Matches:</h5>
       <mat-accordion class="admin-match-list">
         <mat-expansion-panel
           *ngFor="let game of matches$ | ngrxPush; index as i"
@@ -51,7 +51,6 @@
                   formControlName="player1Wins"
                   aria-label="Player 1 wins"
                   exclusive
-                  appearance="legacy"
                 >
                   <mat-button-toggle [value]="0">0</mat-button-toggle>
                   <mat-button-toggle [value]="1">1</mat-button-toggle>
@@ -74,7 +73,6 @@
                   formControlName="player2Wins"
                   aria-label="Player 2 wins"
                   exclusive
-                  appearance="legacy"
                 >
                   <mat-button-toggle [value]="0">0</mat-button-toggle>
                   <mat-button-toggle [value]="1">1</mat-button-toggle>
