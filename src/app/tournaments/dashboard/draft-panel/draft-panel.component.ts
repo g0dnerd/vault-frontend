@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { RouterLink } from '@angular/router';
@@ -22,7 +22,6 @@ import { MyPoolComponent } from './my-pool.component';
   ],
   templateUrl: './draft-panel.component.html',
   styleUrl: './draft-panel.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DraftPanelComponent {
   private readonly draftStore$ = inject(Store<DraftAppState>);

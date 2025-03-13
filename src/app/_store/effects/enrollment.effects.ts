@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, of, tap } from 'rxjs';
 
-import { AlertService, EnrollmentsService } from '../../_services';
+import { AlertService, EnrollmentService } from '../../_services';
 import * as EnrollmentActions from '../actions/enrollment.actions';
 
 export const enrollmentStoreFailure = createEffect(
@@ -11,16 +11,16 @@ export const enrollmentStoreFailure = createEffect(
       ofType(EnrollmentActions.enrollmentStoreFailure),
       tap(({ errorMessage }) => {
         alertService.error(errorMessage, true);
-      })
+      }),
     );
   },
-  { functional: true, dispatch: false }
+  { functional: true, dispatch: false },
 );
 
 export const initializeAllEnrollmentsEffect = createEffect(
   (
     actions$ = inject(Actions),
-    enrollmentService = inject(EnrollmentsService)
+    enrollmentService = inject(EnrollmentService),
   ) => {
     return actions$.pipe(
       ofType(EnrollmentActions.initializeAllEnrollments),
@@ -33,20 +33,20 @@ export const initializeAllEnrollmentsEffect = createEffect(
             return of(
               EnrollmentActions.enrollmentStoreFailure({
                 errorMessage: error.message,
-              })
+              }),
             );
-          })
+          }),
         );
-      })
+      }),
     );
   },
-  { functional: true, dispatch: true }
+  { functional: true, dispatch: true },
 );
 
 export const initializeEnrollmentsForTournamentEffect = createEffect(
   (
     actions$ = inject(Actions),
-    enrollmentService = inject(EnrollmentsService)
+    enrollmentService = inject(EnrollmentService),
   ) => {
     return actions$.pipe(
       ofType(EnrollmentActions.initializeEnrollmentsForTournament),
@@ -59,20 +59,20 @@ export const initializeEnrollmentsForTournamentEffect = createEffect(
             return of(
               EnrollmentActions.enrollmentStoreFailure({
                 errorMessage: error.message,
-              })
+              }),
             );
-          })
+          }),
         );
-      })
+      }),
     );
   },
-  { functional: true, dispatch: true }
+  { functional: true, dispatch: true },
 );
 
 export const initializeLeaguePlayersEffect = createEffect(
   (
     actions$ = inject(Actions),
-    enrollmentService = inject(EnrollmentsService)
+    enrollmentService = inject(EnrollmentService),
   ) => {
     return actions$.pipe(
       ofType(EnrollmentActions.initializeAllLeaguePlayers),
@@ -85,12 +85,12 @@ export const initializeLeaguePlayersEffect = createEffect(
             return of(
               EnrollmentActions.enrollmentStoreFailure({
                 errorMessage: error.message,
-              })
+              }),
             );
-          })
+          }),
         );
-      })
+      }),
     );
   },
-  { functional: true, dispatch: true }
+  { functional: true, dispatch: true },
 );

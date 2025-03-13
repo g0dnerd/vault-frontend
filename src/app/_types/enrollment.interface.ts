@@ -9,3 +9,12 @@ export interface Enrollment {
   user: User;
   elo?: number;
 }
+
+export interface Scorecard {
+  username: string;
+  points: number;
+  pmw: number;
+  pgw: number;
+  omw: number;
+  ogw: number;
+}

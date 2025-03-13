@@ -9,12 +9,14 @@ import * as enrollmentEffects from '../_store/effects/enrollment.effects';
 import * as imageEffects from '../_store/effects/image.effects';
 import * as matchEffects from '../_store/effects/match.effects';
 import * as playerEffects from '../_store/effects/player.effects';
+import * as standingsEffects from '../_store/effects/standings.effects';
 import * as tournamentEffects from '../_store/effects/tournament.effects';
 import { draftReducer } from '../_store/reducers/draft.reducer';
 import { enrollmentReducer } from '../_store/reducers/enrollment.reducer';
 import { imageReducer } from '../_store/reducers/image.reducer';
 import { matchReducer } from '../_store/reducers/match.reducer';
 import { playerReducer } from '../_store/reducers/player.reducer';
+import { standingsReducer } from '../_store/reducers/standings.reducer';
 import { tournamentReducer } from '../_store/reducers/tournament.reducer';
 
 import { AvailableTournamentsComponent } from './available-tournaments/available-tournaments.component';
@@ -46,6 +48,8 @@ export const TOURNAMENT_ROUTES: Routes = [
       provideState('images', imageReducer),
       provideEffects(playerEffects),
       provideState('players', playerReducer),
+      provideEffects(standingsEffects),
+      provideState('standings', standingsReducer),
     ],
     data: { requiredRole: Role.Player },
     canActivate: [AuthGuard],

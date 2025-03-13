@@ -1,7 +1,10 @@
 <h1 *ngIf="tournament$ | ngrxPush as tournament">{{ tournament.name }}</h1>
 <h5>Tournament Dashboard</h5>
 @defer {
-<ng-container *ngIf="tournament$ | ngrxPush">
-  <app-draft-panel></app-draft-panel
-></ng-container>
+  <ng-container *ngIf="tournament$ | ngrxPush as tournament">
+    <app-draft-panel></app-draft-panel>
+    <app-tournament-standings
+      [tournamentId]="tournament.id"
+    ></app-tournament-standings>
+  </ng-container>
 }

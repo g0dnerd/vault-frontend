@@ -1,4 +1,4 @@
-@use '@angular/material' as mat;
+@use "@angular/material" as mat;
 @include mat.core();
 
 $color_1: var(--black);
@@ -15,7 +15,7 @@ $color_11: #9da4b2;
 $color_12: #f7f8f9;
 $color_13: var(--yellow);
 $color_14: #eee;
-$font-family_1: 'GeneralSans-Variable', 'Helvetica Neue', Helvetica, Arial,
+$font-family_1: "GeneralSans-Variable", "Helvetica Neue", Helvetica, Arial,
   sans-serif;
 $background-color_1: var(--yellow);
 $background-color_2: var(--main-color);
@@ -31,9 +31,10 @@ $background-color_11: transparent;
 $border-color_1: var(--main-color);
 
 @font-face {
-  font-family: 'GeneralSans-Variable';
-  src: url('/fonts/GeneralSans-Variable.woff2') format('woff2'),
-    url('/fonts/GeneralSans-Variable.ttf') format('truetype');
+  font-family: "GeneralSans-Variable";
+  src:
+    url("/fonts/GeneralSans-Variable.woff2") format("woff2"),
+    url("/fonts/GeneralSans-Variable.ttf") format("truetype");
   font-weight: 200 700;
   font-display: swap;
   font-style: normal;
@@ -65,7 +66,7 @@ html {
   @include mat.theme(
     (
       color: mat.$violet-palette,
-      typography: 'GeneralSans-Variable',
+      typography: "GeneralSans-Variable",
       density: 0,
     )
   );
@@ -156,7 +157,7 @@ body.vault-app {
           color: $color_4;
         }
         &:after {
-          content: '';
+          content: "";
           display: inline-block;
           margin-left: 15px;
           left: 0;
@@ -164,7 +165,7 @@ body.vault-app {
           width: 25px;
           height: 10px;
           transform: translateX(0);
-          background: url('/images/sprite-arrows.svg') 0 0px/25px no-repeat;
+          background: url("/images/sprite-arrows.svg") 0 0px/25px no-repeat;
         }
       }
       padding: 10px 0;
@@ -270,7 +271,7 @@ body.vault-app {
         color: $color_4;
       }
       &:after {
-        content: '';
+        content: "";
         display: inline-block;
         margin-left: 15px;
         left: 0;
@@ -278,7 +279,7 @@ body.vault-app {
         width: 25px;
         height: 10px;
         transform: translateX(0);
-        background: url('/images/sprite-arrows.svg') 0 0px/25px no-repeat;
+        background: url("/images/sprite-arrows.svg") 0 0px/25px no-repeat;
       }
     }
     border: none;
@@ -293,7 +294,7 @@ body.vault-app {
       display: inline-block;
       width: 60px;
       height: 56px;
-      background: url('/images/logo-vault-1.svg') 0 0 / contain no-repeat;
+      background: url("/images/logo-vault-1.svg") 0 0 / contain no-repeat;
     }
   }
   li {
@@ -361,7 +362,7 @@ body.vault-app {
     color: $color_4;
   }
   &:after {
-    content: '';
+    content: "";
     display: inline-block;
     margin-left: 15px;
     left: 0;
@@ -369,7 +370,7 @@ body.vault-app {
     width: 25px;
     height: 10px;
     transform: translateX(0);
-    background: url('/images/sprite-arrows.svg') 0 0px/25px no-repeat;
+    background: url("/images/sprite-arrows.svg") 0 0px/25px no-repeat;
   }
 }
 .regular-button {
@@ -439,7 +440,7 @@ body.vault-app {
         background: transparent;
         border: var(--border);
         &::before {
-          content: '';
+          content: "";
           display: inline-block;
           width: 20px;
           height: 20px;
@@ -448,7 +449,7 @@ body.vault-app {
           position: relative;
           top: 2px;
           opacity: 0.3;
-          background: url('/images/icons/icon-check-white.svg') 0 0 / contain
+          background: url("/images/icons/icon-check-white.svg") 0 0 / contain
             no-repeat;
           top: 6px;
           opacity: 1;
@@ -500,7 +501,7 @@ body.vault-app {
       background: transparent;
       border: var(--border);
       &::before {
-        content: '';
+        content: "";
         display: inline-block;
         width: 20px;
         height: 20px;
@@ -509,7 +510,7 @@ body.vault-app {
         position: relative;
         top: 2px;
         opacity: 0.3;
-        background: url('/images/icons/icon-check-white.svg') 0 0 / contain
+        background: url("/images/icons/icon-check-white.svg") 0 0 / contain
           no-repeat;
         top: 6px;
         opacity: 1;
@@ -560,7 +561,7 @@ body.vault-app {
       background: transparent;
       border: var(--border);
       &::before {
-        content: '';
+        content: "";
         display: inline-block;
         width: 20px;
         height: 20px;
@@ -569,7 +570,7 @@ body.vault-app {
         position: relative;
         top: 2px;
         opacity: 0.3;
-        background: url('/images/icons/icon-check-white.svg') 0 0 / contain
+        background: url("/images/icons/icon-check-white.svg") 0 0 / contain
           no-repeat;
         top: 6px;
         opacity: 1;
@@ -644,7 +645,7 @@ body.vault-app {
   }
 }
 #tc-terms-form {
-  input[type='submit'] {
+  input[type="submit"] {
     font-weight: 500;
     border: var(--border);
     border-color: $border-color_1;
@@ -667,7 +668,7 @@ body.vault-app {
     }
   }
   .vault-app.darkmode {
-    input[type='submit'] {
+    input[type="submit"] {
       border: none;
       color: $color_2;
       background: #444;
@@ -680,13 +681,13 @@ body.vault-app {
         color: $color_2;
       }
     }
-    input.already-registered[type='submit'] {
+    input.already-registered[type="submit"] {
       pointer-events: none;
       color: $color_8;
       background: transparent;
       border: var(--border);
       &::before {
-        content: '';
+        content: "";
         display: inline-block;
         width: 20px;
         height: 20px;
@@ -695,7 +696,7 @@ body.vault-app {
         position: relative;
         top: 2px;
         opacity: 0.3;
-        background: url('/images/icons/icon-check-white.svg') 0 0 / contain
+        background: url("/images/icons/icon-check-white.svg") 0 0 / contain
           no-repeat;
         top: 6px;
         opacity: 1;
@@ -732,7 +733,7 @@ button {
     }
   }
   &:not(.navbar-toggler).already-registered {
-    content: '';
+    content: "";
     display: inline-block;
     width: 20px;
     height: 20px;
@@ -741,7 +742,7 @@ button {
     position: relative;
     top: 2px;
     opacity: 0.3;
-    background: url('/images/icons/icon-check-white.svg') 0 0 / contain
+    background: url("/images/icons/icon-check-white.svg") 0 0 / contain
       no-repeat;
     top: 6px;
     opacity: 1;
@@ -761,7 +762,7 @@ button {
   text-align: center;
   border-radius: var(--radius);
   background: none;
-  content: '';
+  content: "";
   display: inline-block;
   width: 20px;
   height: 20px;
@@ -770,7 +771,7 @@ button {
   position: relative;
   top: 2px;
   opacity: 0.3;
-  background: url('/images/icons/icon-check-white.svg') 0 0 / contain no-repeat;
+  background: url("/images/icons/icon-check-white.svg") 0 0 / contain no-repeat;
   top: 6px;
   opacity: 1;
   border: none;
@@ -791,7 +792,7 @@ button {
   background: transparent;
   border: var(--border);
   &::before {
-    content: '';
+    content: "";
     display: inline-block;
     width: 20px;
     height: 20px;
@@ -800,7 +801,7 @@ button {
     position: relative;
     top: 2px;
     opacity: 0.3;
-    background: url('/images/icons/icon-check-white.svg') 0 0 / contain
+    background: url("/images/icons/icon-check-white.svg") 0 0 / contain
       no-repeat;
     top: 6px;
     opacity: 1;
@@ -851,7 +852,7 @@ select {
 .btn-outline {
   .already-registered {
     &::before {
-      content: '';
+      content: "";
       display: inline-block;
       width: 20px;
       height: 20px;
@@ -860,7 +861,7 @@ select {
       position: relative;
       top: 2px;
       opacity: 0.3;
-      background: url('/images/icons/icon-check-white.svg') 0 0 / contain
+      background: url("/images/icons/icon-check-white.svg") 0 0 / contain
         no-repeat;
       top: 6px;
       opacity: 1;
@@ -1021,7 +1022,7 @@ img {
     .navbar-brand {
       width: 44px;
       height: 56px;
-      background: url('/images/logo-vault-clean.svg') center center/contain
+      background: url("/images/logo-vault-clean.svg") center center/contain
         no-repeat;
     }
   }
@@ -1087,7 +1088,7 @@ img {
       background: transparent;
       border: var(--border);
       &::before {
-        content: '';
+        content: "";
         display: inline-block;
         width: 20px;
         height: 20px;
@@ -1096,7 +1097,7 @@ img {
         position: relative;
         top: 2px;
         opacity: 0.3;
-        background: url('/images/icons/icon-check-white.svg') 0 0 / contain
+        background: url("/images/icons/icon-check-white.svg") 0 0 / contain
           no-repeat;
         top: 6px;
         opacity: 1;
@@ -1126,7 +1127,7 @@ img {
       background: transparent;
       border: var(--border);
       &::before {
-        content: '';
+        content: "";
         display: inline-block;
         width: 20px;
         height: 20px;
@@ -1135,7 +1136,7 @@ img {
         position: relative;
         top: 2px;
         opacity: 0.3;
-        background: url('/images/icons/icon-check-white.svg') 0 0 / contain
+        background: url("/images/icons/icon-check-white.svg") 0 0 / contain
           no-repeat;
         top: 6px;
         opacity: 1;
@@ -1193,7 +1194,7 @@ img {
     }
   }
   #tc-terms-form {
-    input[type='submit'] {
+    input[type="submit"] {
       background: #444;
       color: $color_2;
       border: none;
@@ -1209,13 +1210,13 @@ img {
         color: $color_2;
       }
     }
-    input.already-registered[type='submit'] {
+    input.already-registered[type="submit"] {
       pointer-events: none;
       color: $color_8;
       background: transparent;
       border: var(--border);
       &::before {
-        content: '';
+        content: "";
         display: inline-block;
         width: 20px;
         height: 20px;
@@ -1224,7 +1225,7 @@ img {
         position: relative;
         top: 2px;
         opacity: 0.3;
-        background: url('/images/icons/icon-check-white.svg') 0 0 / contain
+        background: url("/images/icons/icon-check-white.svg") 0 0 / contain
           no-repeat;
         top: 6px;
         opacity: 1;
@@ -1253,7 +1254,7 @@ img {
     h5 {
       h5 {
         &::before {
-          content: '';
+          content: "";
           display: inline-block;
           width: 20px;
           height: 20px;
@@ -1262,7 +1263,7 @@ img {
           position: relative;
           top: 2px;
           opacity: 0.3;
-          background: url('/images/icons/icon-pairing-white.svg') 0 0 / contain
+          background: url("/images/icons/icon-pairing-white.svg") 0 0 / contain
             no-repeat;
           top: 4px;
         }
@@ -1329,7 +1330,7 @@ img {
             background: transparent;
             border: var(--border);
             &::before {
-              content: '';
+              content: "";
               display: inline-block;
               width: 20px;
               height: 20px;
@@ -1338,7 +1339,7 @@ img {
               position: relative;
               top: 2px;
               opacity: 0.3;
-              background: url('/images/icons/icon-check-white.svg') 0 0 /
+              background: url("/images/icons/icon-check-white.svg") 0 0 /
                 contain no-repeat;
               top: 6px;
               opacity: 1;
@@ -1369,7 +1370,7 @@ img {
         background: transparent;
         border: var(--border);
         &::before {
-          content: '';
+          content: "";
           display: inline-block;
           width: 20px;
           height: 20px;
@@ -1378,7 +1379,7 @@ img {
           position: relative;
           top: 2px;
           opacity: 0.3;
-          background: url('/images/icons/icon-check-white.svg') 0 0 / contain
+          background: url("/images/icons/icon-check-white.svg") 0 0 / contain
             no-repeat;
           top: 6px;
           opacity: 1;
@@ -1392,7 +1393,7 @@ img {
     background: transparent;
     border: var(--border);
     &::before {
-      content: '';
+      content: "";
       display: inline-block;
       width: 20px;
       height: 20px;
@@ -1401,7 +1402,7 @@ img {
       position: relative;
       top: 2px;
       opacity: 0.3;
-      background: url('/images/icons/icon-check-white.svg') 0 0 / contain
+      background: url("/images/icons/icon-check-white.svg") 0 0 / contain
         no-repeat;
       top: 6px;
       opacity: 1;
@@ -1413,7 +1414,7 @@ img {
       color: $color_8;
       background: transparent;
       border: var(--border);
-      content: '';
+      content: "";
       display: inline-block;
       width: 20px;
       height: 20px;
@@ -1422,7 +1423,7 @@ img {
       position: relative;
       top: 2px;
       opacity: 0.3;
-      background: url('/images/icons/icon-check-white.svg') 0 0 / contain
+      background: url("/images/icons/icon-check-white.svg") 0 0 / contain
         no-repeat;
       top: 6px;
       opacity: 1;
@@ -1434,7 +1435,7 @@ img {
     background: transparent;
     border: var(--border);
     &::before {
-      content: '';
+      content: "";
       display: inline-block;
       width: 20px;
       height: 20px;
@@ -1443,7 +1444,7 @@ img {
       position: relative;
       top: 2px;
       opacity: 0.3;
-      background: url('/images/icons/icon-check-white.svg') 0 0 / contain
+      background: url("/images/icons/icon-check-white.svg") 0 0 / contain
         no-repeat;
       top: 6px;
       opacity: 1;
@@ -1455,7 +1456,7 @@ img {
     background: transparent;
     border: var(--border);
     &::before {
-      content: '';
+      content: "";
       display: inline-block;
       width: 20px;
       height: 20px;
@@ -1464,7 +1465,7 @@ img {
       position: relative;
       top: 2px;
       opacity: 0.3;
-      background: url('/images/icons/icon-check-white.svg') 0 0 / contain
+      background: url("/images/icons/icon-check-white.svg") 0 0 / contain
         no-repeat;
       top: 6px;
       opacity: 1;
@@ -1476,7 +1477,7 @@ img {
     background: transparent;
     border: var(--border);
     &::before {
-      content: '';
+      content: "";
       display: inline-block;
       width: 20px;
       height: 20px;
@@ -1485,7 +1486,7 @@ img {
       position: relative;
       top: 2px;
       opacity: 0.3;
-      background: url('/images/icons/icon-check-white.svg') 0 0 / contain
+      background: url("/images/icons/icon-check-white.svg") 0 0 / contain
         no-repeat;
       top: 6px;
       opacity: 1;
@@ -1522,7 +1523,7 @@ img {
         border-radius: 5px;
       }
       &::before {
-        content: '';
+        content: "";
         display: inline-block;
         width: 20px;
         height: 20px;
@@ -1538,7 +1539,7 @@ img {
     mat-card-title {
       margin-bottom: 0.3em;
       &::before {
-        content: '';
+        content: "";
         display: inline-block;
         width: 20px;
         height: 20px;
@@ -1547,7 +1548,7 @@ img {
         position: relative;
         top: 2px;
         opacity: 0.3;
-        background: url('/images/icons/icon-calender-white.svg') 0 0 / contain
+        background: url("/images/icons/icon-calender-white.svg") 0 0 / contain
           no-repeat;
       }
     }
@@ -1555,7 +1556,7 @@ img {
   .draft-info {
     a {
       &::before {
-        content: '';
+        content: "";
         display: inline-block;
         width: 20px;
         height: 20px;
@@ -1567,7 +1568,7 @@ img {
       }
     }
     &::before {
-      background: url('/images/icons/icon-draft-white.svg') 0 0 / contain
+      background: url("/images/icons/icon-draft-white.svg") 0 0 / contain
         no-repeat;
       width: 10px;
       height: 10px;
@@ -1577,7 +1578,7 @@ img {
   .event-dashboard {
     .current-match-panel {
       &::before {
-        content: '';
+        content: "";
         display: inline-block;
         width: 20px;
         height: 20px;
@@ -1586,14 +1587,14 @@ img {
         position: relative;
         top: 2px;
         opacity: 0.3;
-        background: url('/images/icons/icon-match-white.svg') 0 0 / contain
+        background: url("/images/icons/icon-match-white.svg") 0 0 / contain
           no-repeat;
         top: 4px;
       }
     }
     .event-name {
       &::before {
-        content: '';
+        content: "";
         display: inline-block;
         width: 20px;
         height: 20px;
@@ -1602,7 +1603,7 @@ img {
         position: relative;
         top: 2px;
         opacity: 0.3;
-        background: url('/images/icons/icon-trophy-white.svg') 0 0 / contain
+        background: url("/images/icons/icon-trophy-white.svg") 0 0 / contain
           no-repeat;
         width: 30px;
         height: 30px;
@@ -1614,8 +1615,8 @@ img {
   .standings {
     h5 {
       &::before {
-        content: '';
-        content: '';
+        content: "";
+        content: "";
         display: inline-block;
         display: inline-block;
         width: 20px;
@@ -1632,7 +1633,7 @@ img {
         top: 2px;
         opacity: 0.3;
         opacity: 0.3;
-        background: url('/images/icons/icon-standings-white.svg') 0 0 / contain
+        background: url("/images/icons/icon-standings-white.svg") 0 0 / contain
           no-repeat;
         top: 4px;
       }
@@ -1641,7 +1642,7 @@ img {
   .draft-timetable {
     h5 {
       &::before {
-        content: '';
+        content: "";
         display: inline-block;
         width: 20px;
         height: 20px;
@@ -1650,7 +1651,7 @@ img {
         position: relative;
         top: 2px;
         opacity: 0.3;
-        background: url('/images/icons/icon-date-b-white.svg') 0 0 / contain
+        background: url("/images/icons/icon-date-b-white.svg") 0 0 / contain
           no-repeat;
       }
     }
@@ -1660,7 +1661,7 @@ img {
       + {
         a {
           &::before {
-            content: '';
+            content: "";
             display: inline-block;
             width: 20px;
             height: 20px;
@@ -1669,7 +1670,7 @@ img {
             position: relative;
             top: 2px;
             opacity: 0.3;
-            background: url('/images/icons/icon-pool-white.svg') 0 0 / contain
+            background: url("/images/icons/icon-pool-white.svg") 0 0 / contain
               no-repeat;
             top: 4px;
           }
@@ -1680,7 +1681,7 @@ img {
   .pool-info-checked-in {
     h5 {
       &::before {
-        content: '';
+        content: "";
         display: inline-block;
         width: 20px;
         height: 20px;
@@ -1689,7 +1690,7 @@ img {
         position: relative;
         top: 2px;
         opacity: 0.3;
-        background: url('/images/icons/icon-check-white.svg') 0 0 / contain
+        background: url("/images/icons/icon-check-white.svg") 0 0 / contain
           no-repeat;
         top: 6px;
         opacity: 1;
@@ -1699,7 +1700,7 @@ img {
   .seatings-info {
     h5 {
       &::before {
-        content: '';
+        content: "";
         display: inline-block;
         width: 20px;
         height: 20px;
@@ -1708,14 +1709,14 @@ img {
         position: relative;
         top: 2px;
         opacity: 0.3;
-        background: url('/images/icons/icon-seatings-white.svg') 0 0 / contain
+        background: url("/images/icons/icon-seatings-white.svg") 0 0 / contain
           no-repeat;
       }
     }
   }
   .cube-info {
     &::before {
-      background: url('/images/icons/icon-cube-white.svg') 0 0 / contain
+      background: url("/images/icons/icon-cube-white.svg") 0 0 / contain
         no-repeat;
       top: 4px;
     }
@@ -1723,7 +1724,7 @@ img {
   .match-details {
     h5 {
       &::before {
-        background: url('/images/icons/icon-match-white.svg') 0 0 / contain
+        background: url("/images/icons/icon-match-white.svg") 0 0 / contain
           no-repeat;
         top: 4px;
       }
@@ -1795,7 +1796,7 @@ mat-card-content {
       color: $color_4;
     }
     &:after {
-      content: '';
+      content: "";
       display: inline-block;
       margin-left: 15px;
       left: 0;
@@ -1803,16 +1804,11 @@ mat-card-content {
       width: 25px;
       height: 10px;
       transform: translateX(0);
-      background: url('/images/sprite-arrows.svg') 0 0px/25px no-repeat;
+      background: url("/images/sprite-arrows.svg") 0 0px/25px no-repeat;
     }
   }
 }
 
-html,
-body {
-  height: 100%;
-}
-body {
-  margin: 0;
-  font-family: Roboto, 'Helvetica Neue', sans-serif;
+mat-card {
+  margin: 10px 0;
 }

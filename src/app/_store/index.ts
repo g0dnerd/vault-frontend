@@ -13,6 +13,7 @@ import { AuthState } from './reducers/auth.reducer';
 import { DraftState } from './reducers/draft.reducer';
 import { MatchState } from './reducers/match.reducer';
 import { PlayerState } from './reducers/player.reducer';
+import { StandingsState } from './reducers/standings.reducer';
 
 export interface State {
   images: fromImage.ImageState;
@@ -304,3 +305,13 @@ export const selectCubeByQuery = (query: (cube: Cube) => boolean) =>
       (cube): cube is Cube => !!cube && query(cube),
     );
   });
+
+// STANDINGS
+export interface StandingsAppState {
+  standings: StandingsState;
+}
+export const selectStandings = (state: StandingsAppState) => state.standings;
+export const selectTournamentStandings = createSelector(
+  selectStandings,
+  (state: StandingsState) => state.tournamentStandings,
+);

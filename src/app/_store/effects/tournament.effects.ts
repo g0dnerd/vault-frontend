@@ -4,7 +4,7 @@ import { catchError, map, mergeMap, of, tap } from 'rxjs';
 
 import {
   AlertService,
-  EnrollmentsService,
+  EnrollmentService,
   TournamentService,
 } from '../../_services';
 import * as TournamentActions from '../actions/tournament.actions';
@@ -15,16 +15,16 @@ export const tournamentStoreFailure = createEffect(
       ofType(TournamentActions.tournamentStoreFailure),
       tap(({ errorMessage }) => {
         alertService.error(errorMessage, true);
-      })
+      }),
     );
   },
-  { functional: true, dispatch: false }
+  { functional: true, dispatch: false },
 );
 
 export const initAllTournamentsEffect = createEffect(
   (
     actions$ = inject(Actions),
-    tournamentService = inject(TournamentService)
+    tournamentService = inject(TournamentService),
   ) => {
     return actions$.pipe(
       ofType(TournamentActions.initializeAllTournaments),
@@ -37,14 +37,14 @@ export const initAllTournamentsEffect = createEffect(
             return of(
               TournamentActions.tournamentStoreFailure({
                 errorMessage: error.message,
-              })
+              }),
             );
-          })
+          }),
         );
-      })
+      }),
     );
   },
-  { functional: true, dispatch: true }
+  { functional: true, dispatch: true },
 );
 
 // Gets all tournaments from the tournamentService
@@ -52,7 +52,7 @@ export const initAllTournamentsEffect = createEffect(
 export const initPublicTournamentsEffect = createEffect(
   (
     actions$ = inject(Actions),
-    tournamentService = inject(TournamentService)
+    tournamentService = inject(TournamentService),
   ) => {
     return actions$.pipe(
       ofType(TournamentActions.initializePublicTournaments),
@@ -65,14 +65,14 @@ export const initPublicTournamentsEffect = createEffect(
             return of(
               TournamentActions.tournamentStoreFailure({
                 errorMessage: error.message,
-              })
+              }),
             );
-          })
+          }),
         );
-      })
+      }),
     );
   },
-  { functional: true, dispatch: true }
+  { functional: true, dispatch: true },
 );
 
 // Gets all available tournaments for the current user
@@ -82,7 +82,7 @@ export const initPublicTournamentsEffect = createEffect(
 export const initAvailable = createEffect(
   (
     actions$ = inject(Actions),
-    tournamentService = inject(TournamentService)
+    tournamentService = inject(TournamentService),
   ) => {
     return actions$.pipe(
       ofType(TournamentActions.initializeAvailableTournaments),
@@ -96,14 +96,14 @@ export const initAvailable = createEffect(
             return of(
               TournamentActions.tournamentStoreFailure({
                 errorMessage: error.message,
-              })
+              }),
             );
-          })
+          }),
         );
-      })
+      }),
     );
   },
-  { functional: true, dispatch: true }
+  { functional: true, dispatch: true },
 );
 
 // Gets all enrolled tournaments for the current user
@@ -111,7 +111,7 @@ export const initAvailable = createEffect(
 export const initEnrolled = createEffect(
   (
     actions$ = inject(Actions),
-    tournamentService = inject(TournamentService)
+    tournamentService = inject(TournamentService),
   ) => {
     return actions$.pipe(
       ofType(TournamentActions.initializeEnrolledTournaments),
@@ -125,14 +125,14 @@ export const initEnrolled = createEffect(
             return of(
               TournamentActions.tournamentStoreFailure({
                 errorMessage: error.message,
-              })
+              }),
             );
-          })
+          }),
         );
-      })
+      }),
     );
   },
-  { functional: true, dispatch: true }
+  { functional: true, dispatch: true },
 );
 
 // Registers the user with `userId` for the tournament
@@ -142,7 +142,7 @@ export const initEnrolled = createEffect(
 export const enrollEffect = createEffect(
   (
     actions$ = inject(Actions),
-    enrollmentService = inject(EnrollmentsService)
+    enrollmentService = inject(EnrollmentService),
   ) => {
     return actions$.pipe(
       ofType(TournamentActions.enroll),
@@ -162,12 +162,12 @@ export const enrollEffect = createEffect(
             return of(
               TournamentActions.tournamentStoreFailure({
                 errorMessage: error.message,
-              })
+              }),
             );
-          })
+          }),
         );
-      })
+      }),
     );
   },
-  { functional: true, dispatch: true }
+  { functional: true, dispatch: true },
 );

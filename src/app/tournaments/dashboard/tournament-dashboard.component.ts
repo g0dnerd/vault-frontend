@@ -3,6 +3,7 @@ import { Component, inject, input, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
+import { Observable, of } from 'rxjs';
 
 import { Enrollment, Tournament } from '../../_types';
 import { DraftPanelComponent } from './draft-panel/draft-panel.component';
@@ -21,11 +22,17 @@ import { initializeAllEnrollments } from '../../_store/actions/enrollment.action
 import { initCurrentMatch } from '../../_store/actions/match.actions';
 import { initProfile } from '../../_store/actions/auth.actions';
 import { initCurrentPoolStatus } from '../../_store/actions/player.actions';
-import { Observable, of } from 'rxjs';
+import { TournamentStandingsComponent } from './tournament-standings.component';
 
 @Component({
   standalone: true,
-  imports: [DraftPanelComponent, MatCardModule, NgIf, PushPipe],
+  imports: [
+    DraftPanelComponent,
+    MatCardModule,
+    NgIf,
+    PushPipe,
+    TournamentStandingsComponent,
+  ],
   templateUrl: './tournament-dashboard.component.html',
   styleUrl: './tournament-dashboard.component.scss',
 })

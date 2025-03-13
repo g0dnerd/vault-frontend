@@ -1,0 +1,34 @@
+<mat-card class="standings-card" appearance="outlined">
+  <mat-card-header>
+    <mat-card-title-group>
+      <mat-card-title>Tournament Standings</mat-card-title>
+      <mat-card-subtitle *ngIf="!(standings$ | ngrxPush)">
+        Waiting for the first round to finish
+      </mat-card-subtitle></mat-card-title-group
+    >
+  </mat-card-header>
+  <mat-card-content *ngIf="standings$ | ngrxPush">
+    <table class="standings-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Pts</th>
+          <th>OMW%</th>
+          <th>PGW%</th>
+          <th>OGW%</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let player of standings$ | ngrxPush; index as i">
+          <td>{{ i + 1 }}</td>
+          <td>{{ player?.username }}</td>
+          <td>{{ player?.points }}</td>
+          <td>{{ player?.omw }}</td>
+          <td>{{ player?.pgw }}</td>
+          <td>{{ player?.ogw }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </mat-card-content>
+</mat-card>
