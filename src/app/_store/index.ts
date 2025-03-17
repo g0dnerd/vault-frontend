@@ -2,18 +2,29 @@ import {
   ActionReducerMap,
   createFeatureSelector,
   createSelector,
+  MetaReducer,
 } from '@ngrx/store';
 
-import { Cube, Draft, Enrollment, Image, Role, Tournament } from '../_types';
+import {
+  Cube,
+  Draft,
+  Enrollment,
+  Image,
+  Role,
+  Tournament,
+  User,
+} from '../_types';
 import * as fromCube from './reducers/cube.reducer';
 import * as fromEnrollment from './reducers/enrollment.reducer';
 import * as fromImage from './reducers/image.reducer';
 import * as fromTournament from './reducers/tournament.reducer';
+import * as fromUser from './reducers/user.reducer';
 import { AuthState } from './reducers/auth.reducer';
 import { DraftState } from './reducers/draft.reducer';
 import { MatchState } from './reducers/match.reducer';
 import { PlayerState } from './reducers/player.reducer';
 import { StandingsState } from './reducers/standings.reducer';
+import { hydrationMetaReducer } from './reducers/hydration.reducer';
 
 export interface State {
   images: fromImage.ImageState;
@@ -197,6 +208,10 @@ export const selectUsername = createSelector(
   selectAuth,
   (state: AuthState) => state.profileData?.username,
 );
+export const selectCurrentUserRoles = createSelector(
+  selectAuth,
+  (state: AuthState) => state.roles,
+);
 export const selectAdminStatus = createSelector(
   selectAuth,
   (state: AuthState) => state.roles.includes(Role.Admin),
@@ -205,7 +220,7 @@ export const selectPlayerAdminStatus = createSelector(
   selectAuth,
   (state: AuthState) => state.roles.includes(Role.PlayerAdmin),
 );
-export const selectErrorMessage = createSelector(
+export const selectAuthErrorMessage = createSelector(
   selectAuth,
   (state: AuthState) => state.errorMessage,
 );
@@ -261,10 +276,6 @@ export const selectEnrollmentByQuery = (
         !!enrollment && query(enrollment),
     );
   });
-export const selectLeaguePlayerIds = createSelector(
-  selectEnrollmentState,
-  fromEnrollment.getLeaguePlayerIds,
-);
 export const selectLeaguePlayers = (tournamentId: number) =>
   createSelector(
     selectEnrollmentEntities,
@@ -277,6 +288,20 @@ export const selectLeaguePlayers = (tournamentId: number) =>
             enrollment !== undefined && enrollment.tournamentId == tournamentId,
         ),
   );
+export const selectDraftEnrollmentIds = createSelector(
+  selectEnrollmentState,
+  fromEnrollment.getDraftEnrollmentIds,
+);
+export const selectDraftEnrollments = createSelector(
+  selectEnrollmentEntities,
+  selectDraftEnrollmentIds,
+  (enrollments, ids) =>
+    ids
+      .map((id) => enrollments[id])
+      .filter(
+        (enrollment): enrollment is Enrollment => enrollment !== undefined,
+      ),
+);
 
 // CUBES
 export const selectCubeState =
@@ -315,3 +340,33 @@ export const selectTournamentStandings = createSelector(
   selectStandings,
   (state: StandingsState) => state.tournamentStandings,
 );
+
+// USERS
+export const selectUserState =
+  createFeatureSelector<fromUser.UserState>('users');
+export const selectUserIds = createSelector(
+  selectUserState,
+  fromUser.selectUserIds,
+);
+export const selectUserEntities = createSelector(
+  selectUserState,
+  fromUser.selectUserEntities,
+);
+export const selectAllUsers = createSelector(
+  selectUserState,
+  fromUser.selectAllUsers,
+);
+export const selectUserTotal = createSelector(
+  selectUserState,
+  fromUser.selectUserTotal,
+);
+export const selectUserById = (userId: number) =>
+  createSelector(selectUserState, (userState) => userState.entities[userId]);
+export const selectUserByQuery = (query: (user: User) => boolean) =>
+  createSelector(selectUserState, (state) => {
+    return Object.values(state.entities).find(
+      (user): user is User => !!user && query(user),
+    );
+  });
+
+export const metaReducers: MetaReducer[] = [hydrationMetaReducer];
