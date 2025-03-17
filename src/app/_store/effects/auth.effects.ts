@@ -6,6 +6,7 @@ import { catchError, map, mergeMap, of, tap } from 'rxjs';
 import { Role } from '../../_types';
 import { AccountService, AuthService } from '../../_services';
 import * as AuthActions from '../actions/auth.actions';
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 
 export const refreshAuth = createEffect(
   (actions$ = inject(Actions), authService = inject(AuthService)) => {
@@ -63,10 +64,12 @@ export const login = createEffect(
               returnUrl,
             });
           }),
-          catchError((error) => {
-            const errorMessage = error
-              ? `${AuthActions.login.type}: ${error[0]}`
-              : `${AuthActions.login.type}: Got an unspecified error response while logging in`;
+          catchError((error: HttpErrorResponse) => {
+            const errorMessage =
+              error.status === HttpStatusCode.Unauthorized
+                ? 'Wrong username or password'
+                : 'An unexpected error occurred';
+
             return of(AuthActions.loginFailure({ errorMessage }));
           }),
         );
@@ -76,12 +79,13 @@ export const login = createEffect(
   { functional: true, dispatch: true },
 );
 
-export const logout = createEffect(
+export const logoutEffect = createEffect(
   (actions$ = inject(Actions), router = inject(Router)) => {
     return actions$.pipe(
       ofType(AuthActions.logout),
       tap(() => {
         localStorage.removeItem('token');
+        localStorage.removeItem('state');
         router.navigateByUrl('/account/login');
       }),
     );

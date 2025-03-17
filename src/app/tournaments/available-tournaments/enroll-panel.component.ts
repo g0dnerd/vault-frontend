@@ -7,8 +7,6 @@ import {
   Validators,
 } from '@angular/forms';
 
-import { AlertService } from '../../_services';
-
 @Component({
   selector: 'app-enroll-panel',
   standalone: true,
@@ -27,10 +25,7 @@ export class EnrollPanelComponent implements OnInit {
   loading = false;
   submitted = false;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private alertService: AlertService
-  ) {}
+  constructor(private formBuilder: FormBuilder) {}
 
   ngOnInit() {
     this.form = this.formBuilder.group({
@@ -45,11 +40,9 @@ export class EnrollPanelComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-    this.alertService.clear();
 
     if (this.form.invalid || !this.tournamentId()) {
       // TODO: Give this a proper feedback message
-      this.alertService.error(`Invalid enrollment form.`);
       return;
     }
 

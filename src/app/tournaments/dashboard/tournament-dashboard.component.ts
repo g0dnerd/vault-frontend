@@ -1,6 +1,12 @@
-import { NgIf } from '@angular/common';
+import { NgFor, NgIf } from '@angular/common';
 import { Component, inject, input, OnInit } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+import { MatTabsModule } from '@angular/material/tabs';
+import { RouterLink } from '@angular/router';
 import { PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
@@ -12,11 +18,17 @@ import {
   DraftAppState,
   MatchAppState,
   PlayerAppState,
+  selectAdminStatus,
   selectEnrollmentByQuery,
+  selectOngoingDrafts,
+  selectPlayerAdminStatus,
   selectTournamentById,
   State,
 } from '../../_store';
-import { initCurrentDraft } from '../../_store/actions/draft.actions';
+import {
+  initCurrentDraft,
+  initOngoingDrafts,
+} from '../../_store/actions/draft.actions';
 import { initializePublicTournaments } from '../../_store/actions/tournament.actions';
 import { initializeAllEnrollments } from '../../_store/actions/enrollment.actions';
 import { initCurrentMatch } from '../../_store/actions/match.actions';
@@ -28,9 +40,16 @@ import { TournamentStandingsComponent } from './tournament-standings.component';
   standalone: true,
   imports: [
     DraftPanelComponent,
+    MatButtonModule,
     MatCardModule,
+    MatExpansionModule,
+    MatIconModule,
+    MatListModule,
+    MatTabsModule,
+    NgFor,
     NgIf,
     PushPipe,
+    RouterLink,
     TournamentStandingsComponent,
   ],
   templateUrl: './tournament-dashboard.component.html',
@@ -47,14 +66,34 @@ export class TournamentDashboardComponent implements OnInit {
 
   tournament$: Observable<Tournament | undefined> = of(undefined);
   enrollment$: Observable<Enrollment | undefined> = of(undefined);
+  readonly drafts$ = this.draftStore$.select(selectOngoingDrafts);
+  readonly isAdmin$ = this.authStore$.select(selectAdminStatus);
+  readonly isPlayerAdmin$ = this.authStore$.select(selectPlayerAdminStatus);
 
-  ngOnInit() {
+  async ngOnInit() {
     this.authStore$.dispatch(initProfile());
     this.store$.dispatch(initializePublicTournaments());
     this.store$.dispatch(initializeAllEnrollments());
+
+    this.isAdmin$.subscribe((admin) => {
+      if (admin) {
+        this.draftStore$.dispatch(
+          initOngoingDrafts({ tournamentId: this.tournamentId() }),
+        );
+      }
+    });
+    this.isPlayerAdmin$.subscribe((playerAdmin) => {
+      if (playerAdmin) {
+        this.draftStore$.dispatch(
+          initOngoingDrafts({ tournamentId: this.tournamentId() }),
+        );
+      }
+    });
+
     this.draftStore$.dispatch(
       initCurrentDraft({ tournamentId: this.tournamentId() }),
     );
+
     this.matchStore$.dispatch(
       initCurrentMatch({ tournamentId: this.tournamentId() }),
     );

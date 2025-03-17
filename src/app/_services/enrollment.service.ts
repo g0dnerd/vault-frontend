@@ -28,15 +28,26 @@ export class EnrollmentService {
   }
 
   enroll(tournamentId: number): Observable<Enrollment> {
-    return this.http.get<Enrollment>(
-      `${this.apiUrl}/enroll/${tournamentId}`,
-      {},
-    );
+    return this.http.get<Enrollment>(`${this.apiUrl}/enroll/${tournamentId}`);
+  }
+
+  enrollMany(
+    tournamentId: number,
+    userIds: number[],
+  ): Observable<Enrollment[]> {
+    return this.http.post<Enrollment[]>(`${this.apiUrl}/enroll-many`, {
+      tournamentId,
+      userIds,
+    });
   }
 
   getTournamentStandings(tournamentId: number): Observable<Scorecard[]> {
     return this.http.get<Scorecard[]>(
       `${this.apiUrl}/standings/${tournamentId}`,
     );
+  }
+
+  getEnrollmentsForDraft(draftId: number): Observable<Enrollment[]> {
+    return this.http.get<Enrollment[]>(`${this.apiUrl}/draft/${draftId}`);
   }
 }

@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 
 import { Image } from '../../../_types';
 import { dev } from '../../../../environments/environment';
-import { AlertService, ImageService } from '../../../_services';
+import { ImageService } from '../../../_services';
 import { selectAllImages, State } from '../../../_store';
 
 @Component({
@@ -26,10 +26,7 @@ export class ManagePoolComponent {
   private readonly store$ = inject(Store<State>);
   readonly images$: Observable<Image[]> = this.store$.select(selectAllImages);
 
-  constructor(
-    private readonly imageService: ImageService,
-    private readonly alertService: AlertService,
-  ) {}
+  constructor(private readonly imageService: ImageService) {}
 
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
@@ -41,10 +38,8 @@ export class ManagePoolComponent {
 
   async onSubmit() {
     this.submitted = true;
-    this.alertService.clear();
 
     if (!this.imgFile) {
-      this.alertService.error('Please select a file to upload');
       this.submitted = false;
       return;
     }

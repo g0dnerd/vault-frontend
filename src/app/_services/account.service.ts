@@ -13,6 +13,10 @@ export class AccountService {
 
   constructor(private readonly http: HttpClient) {}
 
+  getAllUsers(): Observable<User[]> {
+    return this.http.get<User[]>(this.apiUrl);
+  }
+
   getUserProfile(): Observable<User> {
     return this.http.get<User>(`${this.apiUrl}/profile`);
   }
@@ -24,5 +28,9 @@ export class AccountService {
 
   getCurrentUserRoles(): Observable<Role[]> {
     return this.http.get<Role[]>(`${this.apiUrl}/roles`);
+  }
+
+  getAvailableForTournament(tournamentId: number): Observable<User[]> {
+    return this.http.get<User[]>(`${this.apiUrl}/not-enrolled/${tournamentId}`);
   }
 }

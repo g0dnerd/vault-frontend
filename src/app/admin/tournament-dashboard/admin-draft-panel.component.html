@@ -1,4 +1,29 @@
 <h1>Draft playing {{ (draft$ | ngrxPush)?.cube?.name }}</h1>
+<div class="breadcrumb-container" *ngIf="(draft$ | ngrxPush)?.phase as phase">
+  <a mat-fab extended routerLink="/tournaments/{{ phase.tournamentId }}">
+    <mat-icon>arrow_back</mat-icon>
+    Return to Tournament Dashboard
+  </a>
+</div>
+<mat-card class="draft-options admin">
+  <mat-card-header>
+    <mat-card-title>Change draft settings</mat-card-title>
+  </mat-card-header>
+  <mat-card-content *ngIf="tournamentId() as tId">
+    <a
+      mat-fab
+      extended
+      [routerLink]="[
+        '/tournaments/admin/draft/create',
+        tId,
+        { draftId: draftId() },
+      ]"
+    >
+      <mat-icon>add</mat-icon>
+      Add a draft
+    </a>
+  </mat-card-content>
+</mat-card>
 <ng-container *ngIf="!(matches$ | ngrxPush)?.length">
   <mat-card class="seatings-card admin" *ngIf="(draft$ | ngrxPush)?.seated">
     <mat-card-header>

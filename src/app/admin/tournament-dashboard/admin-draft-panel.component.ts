@@ -7,9 +7,12 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatIconModule } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
 import { PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 import { firstValueFrom, Observable, of } from 'rxjs';
@@ -34,19 +37,23 @@ import { MatchService, MatchWebSocketService } from '../../_services';
   selector: 'app-admin-draft-panel',
   standalone: true,
   imports: [
+    MatButtonModule,
     MatButtonToggleModule,
     MatCardModule,
     MatExpansionModule,
+    MatIconModule,
     NgFor,
     NgIf,
     PushPipe,
     ReactiveFormsModule,
+    RouterLink,
   ],
   templateUrl: './admin-draft-panel.component.html',
   styleUrl: './admin-draft-panel.component.scss',
 })
 export class AdminDraftPanelComponent implements OnInit {
   draftId = input.required<number>();
+  tournamentId = input.required<number>();
 
   form: FormGroup;
   loading = false;

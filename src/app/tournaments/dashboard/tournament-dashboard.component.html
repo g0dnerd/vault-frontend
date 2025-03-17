@@ -2,9 +2,82 @@
 <h5>Tournament Dashboard</h5>
 @defer {
   <ng-container *ngIf="tournament$ | ngrxPush as tournament">
-    <app-draft-panel></app-draft-panel>
-    <app-tournament-standings
-      [tournamentId]="tournament.id"
-    ></app-tournament-standings>
+    <ng-container
+      *ngIf="(isAdmin$ | ngrxPush) || (isPlayerAdmin$ | ngrxPush); else noAdmin"
+    >
+      <mat-tab-group animationDuration="0ms">
+        <mat-tab label="Player View">
+          <app-draft-panel></app-draft-panel>
+          <app-tournament-standings
+            [tournamentId]="tournament.id"
+          ></app-tournament-standings
+        ></mat-tab>
+        <mat-tab label="Admin View">
+          <mat-card class="edit-tournament-card admin">
+            <mat-card-header>
+              <mat-card-title> Tournament Settings </mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <a
+                mat-fab
+                extended
+                routerLink="/tournaments/admin/{{ tournament.id }}/draft/create"
+              >
+                <mat-icon>add</mat-icon>
+                Add a draft
+              </a>
+            </mat-card-content>
+          </mat-card>
+          <div class="draft-list admin">
+            <mat-card
+              class="draft-preview-card admin"
+              *ngFor="let draft of drafts$ | ngrxPush; index as i"
+            >
+              <mat-card-header>
+                <mat-card-title>
+                  Draft
+                  <mat-card-subtitle>
+                    Playing the
+                    <a
+                      routerLink="/cubes/{{ draft.cube?.id }}"
+                      class="card-link"
+                      >{{ draft.cube?.name }}</a
+                    >
+                    cube</mat-card-subtitle
+                  >
+                </mat-card-title>
+              </mat-card-header>
+              <mat-card-content>
+                <mat-expansion-panel class="admin-player-list">
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>Players</mat-panel-title>
+                  </mat-expansion-panel-header>
+                  <mat-list class="admin-player-list" role="list">
+                    <mat-list-item
+                      *ngFor="let player of draft?.players; index as i"
+                    >
+                      {{ player.enrollment?.user?.username }}
+                    </mat-list-item>
+                  </mat-list>
+                </mat-expansion-panel>
+                <a
+                  routerLink="/tournaments/admin/{{ tournament.id }}/draft/{{
+                    draft.id
+                  }}"
+                  class="dashboard-link"
+                  >Draft Dashboard
+                </a>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </ng-container>
+    <ng-template #noAdmin>
+      <app-draft-panel></app-draft-panel>
+      <app-tournament-standings
+        [tournamentId]="tournament.id"
+      ></app-tournament-standings>
+    </ng-template>
   </ng-container>
 }

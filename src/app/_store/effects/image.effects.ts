@@ -1,21 +1,9 @@
 import { inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, mergeMap, of, tap } from 'rxjs';
+import { catchError, map, mergeMap, of } from 'rxjs';
 
-import { AlertService, ImageService } from '../../_services';
+import { ImageService } from '../../_services';
 import * as ImageActions from '../actions/image.actions';
-
-export const imageStoreFailure = createEffect(
-  (actions$ = inject(Actions), alertService = inject(AlertService)) => {
-    return actions$.pipe(
-      ofType(ImageActions.imageStoreFailure),
-      tap(({ errorMessage }) => {
-        alertService.error(errorMessage, true);
-      })
-    );
-  },
-  { functional: true, dispatch: false }
-);
 
 export const initPlayerImages = createEffect(
   (actions$ = inject(Actions), imageService = inject(ImageService)) => {
@@ -30,12 +18,12 @@ export const initPlayerImages = createEffect(
             return of(
               ImageActions.imageStoreFailure({
                 errorMessage: error.message,
-              })
+              }),
             );
-          })
+          }),
         );
-      })
+      }),
     );
   },
-  { functional: true, dispatch: true }
+  { functional: true, dispatch: true },
 );

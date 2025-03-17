@@ -7,11 +7,7 @@ import { Store } from '@ngrx/store';
 import { firstValueFrom, Observable } from 'rxjs';
 
 import { Match } from '../../../_types';
-import {
-  MatchWebSocketService,
-  AlertService,
-  MatchService,
-} from '../../../_services';
+import { MatchWebSocketService, MatchService } from '../../../_services';
 import {
   AuthAppState,
   MatchAppState,
@@ -47,10 +43,7 @@ export class MatchPanelComponent {
   username$: Observable<string | undefined> =
     this.authStore$.select(selectUsername);
 
-  constructor(
-    private readonly alertService: AlertService,
-    private readonly matchService: MatchService,
-  ) {
+  constructor(private readonly matchService: MatchService) {
     // Listen to the WebSocket service and
     // have it update matches on the corresponding event
     this.matchWebSocketService
@@ -76,14 +69,9 @@ export class MatchPanelComponent {
 
   // Handles result confirmation
   async onConfirm() {
-    this.alertService.clear();
-
     const game = await firstValueFrom(this.currentMatch$);
     if (!game) {
-      this.alertService.error(
-        'Error while trying to confirm result (no game data)',
-        true,
-      );
+      // FIXME: Error handling
       return;
     }
     await firstValueFrom(this.matchService.confirmResult(game.id));
