@@ -16,6 +16,7 @@ import {
   AuthGuard,
   errorInterceptor,
   jwtInterceptor,
+  RolesGuard,
   UnAuthGuard,
 } from './_helpers';
 import * as authEffects from './_store/effects/auth.effects';
@@ -23,6 +24,7 @@ import * as cubeEffects from './_store/effects/cube.effects';
 import { authReducer } from './_store/reducers/auth.reducer';
 import { cubeReducer } from './_store/reducers/cube.reducer';
 import { dev } from '../environments/environment';
+import { hydrationMetaReducer } from './_store/reducers/hydration.reducer';
 
 const config: SocketIoConfig = {
   url: dev.webSocketUrl,
@@ -36,12 +38,16 @@ export const appConfig: ApplicationConfig = {
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: {
-        appearance: 'outline',
+        appearance: 'fill',
+        subscriptSizing: 'fixed',
       },
     },
     AuthGuard,
     UnAuthGuard,
-    provideStore(),
+    RolesGuard,
+    provideStore(undefined, {
+      metaReducers: [hydrationMetaReducer],
+    }),
     provideState({ name: 'auth', reducer: authReducer }),
     provideEffects(authEffects),
     provideState({ name: 'cubes', reducer: cubeReducer }),
@@ -49,7 +55,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(appRoutes, withComponentInputBinding()),
     provideHttpClient(
       withFetch(),
-      withInterceptors([jwtInterceptor, errorInterceptor])
+      withInterceptors([jwtInterceptor, errorInterceptor]),
     ),
     importProvidersFrom(SocketIoModule.forRoot(config)),
     provideAnimationsAsync(),
