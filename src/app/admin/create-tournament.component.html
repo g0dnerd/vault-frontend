@@ -1,7 +1,12 @@
 <h1>Create a tournament</h1>
-<mat-card>
-  <mat-card-content>
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+<mat-stepper #stepper linear>
+  <mat-step
+    [stepControl]="tournamentForm"
+    [completed]="skipInitial()"
+    [editable]="false"
+  >
+    <form [formGroup]="tournamentForm" (ngSubmit)="createTournament()">
+      <ng-template matStepLabel>Enter tournament data</ng-template>
       <mat-form-field>
         <mat-label>Tournament Name</mat-label>
         <input
@@ -22,7 +27,9 @@
           type="number"
           formControlName="playerCapacity"
           class="form-control"
-          [ngClass]="{ 'is-invalid': submitted && f['playerCapacity'].errors }"
+          [ngClass]="{
+            'is-invalid': submitted && f['playerCapacity'].errors,
+          }"
         />
       </mat-form-field>
       <div
@@ -76,13 +83,31 @@
           </div>
         </div>
       </section>
-      <button [disabled]="loading" class="btn btn-primary">
-        <span
-          *ngIf="loading"
-          class="spinner-border spinner-border-sm me-1"
-        ></span>
-        Create
-      </button>
+      <button mat-button matStepperNext>Create and continue</button>
     </form>
-  </mat-card-content>
-</mat-card>
+  </mat-step>
+  <mat-step
+    [stepControl]="enrollForm"
+    label="Enroll players"
+    [editable]="false"
+  >
+    <form [formGroup]="enrollForm" (ngSubmit)="enrollUsers()">
+      <mat-form-field>
+        <mat-label>Players</mat-label>
+        <mat-select
+          formControlName="users"
+          multiple
+          (ngModelChange)="enrollmentsChanged($event)"
+          [ngClass]="{ 'is-invalid': submitted && ef['users'].errors }"
+        >
+          @for (user of availableUsers$ | ngrxPush; track user.id) {
+            <mat-option [value]="user.id">{{ user.username }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <button mat-button>Enroll players</button>
+      <button mat-button matStepperPrevious type="button">Back</button>
+      <button mat-button matStepperNext type="button">Next</button>
+    </form>
+  </mat-step>
+</mat-stepper>

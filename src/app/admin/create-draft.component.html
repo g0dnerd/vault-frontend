@@ -1,62 +1,94 @@
 <h1>Create a draft</h1>
-<mat-card>
-  <mat-card-content>
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
-      <mat-form-field>
+<form [formGroup]="form" (ngSubmit)="createDraft()">
+  <mat-stepper #stepper linear="false">
+    <mat-step [editable]="true">
+      <ng-template matStepLabel>Enter draft data</ng-template>
+      <mat-form-field class="form-field-full-width">
         <mat-label>Cube</mat-label>
-        <mat-select
-          formControlName="cube"
-          [ngClass]="{ 'is-invalid': submitted && f['cube'].errors }"
-        >
-          @for (cube of cubes$ | ngrxPush; track cube) {
-          <mat-option [value]="cube.id">{{ cube.name }}</mat-option>
+        <mat-select required formControlName="cube" [(value)]="draftCubeId">
+          @for (cube of cubes$ | ngrxPush; track cube.id) {
+            <mat-option [value]="cube.id">{{ cube.name }}</mat-option>
           }
         </mat-select>
       </mat-form-field>
       <div *ngIf="submitted && f['cube'].errors" class="invalid-feedback">
         <div *ngIf="f['cube'].errors['required']">Cube is required</div>
       </div>
-      <mat-form-field>
-        <mat-label>Rounds</mat-label>
-        <input
-          [value]="roundNumber()"
-          matInput
-          type="number"
-          formControlName="rounds"
-          class="form-control"
-          [ngClass]="{ 'is-invalid': submitted && f['rounds'].errors }"
-        />
-      </mat-form-field>
-      <div *ngIf="submitted && f['rounds'].errors" class="invalid-feedback">
-        <div *ngIf="f['rounds'].errors['required']">
-          Number of rounds is required
+      <section class="table-slider-container">
+        <div class="table-number-section">
+          <mat-checkbox (change)="changeTableControl()">
+            Specify tables</mat-checkbox
+          >
         </div>
-      </div>
-      <mat-form-field>
-        <mat-label>Players</mat-label>
-        <mat-select
-          formControlName="players"
-          multiple
-          (ngModelChange)="playersChanged($event)"
-          [ngClass]="{ 'is-invalid': submitted && f['players'].errors }"
+        <mat-form-field class="form-field-75">
+          <div class="slider-label-container">
+            <mat-label id="first-table-name-label" class="tables-name-label"
+              >First table:</mat-label
+            >
+            <mat-label class="tables-value-label" class="tables-value-label">{{
+              sliderStart.value
+            }}</mat-label>
+            <mat-label id="last-table-name-label" class="tables-name-label"
+              >Last table:</mat-label
+            >
+            <mat-label
+              class="last-table-value-label"
+              class="tables-value-label"
+              >{{ sliderEnd.value }}</mat-label
+            >
+          </div>
+          <mat-slider
+            min="1"
+            [max]="maxTable()"
+            [disabled]="!tableSliderEnabled"
+            discrete
+            showTickMarks
+            class="table-slider"
+          >
+            <input
+              matInput
+              matSliderStartThumb
+              formControlName="tableFirst"
+              #sliderStart
+            />
+            <input
+              matInput
+              matSliderEndThumb
+              formControlName="tableLast"
+              #sliderEnd
+            />
+          </mat-slider>
+        </mat-form-field>
+      </section>
+      <button mat-button matStepperNext type="button">Next</button>
+    </mat-step>
+    <mat-step label="Enroll players">
+      <ng-container
+        *ngIf="availableEnrollments$ | ngrxPush as availableEnrollments"
+      >
+        <ng-container *ngIf="availableEnrollments.length > 0">
+          <mat-form-field>
+            <mat-label>Players</mat-label>
+            <mat-select
+              formControlName="players"
+              [(value)]="alreadyEnrolledIds"
+              multiple
+              [ngClass]="{ 'is-invalid': submitted && f['players'].errors }"
+            >
+              @for (enrollment of availableEnrollments; track enrollment.id) {
+                <mat-option [value]="enrollment.id">{{
+                  enrollment.user.username
+                }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field></ng-container
         >
-          @for (enrollment of enrollments$ | ngrxPush; track enrollment) {
-          <mat-option [value]="enrollment.id">{{
-            enrollment.user.username
-          }}</mat-option>
-          }
-        </mat-select>
-      </mat-form-field>
+      </ng-container>
       <div *ngIf="submitted && f['players'].errors" class="invalid-feedback">
         <div *ngIf="f['players'].errors['required']">Players are required</div>
       </div>
-      <button [disabled]="loading" class="btn btn-primary">
-        <span
-          *ngIf="loading"
-          class="spinner-border spinner-border-sm me-1"
-        ></span>
-        Create
-      </button>
-    </form>
-  </mat-card-content>
-</mat-card>
+      <button mat-button matStepperPrevious type="button">Back</button>
+      <button mat-button>Submit</button>
+    </mat-step>
+  </mat-stepper>
+</form>

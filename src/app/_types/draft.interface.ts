@@ -1,4 +1,5 @@
 import { Cube } from './cube.interface';
+import { Phase } from './phase.interface';
 import { Player } from './player.interface';
 
 export interface Draft {
@@ -10,4 +11,5 @@ export interface Draft {
   seated: boolean;
   players?: Player[];
   cube?: Cube;
+  phase?: Phase;
 }

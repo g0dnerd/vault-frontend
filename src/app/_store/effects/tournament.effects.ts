@@ -1,25 +1,9 @@
 import { inject } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, mergeMap, of, tap } from 'rxjs';
+import { catchError, map, mergeMap, of } from 'rxjs';
 
-import {
-  AlertService,
-  EnrollmentService,
-  TournamentService,
-} from '../../_services';
+import { EnrollmentService, TournamentService } from '../../_services';
 import * as TournamentActions from '../actions/tournament.actions';
-
-export const tournamentStoreFailure = createEffect(
-  (actions$ = inject(Actions), alertService = inject(AlertService)) => {
-    return actions$.pipe(
-      ofType(TournamentActions.tournamentStoreFailure),
-      tap(({ errorMessage }) => {
-        alertService.error(errorMessage, true);
-      }),
-    );
-  },
-  { functional: true, dispatch: false },
-);
 
 export const initAllTournamentsEffect = createEffect(
   (

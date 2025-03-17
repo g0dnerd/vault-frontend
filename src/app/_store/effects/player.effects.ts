@@ -5,7 +5,7 @@ import { catchError, map, mergeMap, of } from 'rxjs';
 import { PlayerService } from '../../_services';
 import * as PlayerActions from '../actions/player.actions';
 
-export const initCurrentPoolStatusEffect = createEffect(
+export const initializeCurrentPoolStatusEffect = createEffect(
   (actions$ = inject(Actions), playerService = inject(PlayerService)) => {
     return actions$.pipe(
       ofType(PlayerActions.initCurrentPoolStatus),
@@ -20,12 +20,12 @@ export const initCurrentPoolStatusEffect = createEffect(
             return of(
               PlayerActions.playerStoreFailure({
                 errorMessage: error.message,
-              })
+              }),
             );
-          })
+          }),
         );
-      })
+      }),
     );
   },
-  { functional: true, dispatch: true }
+  { functional: true, dispatch: true },
 );
