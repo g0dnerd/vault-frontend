@@ -3,7 +3,7 @@ import { provideEffects } from '@ngrx/effects';
 import { provideState } from '@ngrx/store';
 
 import { Role } from '../_types';
-import { AuthGuard } from '../_helpers';
+import { RolesGuard } from '../_helpers';
 import * as draftEffects from '../_store/effects/draft.effects';
 import * as enrollmentEffects from '../_store/effects/enrollment.effects';
 import * as imageEffects from '../_store/effects/image.effects';
@@ -51,47 +51,47 @@ export const TOURNAMENT_ROUTES: Routes = [
       provideEffects(standingsEffects),
       provideState('standings', standingsReducer),
     ],
-    data: { requiredRole: Role.Player },
-    canActivate: [AuthGuard],
   },
   {
     path: 'available',
     component: AvailableTournamentsComponent,
-    data: { requiredRole: Role.Player },
   },
   {
     path: 'admin',
     component: AdminTournamentListComponent,
-    data: { requiredRole: Role.Admin },
+    data: { requiredRoles: [Role.Admin, Role.PlayerAdmin] },
+    canActivate: [RolesGuard],
   },
   {
     path: 'admin/create',
     component: CreateTournamentComponent,
-    data: { requiredRole: Role.Admin },
+    data: { requiredRoles: [Role.Admin, Role.PlayerAdmin] },
+    canActivate: [RolesGuard],
   },
   {
-    path: 'admin/create/:tournamentId',
+    path: 'admin/draft/create/:tournamentId',
     component: CreateDraftComponent,
-    data: { requiredRole: Role.Admin },
+    data: { requiredRoles: [Role.Admin, Role.PlayerAdmin] },
+    canActivate: [RolesGuard],
   },
   {
     path: ':tournamentId',
     component: TournamentDashboardComponent,
-    data: { requiredRole: Role.Player },
   },
   {
     path: 'league/:leagueId',
     component: LeagueDetailComponent,
-    data: { requiredRole: Role.Player },
   },
   {
     path: 'admin/:tournamentId',
     component: AdminTournamentDashboardComponent,
-    data: { requiredRole: Role.Admin },
+    data: { requiredRoles: [Role.Admin, Role.PlayerAdmin] },
+    canActivate: [RolesGuard],
   },
   {
-    path: 'admin/draft/:draftId',
+    path: 'admin/:tournamentId/draft/:draftId',
     component: AdminDraftPanelComponent,
-    data: { requiredRole: Role.Admin },
+    data: { requiredRoles: [Role.Admin, Role.PlayerAdmin] },
+    canActivate: [RolesGuard],
   },
 ];
