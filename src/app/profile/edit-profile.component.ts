@@ -14,7 +14,6 @@ import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 
 import { User } from '../_types';
-import { AlertService } from '../_services';
 import { AuthAppState, selectProfileData } from '../_store';
 import { initProfile, updateUser } from '../_store/actions/auth.actions';
 
@@ -42,7 +41,6 @@ export class EditProfileComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private alertService: AlertService,
     private readonly router: Router,
   ) {}
 
@@ -70,8 +68,6 @@ export class EditProfileComponent implements OnInit {
 
   onSubmit() {
     this.submitted = true;
-
-    this.alertService.clear();
 
     if (this.form.invalid) return;
 

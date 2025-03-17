@@ -1,5 +1,5 @@
 import { NgClass, NgIf } from '@angular/common';
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -12,10 +12,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 
 import { login } from '../_store/actions/auth.actions';
-import { AuthAppState } from '../_store';
+import { AuthAppState, selectAuthErrorMessage } from '../_store';
 
 @Component({
   imports: [
@@ -26,6 +27,7 @@ import { AuthAppState } from '../_store';
     MatInputModule,
     NgClass,
     NgIf,
+    PushPipe,
     RouterLink,
     ReactiveFormsModule,
   ],
@@ -33,7 +35,9 @@ import { AuthAppState } from '../_store';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent implements OnInit {
-  errorMessage: string | null = null;
+  private readonly authStore$ = inject(Store<AuthAppState>);
+  readonly errorMessage$ = this.authStore$.select(selectAuthErrorMessage);
+
   form!: FormGroup;
   loading = false;
   submitted = false;
@@ -41,11 +45,10 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private readonly authStore$: Store<AuthAppState>,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
     this.form = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
@@ -60,7 +63,10 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
 
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      this.submitted = false;
+      return;
+    }
 
     this.loading = true;
 
@@ -73,8 +79,9 @@ export class LoginComponent implements OnInit {
           password: this.f['password'].value,
         },
         returnUrl,
-      })
+      }),
     );
+    this.loading = false;
   }
 
   clickEvent(event: MouseEvent) {

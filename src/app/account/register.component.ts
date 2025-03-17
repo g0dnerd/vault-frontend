@@ -12,7 +12,6 @@ import { Store } from '@ngrx/store';
 import { AuthPayload } from '../_types';
 import { register } from '../_store/actions/auth.actions';
 import { AuthAppState } from '../_store';
-import { AlertService } from '../_services';
 
 @Component({
   imports: [NgClass, NgIf, ReactiveFormsModule, RouterLink],
@@ -28,7 +27,6 @@ export class RegisterComponent {
   constructor(
     private formBuilder: FormBuilder,
     private readonly store$: Store<AuthAppState>,
-    private readonly alertService: AlertService,
   ) {
     this.form = this.formBuilder.group({
       username: ['', [Validators.required, Validators.minLength(5)]],
@@ -43,7 +41,6 @@ export class RegisterComponent {
 
   onSubmit() {
     this.submitted = true;
-    this.alertService.clear();
 
     if (this.form.invalid) return;
 
