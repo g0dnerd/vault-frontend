@@ -42,7 +42,7 @@ export const initDraftMatchesSuccess = createAction(
   props<{ ongoing: Match[] }>(),
 );
 export const updateCurrentMatch = createAction(
-  MatchActionTypes.INIT_CURRENT_MATCH,
+  MatchActionTypes.UPDATE_CURRENT_MATCH,
   props<{ changes: Match }>(),
 );
 export const pairRound = createAction(
