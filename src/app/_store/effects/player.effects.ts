@@ -5,14 +5,14 @@ import { catchError, map, mergeMap, of } from 'rxjs';
 import { PlayerService } from '../../_services';
 import * as PlayerActions from '../actions/player.actions';
 
-export const initializeCurrentPoolStatusEffect = createEffect(
+export const initializePoolStatus$ = createEffect(
   (actions$ = inject(Actions), playerService = inject(PlayerService)) => {
     return actions$.pipe(
-      ofType(PlayerActions.initCurrentPoolStatus),
+      ofType(PlayerActions.initializePoolStatus),
       mergeMap(({ tournamentId }) => {
         return playerService.getPoolStatuses(tournamentId).pipe(
           map((status) => {
-            return PlayerActions.initCurrentPoolStatusSuccess({
+            return PlayerActions.initializePoolStatusSuccess({
               status,
             });
           }),

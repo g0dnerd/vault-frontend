@@ -5,7 +5,7 @@ import { catchError, map, mergeMap, of } from 'rxjs';
 import * as CubeActions from '../actions/cube.actions';
 import { CubeService } from '../../_services/cube.service';
 
-export const initAllCubesEffect = createEffect(
+export const initializeAllCubes$ = createEffect(
   (actions$ = inject(Actions), cubeService = inject(CubeService)) => {
     return actions$.pipe(
       ofType(CubeActions.initializeAllCubes),
@@ -18,12 +18,12 @@ export const initAllCubesEffect = createEffect(
             return of(
               CubeActions.cubeStoreFailure({
                 errorMessage: error.message,
-              })
+              }),
             );
-          })
+          }),
         );
-      })
+      }),
     );
   },
-  { functional: true, dispatch: true }
+  { functional: true, dispatch: true },
 );

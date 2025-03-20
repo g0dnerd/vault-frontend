@@ -5,7 +5,7 @@ import { inject } from '@angular/core';
 import { AccountService } from '../../_services';
 import { catchError, map, mergeMap, of } from 'rxjs';
 
-export const initializeAllUsersEffect = createEffect(
+export const initializeAllUsers$ = createEffect(
   (actions$ = inject(Actions), accountService = inject(AccountService)) => {
     return actions$.pipe(
       ofType(UserActions.initializeAllUsers),
@@ -28,7 +28,7 @@ export const initializeAllUsersEffect = createEffect(
   { functional: true, dispatch: true },
 );
 
-export const initializeAvailableUsersForTournamentEffect = createEffect(
+export const initializeAvailableUsersForTournament$ = createEffect(
   (actions$ = inject(Actions), accountService = inject(AccountService)) => {
     return actions$.pipe(
       ofType(UserActions.initializeAvailableUsersForTournament),

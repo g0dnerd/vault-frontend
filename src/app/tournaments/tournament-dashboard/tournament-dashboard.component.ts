@@ -27,7 +27,7 @@ import {
 import { initProfile } from '../../_store/actions/auth.actions';
 import { initializeAllEnrollments } from '../../_store/actions/enrollment.actions';
 import { initCurrentMatch } from '../../_store/actions/match.actions';
-import { initCurrentPoolStatus } from '../../_store/actions/player.actions';
+import { initializePoolStatus } from '../../_store/actions/player.actions';
 import { initializePublicTournaments } from '../../_store/actions/tournament.actions';
 import { Enrollment, Tournament } from '../../_types';
 import { DraftPanelComponent } from './draft-panel/draft-panel.component';
@@ -92,7 +92,7 @@ export class TournamentDashboardComponent implements OnInit {
       initCurrentMatch({ tournamentId: this.tournamentId() }),
     );
     this.store$.dispatch(
-      initCurrentPoolStatus({ tournamentId: this.tournamentId() }),
+      initializePoolStatus({ tournamentId: this.tournamentId() }),
     );
     this.tournament$ = this.store$.select(
       selectTournamentById(this.tournamentId()),

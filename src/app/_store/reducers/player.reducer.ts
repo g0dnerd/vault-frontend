@@ -17,7 +17,7 @@ export const playerReducer = createReducer(
     status: null,
     errorMessage,
   })),
-  on(PlayerActions.initCurrentPoolStatusSuccess, (_state, { status }) => ({
+  on(PlayerActions.initializePoolStatusSuccess, (_state, { status }) => ({
     status,
     errorMessage: null,
   })),

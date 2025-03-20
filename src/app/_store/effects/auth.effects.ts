@@ -1,14 +1,13 @@
+import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, of, tap } from 'rxjs';
 
-import { Role } from '../../_types';
-import { AccountService, AuthService } from '../../_services';
 import * as AuthActions from '../actions/auth.actions';
-import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
+import { AccountService, AuthService } from '../../_services';
 
-export const refreshAuth = createEffect(
+export const refreshAuth$ = createEffect(
   (actions$ = inject(Actions), authService = inject(AuthService)) => {
     return actions$.pipe(
       ofType(AuthActions.refreshAuth),
@@ -30,26 +29,20 @@ export const refreshAuth = createEffect(
   { functional: true, dispatch: true },
 );
 
-export const authSuccess = createEffect(
+export const authSuccess$ = createEffect(
   (actions$ = inject(Actions), router = inject(Router)) => {
     return actions$.pipe(
       ofType(AuthActions.authSuccess),
-      tap(({ roles, token, returnUrl }) => {
+      tap(({ token, returnUrl }) => {
         localStorage.setItem('token', token);
-        if (returnUrl) {
-          if (roles.includes(Role.Admin)) {
-            router.navigateByUrl('/');
-          } else {
-            router.navigate([returnUrl || '/']);
-          }
-        }
+        router.navigate([returnUrl || '/']);
       }),
     );
   },
   { functional: true, dispatch: false },
 );
 
-export const login = createEffect(
+export const login$ = createEffect(
   (actions$ = inject(Actions), authService = inject(AuthService)) => {
     return actions$.pipe(
       ofType(AuthActions.login),
@@ -79,13 +72,12 @@ export const login = createEffect(
   { functional: true, dispatch: true },
 );
 
-export const logoutEffect = createEffect(
+export const logout$ = createEffect(
   (actions$ = inject(Actions), router = inject(Router)) => {
     return actions$.pipe(
       ofType(AuthActions.logout),
       tap(() => {
         localStorage.removeItem('token');
-        localStorage.removeItem('state');
         router.navigateByUrl('/account/login');
       }),
     );
@@ -93,7 +85,7 @@ export const logoutEffect = createEffect(
   { functional: true, dispatch: false },
 );
 
-export const initProfileEffect = createEffect(
+export const initProfile$ = createEffect(
   (actions$ = inject(Actions), accountService = inject(AccountService)) => {
     return actions$.pipe(
       ofType(AuthActions.initProfile),
@@ -115,7 +107,7 @@ export const initProfileEffect = createEffect(
   { functional: true, dispatch: true },
 );
 
-export const initRolesEffect = createEffect(
+export const initRoles$ = createEffect(
   (actions$ = inject(Actions), accountService = inject(AccountService)) => {
     return actions$.pipe(
       ofType(AuthActions.initRoles),
@@ -137,7 +129,7 @@ export const initRolesEffect = createEffect(
   { functional: true, dispatch: true },
 );
 
-export const updateUserEffect = createEffect(
+export const updateUser$ = createEffect(
   (actions$ = inject(Actions), accountService = inject(AccountService)) => {
     return actions$.pipe(
       ofType(AuthActions.updateUser),
@@ -159,7 +151,7 @@ export const updateUserEffect = createEffect(
   { functional: true, dispatch: true },
 );
 
-export const registerEffect = createEffect(
+export const register$ = createEffect(
   (
     actions$ = inject(Actions),
     authService = inject(AuthService),

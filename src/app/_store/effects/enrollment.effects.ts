@@ -5,7 +5,7 @@ import { catchError, map, mergeMap, of } from 'rxjs';
 import { EnrollmentService } from '../../_services';
 import * as EnrollmentActions from '../actions/enrollment.actions';
 
-export const initializeAllEnrollmentsEffect = createEffect(
+export const initializeAllEnrollments$ = createEffect(
   (
     actions$ = inject(Actions),
     enrollmentService = inject(EnrollmentService),
@@ -31,7 +31,7 @@ export const initializeAllEnrollmentsEffect = createEffect(
   { functional: true, dispatch: true },
 );
 
-export const initializeEnrollmentsForTournamentEffect = createEffect(
+export const initializeEnrollmentsForTournament$ = createEffect(
   (
     actions$ = inject(Actions),
     enrollmentService = inject(EnrollmentService),
@@ -57,7 +57,7 @@ export const initializeEnrollmentsForTournamentEffect = createEffect(
   { functional: true, dispatch: true },
 );
 
-export const initializeLeaguePlayersEffect = createEffect(
+export const initializeLeaguePlayers$ = createEffect(
   (
     actions$ = inject(Actions),
     enrollmentService = inject(EnrollmentService),
@@ -83,7 +83,7 @@ export const initializeLeaguePlayersEffect = createEffect(
   { functional: true, dispatch: true },
 );
 
-export const initializeEnrollmentsForDraftEffect = createEffect(
+export const initializeEnrollmentsForDraft$ = createEffect(
   (
     actions$ = inject(Actions),
     enrollmentService = inject(EnrollmentService),

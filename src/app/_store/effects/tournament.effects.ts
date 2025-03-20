@@ -5,7 +5,7 @@ import { catchError, map, mergeMap, of } from 'rxjs';
 import { EnrollmentService, TournamentService } from '../../_services';
 import * as TournamentActions from '../actions/tournament.actions';
 
-export const initAllTournamentsEffect = createEffect(
+export const initializeAllTournaments$ = createEffect(
   (
     actions$ = inject(Actions),
     tournamentService = inject(TournamentService),
@@ -33,7 +33,7 @@ export const initAllTournamentsEffect = createEffect(
 
 // Gets all tournaments from the tournamentService
 // and stores them in state.
-export const initPublicTournamentsEffect = createEffect(
+export const initializePublicTournaments$ = createEffect(
   (
     actions$ = inject(Actions),
     tournamentService = inject(TournamentService),
@@ -63,7 +63,7 @@ export const initPublicTournamentsEffect = createEffect(
 // from the tournamentService and stores them in state.
 // Dispatches an initAvailableFailure action
 // on error reponse from the API.
-export const initAvailable = createEffect(
+export const initializeAvailableTournaments$ = createEffect(
   (
     actions$ = inject(Actions),
     tournamentService = inject(TournamentService),
@@ -92,7 +92,7 @@ export const initAvailable = createEffect(
 
 // Gets all enrolled tournaments for the current user
 // from the tournamentService and stores them in state.
-export const initEnrolled = createEffect(
+export const initializeEnrolledTournaments$ = createEffect(
   (
     actions$ = inject(Actions),
     tournamentService = inject(TournamentService),
@@ -123,7 +123,7 @@ export const initEnrolled = createEffect(
 // with `tournamentId`. Returns the tournament object
 // on success and a registerFailure on error response
 // from the API.
-export const enrollEffect = createEffect(
+export const enroll$ = createEffect(
   (
     actions$ = inject(Actions),
     enrollmentService = inject(EnrollmentService),
@@ -132,6 +132,7 @@ export const enrollEffect = createEffect(
       ofType(TournamentActions.enroll),
       mergeMap(({ tournamentId }) => {
         return enrollmentService.enroll(tournamentId).pipe(
+          // FIXME: this is ugly
           map((res) => {
             // If the response did not contain a tournament,
             // the user could not be enrolled. Return an error.

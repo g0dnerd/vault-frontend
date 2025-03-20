@@ -8,7 +8,7 @@ import { DraftService } from '../../_services';
 // Gets the currently ongoing draft from `draftService` and stores
 // it in state on success.
 // Dispatches an `initOngoingFailure` on API error response
-export const initOngoingDraftsEffect = createEffect(
+export const initializeOngoingDrafts$ = createEffect(
   (actions$ = inject(Actions), draftService = inject(DraftService)) => {
     return actions$.pipe(
       ofType(DraftActions.initializeOngoingDrafts),
@@ -33,7 +33,7 @@ export const initOngoingDraftsEffect = createEffect(
   { functional: true, dispatch: true },
 );
 
-export const initCurrentEffect = createEffect(
+export const initializeCurrentDraft$ = createEffect(
   (actions$ = inject(Actions), draftService = inject(DraftService)) => {
     return actions$.pipe(
       ofType(DraftActions.initializeCurrentDraft),
@@ -56,7 +56,7 @@ export const initCurrentEffect = createEffect(
   { functional: true, dispatch: true },
 );
 
-export const initSingleDraftEffect = createEffect(
+export const initializeSingleDraft$ = createEffect(
   (actions$ = inject(Actions), draftService = inject(DraftService)) => {
     return actions$.pipe(
       ofType(DraftActions.initializeSingleDraft),
@@ -79,7 +79,7 @@ export const initSingleDraftEffect = createEffect(
   { functional: true, dispatch: true },
 );
 
-export const seatDraftEffect = createEffect(
+export const seatDraft$ = createEffect(
   (actions$ = inject(Actions), draftService = inject(DraftService)) => {
     return actions$.pipe(
       ofType(DraftActions.seatDraft),
@@ -102,7 +102,7 @@ export const seatDraftEffect = createEffect(
   { functional: true, dispatch: true },
 );
 
-export const createDraftEffect = createEffect(
+export const createDraft$ = createEffect(
   (actions$ = inject(Actions), draftService = inject(DraftService)) => {
     return actions$.pipe(
       ofType(DraftActions.createDraft),
@@ -125,7 +125,7 @@ export const createDraftEffect = createEffect(
   { functional: true, dispatch: true },
 );
 
-export const updateDraftEffect = createEffect(
+export const updateDraft$ = createEffect(
   (actions$ = inject(Actions), draftService = inject(DraftService)) => {
     return actions$.pipe(
       ofType(DraftActions.updateDraft),

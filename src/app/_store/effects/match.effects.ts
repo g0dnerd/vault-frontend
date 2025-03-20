@@ -5,7 +5,7 @@ import { catchError, map, mergeMap, of } from 'rxjs';
 import { MatchService } from '../../_services';
 import * as MatchActions from '../actions/match.actions';
 
-export const initCurrentMatchEffect = createEffect(
+export const initCurrentMatch$ = createEffect(
   (actions$ = inject(Actions), matchService = inject(MatchService)) => {
     return actions$.pipe(
       ofType(MatchActions.initCurrentMatch),
@@ -20,17 +20,17 @@ export const initCurrentMatchEffect = createEffect(
             return of(
               MatchActions.matchStoreFailure({
                 errorMessage: error.message,
-              })
+              }),
             );
-          })
+          }),
         );
-      })
+      }),
     );
   },
-  { functional: true, dispatch: true }
+  { functional: true, dispatch: true },
 );
 
-export const initSingleMatchEffect = createEffect(
+export const initializeSingleMatch$ = createEffect(
   (actions$ = inject(Actions), matchService = inject(MatchService)) => {
     return actions$.pipe(
       ofType(MatchActions.initSingleMatch),
@@ -45,17 +45,17 @@ export const initSingleMatchEffect = createEffect(
             return of(
               MatchActions.matchStoreFailure({
                 errorMessage: error.message,
-              })
+              }),
             );
-          })
+          }),
         );
-      })
+      }),
     );
   },
-  { functional: true, dispatch: true }
+  { functional: true, dispatch: true },
 );
 
-export const initDraftMatchesEffect = createEffect(
+export const initializeDraftMatches$ = createEffect(
   (actions$ = inject(Actions), matchService = inject(MatchService)) => {
     return actions$.pipe(
       ofType(MatchActions.initDraftMatches),
@@ -70,17 +70,17 @@ export const initDraftMatchesEffect = createEffect(
             return of(
               MatchActions.matchStoreFailure({
                 errorMessage: error.message,
-              })
+              }),
             );
-          })
+          }),
         );
-      })
+      }),
     );
   },
-  { functional: true, dispatch: true }
+  { functional: true, dispatch: true },
 );
 
-export const updateCurrentMatchEffect = createEffect(
+export const updateCurrentMatch$ = createEffect(
   (actions$ = inject(Actions)) => {
     return actions$.pipe(
       ofType(MatchActions.updateCurrentMatch),
@@ -88,15 +88,15 @@ export const updateCurrentMatchEffect = createEffect(
         return of(
           MatchActions.initCurrentMatchSuccess({
             current: changes,
-          })
+          }),
         );
-      })
+      }),
     );
   },
-  { functional: true, dispatch: true }
+  { functional: true, dispatch: true },
 );
 
-export const pairRoundEffect = createEffect(
+export const pairRound$ = createEffect(
   (actions$ = inject(Actions), matchService = inject(MatchService)) => {
     return actions$.pipe(
       ofType(MatchActions.pairRound),
@@ -109,12 +109,12 @@ export const pairRoundEffect = createEffect(
             return of(
               MatchActions.matchStoreFailure({
                 errorMessage: error.message,
-              })
+              }),
             );
-          })
+          }),
         );
-      })
+      }),
     );
   },
-  { functional: true, dispatch: true }
+  { functional: true, dispatch: true },
 );

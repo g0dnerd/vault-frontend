@@ -5,7 +5,7 @@ import { catchError, map, mergeMap, of } from 'rxjs';
 import * as StandingsActions from '../actions/standings.actions';
 import { EnrollmentService } from '../../_services';
 
-export const initTournamentStandingsEffect = createEffect(
+export const initializeTournamentStandings$ = createEffect(
   (
     actions$ = inject(Actions),
     enrollmentService = inject(EnrollmentService),

@@ -5,7 +5,7 @@ import { catchError, map, mergeMap, of } from 'rxjs';
 import { PhaseService } from '../../_services';
 import * as PhaseActions from '../actions/phase.actions';
 
-export const initializeAllPhasesEffect = createEffect(
+export const initializePhasesForTournament$ = createEffect(
   (actions$ = inject(Actions), phaseService = inject(PhaseService)) => {
     return actions$.pipe(
       ofType(PhaseActions.initializePhasesForTournament),

@@ -4,6 +4,7 @@ import { Action, Store } from '@ngrx/store';
 import { distinctUntilChanged, map, switchMap, tap } from 'rxjs';
 
 import * as HydrationActions from '../actions/hydration.actions';
+import * as AuthActions from '../actions/auth.actions';
 import { State } from '..';
 
 @Injectable()
@@ -39,6 +40,21 @@ export class HydrationEffects implements OnInitEffects {
         switchMap(() => this.store),
         distinctUntilChanged(),
         tap((state) => localStorage.setItem('state', JSON.stringify(state))),
+      ),
+    { dispatch: false },
+  );
+
+  // Clear state from local storage on any auth failure and on logout
+  purge$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(
+          AuthActions.logout,
+          AuthActions.loginFailure,
+          AuthActions.registerFailure,
+        ),
+        switchMap(() => this.store),
+        tap(() => localStorage.removeItem('state')),
       ),
     { dispatch: false },
   );
