@@ -1,0 +1,39 @@
+.form-field-full-width {
+  width: 100%;
+}
+
+.form-field-75 {
+  width: 60%;
+  align-content: center;
+}
+
+.form-checkbox-container {
+  display: flex;
+  justify-content: space-between;
+  flex-flow: row;
+  width: 100%;
+}
+
+.table-number-section {
+  align-content: center;
+}
+
+.form-field-half-width {
+  max-width: 30%;
+}
+
+.mat-mdc-slider {
+  max-width: 300px;
+  width: 100%;
+}
+
+.table-slider {
+  margin: 8px;
+}
+
+.slider-label-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 0 10px 0;
+  max-width: 284px;
+}
