@@ -1,9 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { CanActivate } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { map, of, switchMap } from 'rxjs';
+import { map, take } from 'rxjs';
 
-import { AuthAppState, selectAuthToken } from '../_store';
+import { AuthAppState, selectAuthStatus } from '../_store';
 import { logout, refreshAuth } from '../_store/actions/auth.actions';
 
 @Injectable({
@@ -13,43 +13,31 @@ import { logout, refreshAuth } from '../_store/actions/auth.actions';
 // Waits for the store to fully resolve auth status before
 // allowing or disallowing route access.
 export class AuthGuard implements CanActivate {
-  constructor(private readonly authStore$: Store<AuthAppState>) {}
+  private readonly authStore$ = inject(Store<AuthAppState>);
+  private readonly authStatus$ = this.authStore$.select(selectAuthStatus);
 
   canActivate() {
-    return this.authStore$.select(selectAuthToken).pipe(
-      // Take the first value from the subscription and return it
-      switchMap((authStatus) => {
-        if (!!authStatus) {
-          return of(true);
+    return this.authStatus$.pipe(
+      take(1),
+      map((isAuthenticated) => {
+        // If we have an authentication status in state, we can return it
+        if (isAuthenticated) {
+          return isAuthenticated;
         }
+
+        // If we don't, we can check for a token in local storage
         const token = localStorage.getItem('token');
         if (!token) {
+          // If we don't find one, we dispatch a logout action and deny the routing request.
           this.authStore$.dispatch(logout());
-          return of(false);
+          return false;
         }
+
+        // If we did find one, we check the token's status with the backend
+        // before adjudicating the routing request.
         this.authStore$.dispatch(refreshAuth());
-        return of(true);
-      })
-    );
-  }
-}
-
-@Injectable({
-  providedIn: 'root',
-})
-// Allows route access only if user is NOT authenticated.
-// Waits for the store to fully resolve auth status before
-// allowing or disallowing route access.
-export class UnAuthGuard implements CanActivate {
-  private readonly authStore$ = inject(Store<AuthAppState>);
-
-  canActivate() {
-    return this.authStore$.select(selectAuthToken).pipe(
-      // Take the first value from the subscription that is a resolved auth status
-      // Return the inverse of that status
-      map((authToken) => {
-        return !!!authToken;
-      })
+        return true;
+      }),
     );
   }
 }
