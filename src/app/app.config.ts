@@ -4,8 +4,8 @@ import {
   withInterceptors,
 } from '@angular/common/http';
 import { ApplicationConfig, importProvidersFrom } from '@angular/core';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
 import { provideState, provideStore } from '@ngrx/store';
@@ -17,14 +17,13 @@ import {
   errorInterceptor,
   jwtInterceptor,
   RolesGuard,
-  UnAuthGuard,
 } from './_helpers';
 import * as authEffects from './_store/effects/auth.effects';
-import * as cubeEffects from './_store/effects/cube.effects';
 import { authReducer } from './_store/reducers/auth.reducer';
-import { cubeReducer } from './_store/reducers/cube.reducer';
-import { dev } from '../environments/environment';
 import { hydrationMetaReducer } from './_store/reducers/hydration.reducer';
+import { dev } from '../environments/environment';
+import { HydrationEffects } from './_store/effects/hydration.effects';
+import { reducers } from './_store';
 
 const config: SocketIoConfig = {
   url: dev.webSocketUrl,
@@ -38,20 +37,18 @@ export const appConfig: ApplicationConfig = {
     {
       provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
       useValue: {
-        appearance: 'fill',
+        appearance: 'outline',
         subscriptSizing: 'fixed',
       },
     },
     AuthGuard,
-    UnAuthGuard,
     RolesGuard,
-    provideStore(undefined, {
+    provideStore(reducers, {
       metaReducers: [hydrationMetaReducer],
     }),
+    provideEffects(HydrationEffects),
     provideState({ name: 'auth', reducer: authReducer }),
     provideEffects(authEffects),
-    provideState({ name: 'cubes', reducer: cubeReducer }),
-    provideEffects(cubeEffects),
     provideRouter(appRoutes, withComponentInputBinding()),
     provideHttpClient(
       withFetch(),
