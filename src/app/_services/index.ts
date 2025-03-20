@@ -6,5 +6,6 @@ export * from './enrollment.service';
 export * from './image.service';
 export * from './match-websocket.service';
 export * from './match.service';
+export * from './phase.service';
 export * from './player.service';
 export * from './tournament.service';

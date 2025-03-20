@@ -11,6 +11,7 @@ export const API_ROUTES = {
   DRAFTS: '/drafts',
   IMAGES: '/images',
   CUBES: '/cubes',
+  PHASES: '/phases',
 };
 
 export enum Statuses {
