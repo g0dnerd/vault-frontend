@@ -1,5 +1,5 @@
 import { NgClass, NgIf } from '@angular/common';
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -37,31 +37,31 @@ import { login } from '../../_store/actions/auth.actions';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent {
   private readonly authStore$ = inject(Store<AuthAppState>);
   readonly errorMessage$ = this.authStore$.select(selectAuthErrorMessage);
 
   form!: FormGroup;
   loading = false;
   submitted = false;
+
+  // Password is hidden by default
   hide = signal(true);
 
   emailFormControl = new FormControl('', [
     Validators.required,
     Validators.email,
   ]);
+  passwordFormControl = new FormControl('', [Validators.required]);
 
   constructor(
     private formBuilder: FormBuilder,
     private readonly route: ActivatedRoute,
-  ) {}
-
-  ngOnInit() {
+  ) {
     this.form = this.formBuilder.group({
       email: this.emailFormControl,
-      password: ['', Validators.required],
+      password: this.passwordFormControl,
     });
-    this.loading = false;
   }
 
   get f() {
@@ -71,6 +71,7 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
 
+    // FIXME: User feedback
     if (this.form.invalid) {
       this.submitted = false;
       return;
@@ -91,6 +92,7 @@ export class LoginComponent implements OnInit {
     );
   }
 
+  // Toggle show/hide password state
   clickEvent(event: MouseEvent) {
     this.hide.set(!this.hide());
     event.stopPropagation();

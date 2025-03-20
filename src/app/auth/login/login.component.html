@@ -29,7 +29,7 @@
           <input
             matInput
             [type]="hide() ? 'password' : 'text'"
-            formControlName="password"
+            [formControl]="passwordFormControl"
             [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
           />
           <button
@@ -43,6 +43,9 @@
           >
             <mat-icon>{{ hide() ? "visibility_off" : "visibility" }}</mat-icon>
           </button>
+          @if (passwordFormControl.hasError("required")) {
+            <mat-error>Password is <strong>required</strong></mat-error>
+          }
         </mat-form-field>
       </div>
       <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">

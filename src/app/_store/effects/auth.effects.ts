@@ -35,7 +35,9 @@ export const authSuccess$ = createEffect(
       ofType(AuthActions.authSuccess),
       tap(({ token, returnUrl }) => {
         localStorage.setItem('token', token);
-        router.navigate([returnUrl || '/']);
+        if (returnUrl) {
+          router.navigate([returnUrl || '/']);
+        }
       }),
     );
   },

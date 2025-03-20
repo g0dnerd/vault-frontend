@@ -159,6 +159,7 @@ export class CreateDraftComponent implements OnInit {
 
   ngOnInit() {
     const tournamentId: number = this.tournamentId();
+
     this.store$.dispatch(initializeEnrollmentsForTournament({ tournamentId }));
     this.store$.dispatch(initializeAllTournaments());
     this.store$.dispatch(initializeAllCubes());
@@ -179,8 +180,8 @@ export class CreateDraftComponent implements OnInit {
     this.draft$.subscribe((draft) => {
       if (draft) {
         this.form.setValue({
-          cubeId: draft.cube!.id,
-          phaseId: draft.phase!.id,
+          cubeId: draft.cube?.id,
+          phaseId: draft.phase?.id,
           numRounds: draft.phase?.roundAmount,
           players: this.f['players'].value,
           tableFirst: this.f['tableFirst'].value,
@@ -193,6 +194,7 @@ export class CreateDraftComponent implements OnInit {
       this.alreadyEnrolledIds.set(enrolled.map((e) => e.id));
     });
     this.tournament$.subscribe((tournament) => {
+      // TODO: What's the default max table?
       const maxTable = tournament ? tournament.playerCapacity / 2 : 10;
       this.maxTable.set(maxTable);
     });

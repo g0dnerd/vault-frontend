@@ -20,23 +20,25 @@ export class AuthGuard implements CanActivate {
     return this.authStatus$.pipe(
       take(1),
       map((isAuthenticated) => {
-        // If we have an authentication status in state, we can return it
+        // If there's an authentication status in state, return it
         if (isAuthenticated) {
           return isAuthenticated;
         }
 
-        // If we don't, we can check for a token in local storage
+        // If not, check for a token in local storage
         const token = localStorage.getItem('token');
         if (!token) {
-          // If we don't find one, we dispatch a logout action and deny the routing request.
+          // If there is none, dispatch a logout action and deny the routing request.
           this.authStore$.dispatch(logout());
           return false;
         }
 
-        // If we did find one, we check the token's status with the backend
+        // If there was a token, check its status with the backend
         // before adjudicating the routing request.
+        // FIXME: this isn't good enough because it shows a flash of the protected
+        // route content before a negative auth status resolves
         this.authStore$.dispatch(refreshAuth());
-        return true;
+        return false;
       }),
     );
   }
