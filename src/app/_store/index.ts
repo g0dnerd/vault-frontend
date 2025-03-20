@@ -10,6 +10,7 @@ import {
   Draft,
   Enrollment,
   Image,
+  Phase,
   Role,
   Tournament,
   User,
@@ -17,30 +18,44 @@ import {
 import * as fromCube from './reducers/cube.reducer';
 import * as fromEnrollment from './reducers/enrollment.reducer';
 import * as fromImage from './reducers/image.reducer';
+import * as fromPhase from './reducers/phase.reducer';
 import * as fromTournament from './reducers/tournament.reducer';
 import * as fromUser from './reducers/user.reducer';
 import { AuthState } from './reducers/auth.reducer';
-import { DraftState } from './reducers/draft.reducer';
-import { MatchState } from './reducers/match.reducer';
-import { PlayerState } from './reducers/player.reducer';
-import { StandingsState } from './reducers/standings.reducer';
+import { draftReducer, DraftState } from './reducers/draft.reducer';
+import { matchReducer, MatchState } from './reducers/match.reducer';
+import { playerReducer, PlayerState } from './reducers/player.reducer';
+import { standingsReducer, StandingsState } from './reducers/standings.reducer';
 import { hydrationMetaReducer } from './reducers/hydration.reducer';
 
 export interface State {
+  cubes: fromCube.CubeState;
+  drafts: DraftState;
+  enrollments: fromEnrollment.EnrollmentState;
   images: fromImage.ImageState;
+  matches: MatchState;
+  phases: fromPhase.PhaseState;
+  players: PlayerState;
+  standings: StandingsState;
   tournaments: fromTournament.TournamentState;
+  users: fromUser.UserState;
 }
 
 export const reducers: ActionReducerMap<State> = {
+  cubes: fromCube.cubeReducer,
+  drafts: draftReducer,
+  enrollments: fromEnrollment.enrollmentReducer,
   images: fromImage.imageReducer,
+  matches: matchReducer,
+  phases: fromPhase.phaseReducer,
+  players: playerReducer,
+  standings: standingsReducer,
   tournaments: fromTournament.tournamentReducer,
+  users: fromUser.userReducer,
 };
 
 // MATCHES
-export interface MatchAppState {
-  matches: MatchState;
-}
-export const selectMatches = (state: MatchAppState) => state.matches;
+export const selectMatches = (state: State) => state.matches;
 export const selectCurrentMatch = createSelector(
   selectMatches,
   (state: MatchState) => state.current,
@@ -51,10 +66,7 @@ export const selectOngoingMatches = createSelector(
 );
 
 // PLAYERS
-export interface PlayerAppState {
-  players: PlayerState;
-}
-export const selectPlayers = (state: PlayerAppState) => state.players;
+export const selectPlayers = (state: State) => state.players;
 export const selectCurrentPoolStatus = createSelector(
   selectPlayers,
   (state: PlayerState) => state.status,
@@ -226,10 +238,7 @@ export const selectAuthErrorMessage = createSelector(
 );
 
 // DRAFTS
-export interface DraftAppState {
-  drafts: DraftState;
-}
-export const selectDrafts = (state: DraftAppState) => state.drafts;
+export const selectDrafts = (state: State) => state.drafts;
 export const selectOngoingDrafts = createSelector(
   selectDrafts,
   (state: DraftState) => state.ongoing,
@@ -332,10 +341,7 @@ export const selectCubeByQuery = (query: (cube: Cube) => boolean) =>
   });
 
 // STANDINGS
-export interface StandingsAppState {
-  standings: StandingsState;
-}
-export const selectStandings = (state: StandingsAppState) => state.standings;
+export const selectStandings = (state: State) => state.standings;
 export const selectTournamentStandings = createSelector(
   selectStandings,
   (state: StandingsState) => state.tournamentStandings,
@@ -366,6 +372,37 @@ export const selectUserByQuery = (query: (user: User) => boolean) =>
   createSelector(selectUserState, (state) => {
     return Object.values(state.entities).find(
       (user): user is User => !!user && query(user),
+    );
+  });
+
+// PHASES
+export const selectPhaseState =
+  createFeatureSelector<fromPhase.PhaseState>('phases');
+export const selectPhaseIds = createSelector(
+  selectPhaseState,
+  fromPhase.selectPhaseIds,
+);
+export const selectPhaseEntities = createSelector(
+  selectPhaseState,
+  fromPhase.selectPhaseEntities,
+);
+export const selectAllPhases = createSelector(
+  selectPhaseState,
+  fromPhase.selectAllPhases,
+);
+export const selectPhaseTotal = createSelector(
+  selectPhaseState,
+  fromPhase.selectPhaseTotal,
+);
+export const selectPhaseById = (phaseId: number) =>
+  createSelector(
+    selectPhaseState,
+    (phaseState) => phaseState.entities[phaseId],
+  );
+export const selectPhaseByQuery = (query: (phase: Phase) => boolean) =>
+  createSelector(selectPhaseState, (state) => {
+    return Object.values(state.entities).find(
+      (phase): phase is Phase => !!phase && query(phase),
     );
   });
 
