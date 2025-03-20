@@ -28,17 +28,25 @@ export const appRoutes: Route[] = [
     ],
   },
   {
-    path: 'account/login',
-    component: LoginComponent,
-  },
-  {
-    path: 'account/register',
-    component: RegisterComponent,
+    path: 'account',
+    children: [
+      {
+        path: 'login',
+        component: LoginComponent,
+      },
+      {
+        path: 'register',
+        component: RegisterComponent,
+      },
+    ],
   },
   {
     path: 'cubes',
-    component: CubeListComponent,
     children: [
+      {
+        path: '',
+        component: CubeListComponent,
+      },
       {
         path: ':cubeId',
         component: CubeDetailComponent,
@@ -47,8 +55,11 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'profile',
-    component: ProfileComponent,
     children: [
+      {
+        path: '',
+        component: ProfileComponent,
+      },
       {
         path: 'edit',
         component: EditProfileComponent,
