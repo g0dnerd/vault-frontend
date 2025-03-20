@@ -3,14 +3,14 @@ import { Component, inject, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { PushPipe } from '@ngrx/component';
 
-import { Enrollment } from '../../_types';
-import { EnrollPanelComponent } from './enroll-panel.component';
 import { selectAvailableTournaments, State } from '../../_store';
 import {
   initializePublicTournaments,
   initializeAvailableTournaments,
   enroll,
 } from '../../_store/actions/tournament.actions';
+import { Enrollment } from '../../_types';
+import { EnrollPanelComponent } from '../enroll-panel/enroll-panel.component';
 
 @Component({
   standalone: true,

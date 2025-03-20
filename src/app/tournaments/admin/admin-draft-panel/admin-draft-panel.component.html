@@ -1,0 +1,191 @@
+<h1>Draft playing {{ (draft$ | ngrxPush)?.cube?.name }}</h1>
+<div class="breadcrumb-container" *ngIf="(draft$ | ngrxPush)?.phase as phase">
+  <a mat-fab extended routerLink="/tournaments/{{ phase.tournamentId }}">
+    <mat-icon>arrow_back</mat-icon>
+    Return to Tournament Dashboard
+  </a>
+</div>
+<mat-card class="draft-options admin" *ngIf="draft$ | ngrxPush as draft">
+  <mat-card-header>
+    <mat-card-title>Draft setup</mat-card-title>
+  </mat-card-header>
+  <mat-card-content *ngIf="tournamentId() as tId">
+    <mat-card-actions>
+      <button
+        mat-stroked-button
+        type="button"
+        class="regular-button"
+        [disabled]="draft.seated"
+        (click)="seatDraft()"
+      >
+        Make Seatings
+      </button>
+      <button
+        mat-stroked-button
+        type="button"
+        class="regular-button"
+        [disabled]="(matches$ | ngrxPush)?.length"
+        (click)="pairRound()"
+      >
+        Pair Round
+      </button>
+      <a
+        mat-stroked-button
+        type="button"
+        class="regular-button"
+        [routerLink]="[
+          '/tournaments/admin/draft/create',
+          tId,
+          { draftId: draftId() },
+        ]"
+      >
+        <mat-icon>edit</mat-icon>
+        Edit this draft
+      </a>
+    </mat-card-actions>
+    <mat-expansion-panel class="admin-player-list">
+      <mat-expansion-panel-header>
+        <mat-panel-title>Players</mat-panel-title>
+      </mat-expansion-panel-header>
+      <ul class="admin-player-list">
+        <li *ngFor="let player of draft.players; index as i">
+          {{ player?.enrollment?.user?.username }}
+          <button
+            mat-stroked-button
+            type="button"
+            class="drop-player-button"
+            (click)="dropPlayer(i)"
+          >
+            Drop
+          </button>
+        </li>
+      </ul>
+    </mat-expansion-panel>
+  </mat-card-content>
+</mat-card>
+<ng-container *ngIf="!(matches$ | ngrxPush)?.length">
+  <mat-card class="seatings-card admin" *ngIf="(draft$ | ngrxPush)?.seated">
+    <mat-card-header>
+      <mat-card-title>Seatings</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <ol class="seatings-list">
+        <li *ngFor="let player of (draft$ | ngrxPush)?.players; index as i">
+          {{ player.enrollment?.user?.username }}
+        </li>
+      </ol>
+    </mat-card-content>
+  </mat-card>
+</ng-container>
+<ng-container *ngIf="(matches$ | ngrxPush)?.length">
+  <mat-card class="matches-card admin" *ngIf="matches$ | ngrxPush as matches">
+    <mat-card-header>
+      <mat-card-title>Matches</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <mat-accordion class="admin-match-list">
+        <mat-expansion-panel
+          *ngFor="let game of matches; index as i"
+          class="admin-match-embed"
+        >
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              {{ game.player1?.enrollment?.user?.username }}
+              vs
+              {{ game.player2?.enrollment?.user?.username }}
+            </mat-panel-title>
+            <mat-panel-description>
+              <div
+                *ngIf="
+                  game.player1Wins ||
+                  game.player2Wins ||
+                  game.resultConfirmed ||
+                  game.reportedById
+                "
+              >
+                {{ game.player1Wins }} - {{ game.player2Wins }}
+                <span *ngIf="game.resultConfirmed">(result confirmed)</span>
+              </div>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <div>
+            <form
+              [formGroup]="form"
+              *ngIf="form"
+              (ngSubmit)="reportResult(game.id)"
+            >
+              <div class="form-input player-wins">
+                <label class="form-label">
+                  {{ game.player1?.enrollment?.user?.username }} wins
+                </label>
+                <mat-button-toggle-group
+                  formControlName="player1Wins"
+                  aria-label="Player 1 wins"
+                  exclusive
+                >
+                  <mat-button-toggle [value]="0">0</mat-button-toggle>
+                  <mat-button-toggle [value]="1">1</mat-button-toggle>
+                  <mat-button-toggle [value]="2">2</mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
+              <div
+                *ngIf="submitted && f['player1Wins'].errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="f['player1Wins'].errors['required']">
+                  Player 1 wins are required
+                </div>
+              </div>
+              <div class="form-input player-wins">
+                <label class="form-label">
+                  {{ game.player2?.enrollment?.user?.username }} wins
+                </label>
+                <mat-button-toggle-group
+                  formControlName="player2Wins"
+                  aria-label="Player 2 wins"
+                  exclusive
+                >
+                  <mat-button-toggle [value]="0">0</mat-button-toggle>
+                  <mat-button-toggle [value]="1">1</mat-button-toggle>
+                  <mat-button-toggle [value]="2">2</mat-button-toggle>
+                </mat-button-toggle-group>
+              </div>
+              <div
+                *ngIf="submitted && f['player2Wins'].errors"
+                class="invalid-feedback"
+              >
+                <div *ngIf="f['player2Wins'].errors['required']">
+                  Player 2 wins are required
+                </div>
+              </div>
+              <div
+                *ngIf="form.hasError('sumExceeded')"
+                class="cross-validation-error-message alert alert-danger"
+              >
+                Total games in match cannot exceed 3
+              </div>
+              <div *ngIf="!game.player1Wins; else modifyResult">
+                <button [disabled]="loading" class="btn btn-primary">
+                  <span
+                    *ngIf="loading"
+                    class="spinner-border spinner-border-sm me-1"
+                  ></span>
+                  Report result
+                </button>
+              </div>
+              <ng-template #modifyResult>
+                <button [disabled]="loading" class="btn btn-primary">
+                  <span
+                    *ngIf="loading"
+                    class="spinner-border spinner-border-sm me-1"
+                  ></span>
+                  Modify result
+                </button>
+              </ng-template>
+            </form>
+          </div>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </mat-card-content>
+  </mat-card>
+</ng-container>

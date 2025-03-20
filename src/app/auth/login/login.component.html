@@ -1,0 +1,61 @@
+<mat-card class="login-card" appearance="outlined">
+  <mat-card-header>
+    <mat-card-title>Login</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+      <div class="form-field-container">
+        <mat-form-field class="form-field-full-width">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            type="email"
+            [formControl]="emailFormControl"
+            placeholder="chaos@orb.com"
+            class="form-control"
+          />
+          @if (
+            emailFormControl.hasError("email") &&
+            !emailFormControl.hasError("required")
+          ) {
+            <mat-error>Please enter a valid email address</mat-error>
+          }
+          @if (emailFormControl.hasError("required")) {
+            <mat-error>Email is <strong>required</strong></mat-error>
+          }
+        </mat-form-field>
+        <mat-form-field class="form-field-full-width">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            [type]="hide() ? 'password' : 'text'"
+            formControlName="password"
+            [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            class="show-password-button"
+            (click)="clickEvent($event)"
+            [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide()"
+          >
+            <mat-icon>{{ hide() ? "visibility_off" : "visibility" }}</mat-icon>
+          </button>
+        </mat-form-field>
+      </div>
+      <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
+        <div *ngIf="f['password'].errors['required']">Password is required</div>
+      </div>
+      <p *ngIf="errorMessage$ | ngrxPush as msg" class="message-alert-error">
+        {{ msg }}
+      </p>
+      <button mat-stroked-button [disabled]="loading">Login</button>
+      <a mat-stroked-button routerLink="../register" class="register-button"
+        >Register</a
+      >
+    </form>
+    <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+  </mat-card-content>
+</mat-card>
