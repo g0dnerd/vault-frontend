@@ -1,10 +1,10 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
 
-import { NavbarComponent } from './navbar/navbar.component';
 import { AuthAppState } from './_store';
 import { logout, refreshAuth } from './_store/actions/auth.actions';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @Component({
   standalone: true,
@@ -12,7 +12,6 @@ import { logout, refreshAuth } from './_store/actions/auth.actions';
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AppComponent implements OnInit {
   constructor(
