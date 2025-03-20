@@ -13,6 +13,24 @@ export class DraftService {
 
   constructor(private readonly http: HttpClient) {}
 
+  createDraft(data: {
+    cubeId: number;
+    phaseId: number;
+    tableFirst?: number;
+    tableLast?: number;
+  }): Observable<Draft> {
+    return this.http.post<Draft>(this.apiUrl, data);
+  }
+
+  editDraft(data: {
+    cubeId?: number;
+    phaseId?: number;
+    tableFirst?: number;
+    tableLast?: number;
+  }): Observable<Draft> {
+    return this.http.patch<Draft>(this.apiUrl, data);
+  }
+
   getOngoingDrafts(tournamentId: number): Observable<Draft[]> {
     return this.http.get<Draft[]>(`${this.apiUrl}/ongoing/${tournamentId}`);
   }

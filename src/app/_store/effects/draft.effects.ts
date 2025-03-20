@@ -11,11 +11,11 @@ import { DraftService } from '../../_services';
 export const initOngoingDraftsEffect = createEffect(
   (actions$ = inject(Actions), draftService = inject(DraftService)) => {
     return actions$.pipe(
-      ofType(DraftActions.initOngoingDrafts),
+      ofType(DraftActions.initializeOngoingDrafts),
       mergeMap(({ tournamentId }) => {
         return draftService.getOngoingDrafts(tournamentId).pipe(
           map((ongoing) => {
-            return DraftActions.initOngoingDraftsSuccess({
+            return DraftActions.initializeOngoingDraftsSuccess({
               ongoing,
             });
           }),
@@ -23,60 +23,60 @@ export const initOngoingDraftsEffect = createEffect(
             return of(
               DraftActions.draftStoreFailure({
                 errorMessage: error.message,
-              })
+              }),
             );
-          })
+          }),
         );
-      })
+      }),
     );
   },
-  { functional: true, dispatch: true }
+  { functional: true, dispatch: true },
 );
 
 export const initCurrentEffect = createEffect(
   (actions$ = inject(Actions), draftService = inject(DraftService)) => {
     return actions$.pipe(
-      ofType(DraftActions.initCurrentDraft),
+      ofType(DraftActions.initializeCurrentDraft),
       mergeMap(({ tournamentId }) => {
         return draftService.getCurrentDraft(tournamentId).pipe(
           map((current) => {
-            return DraftActions.initCurrentDraftSuccess({ current });
+            return DraftActions.initializeCurrentDraftSuccess({ current });
           }),
           catchError((error) => {
             return of(
               DraftActions.draftStoreFailure({
                 errorMessage: error.message,
-              })
+              }),
             );
-          })
+          }),
         );
-      })
+      }),
     );
   },
-  { functional: true, dispatch: true }
+  { functional: true, dispatch: true },
 );
 
 export const initSingleDraftEffect = createEffect(
   (actions$ = inject(Actions), draftService = inject(DraftService)) => {
     return actions$.pipe(
-      ofType(DraftActions.initSingleDraft),
+      ofType(DraftActions.initializeSingleDraft),
       mergeMap(({ draftId }) => {
         return draftService.getDraftById(draftId).pipe(
           map((current) => {
-            return DraftActions.initCurrentDraftSuccess({ current });
+            return DraftActions.initializeCurrentDraftSuccess({ current });
           }),
           catchError((error) => {
             return of(
               DraftActions.draftStoreFailure({
                 errorMessage: error.message,
-              })
+              }),
             );
-          })
+          }),
         );
-      })
+      }),
     );
   },
-  { functional: true, dispatch: true }
+  { functional: true, dispatch: true },
 );
 
 export const seatDraftEffect = createEffect(
@@ -86,18 +86,64 @@ export const seatDraftEffect = createEffect(
       mergeMap(({ draftId }) => {
         return draftService.seatDraft(draftId).pipe(
           map((current) => {
-            return DraftActions.initCurrentDraftSuccess({ current });
+            return DraftActions.initializeCurrentDraftSuccess({ current });
           }),
           catchError((error) => {
             return of(
               DraftActions.draftStoreFailure({
                 errorMessage: error.message,
-              })
+              }),
             );
-          })
+          }),
         );
-      })
+      }),
     );
   },
-  { functional: true, dispatch: true }
+  { functional: true, dispatch: true },
+);
+
+export const createDraftEffect = createEffect(
+  (actions$ = inject(Actions), draftService = inject(DraftService)) => {
+    return actions$.pipe(
+      ofType(DraftActions.createDraft),
+      mergeMap(({ data }) => {
+        return draftService.createDraft(data).pipe(
+          map((current) => {
+            return DraftActions.initializeCurrentDraftSuccess({ current });
+          }),
+          catchError((error) => {
+            return of(
+              DraftActions.draftStoreFailure({
+                errorMessage: error.message,
+              }),
+            );
+          }),
+        );
+      }),
+    );
+  },
+  { functional: true, dispatch: true },
+);
+
+export const updateDraftEffect = createEffect(
+  (actions$ = inject(Actions), draftService = inject(DraftService)) => {
+    return actions$.pipe(
+      ofType(DraftActions.updateDraft),
+      mergeMap(({ changes }) => {
+        return draftService.editDraft(changes).pipe(
+          map((current) => {
+            return DraftActions.initializeCurrentDraftSuccess({ current });
+          }),
+          catchError((error) => {
+            return of(
+              DraftActions.draftStoreFailure({
+                errorMessage: error.message,
+              }),
+            );
+          }),
+        );
+      }),
+    );
+  },
+  { functional: true, dispatch: true },
 );

@@ -13,3 +13,17 @@ export interface Draft {
   cube?: Cube;
   phase?: Phase;
 }
+
+export interface CreateDraftDto {
+  cubeId: number;
+  phaseId: number;
+  tableFirst?: number;
+  tableLast?: number;
+}
+
+export interface UpdateDraftDto {
+  cubeId?: number;
+  phaseId?: number;
+  tableFirst?: number;
+  tableLast?: number;
+}

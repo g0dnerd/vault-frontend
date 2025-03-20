@@ -22,12 +22,12 @@ export const draftReducer = createReducer(
     current: null,
     errorMessage,
   })),
-  on(DraftActions.initCurrentDraftSuccess, (state, { current }) => ({
+  on(DraftActions.initializeCurrentDraftSuccess, (state, { current }) => ({
     ...state,
     current,
     errorMessage: null,
   })),
-  on(DraftActions.initOngoingDraftsSuccess, (state, { ongoing }) => ({
+  on(DraftActions.initializeOngoingDraftsSuccess, (state, { ongoing }) => ({
     ...state,
     ongoing,
     errorMessage: null,
