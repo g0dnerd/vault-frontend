@@ -14,6 +14,8 @@ import {
   templateUrl: './enroll-panel.component.html',
   styleUrl: './enroll-panel.component.scss',
 })
+// FIXME: this should just be inlined into the parent
+// component instead of taking all these inputs
 export class EnrollPanelComponent implements OnInit {
   readonly tournamentId = input.required<number>();
   readonly tournamentName = input.required<string>();

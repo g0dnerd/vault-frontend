@@ -16,7 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
-import { firstValueFrom, Observable, of } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 
 import { matchSumValidator } from '../../../_helpers/match-form.validator';
 import { MatchService, MatchWebSocketService } from '../../../_services';
@@ -34,7 +34,7 @@ import {
   pairRound,
   updateDraftMatch,
 } from '../../../_store/actions/match.actions';
-import { Draft, Match } from '../../../_types';
+import { Match } from '../../../_types';
 
 @Component({
   selector: 'app-admin-draft-panel',
@@ -65,8 +65,8 @@ export class AdminDraftPanelComponent implements OnInit {
 
   private readonly store$ = inject(Store<State>);
 
-  draft$: Observable<Draft | null> = of(null);
-  matches$: Observable<Match[]> = of([]);
+  draft$ = this.store$.select(selectCurrentDraft);
+  matches$ = this.store$.select(selectOngoingMatches);
 
   constructor(
     private formBuilder: FormBuilder,
@@ -78,6 +78,8 @@ export class AdminDraftPanelComponent implements OnInit {
       .subscribe((game: Match) => {
         this.store$.dispatch(updateDraftMatch({ changes: game }));
       });
+
+    // FIXME: Move form controls to class members so the template can see them
     this.form = this.formBuilder.group(
       {
         matchId: new FormControl(0, [Validators.required, Validators.min(0)]),
@@ -105,8 +107,6 @@ export class AdminDraftPanelComponent implements OnInit {
 
     this.store$.dispatch(initializeSingleDraft({ draftId: this.draftId() }));
     this.store$.dispatch(initDraftMatches({ draftId: this.draftId() }));
-    this.draft$ = this.store$.select(selectCurrentDraft);
-    this.matches$ = this.store$.select(selectOngoingMatches);
   }
 
   get f() {
@@ -124,9 +124,13 @@ export class AdminDraftPanelComponent implements OnInit {
   async reportResult(matchId: number) {
     this.submitted = true;
 
-    if (this.form.invalid) return;
+    // TODO: User feedback
+    if (this.form.invalid) {
+      return;
+    }
     this.loading = true;
 
+    // FIXME: no
     await firstValueFrom(
       this.matchService.reportResult(matchId, {
         player1Wins: this.f['player1Wins'].value,

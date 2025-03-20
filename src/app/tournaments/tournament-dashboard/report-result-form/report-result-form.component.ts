@@ -10,12 +10,11 @@ import {
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
-import { firstValueFrom, Observable } from 'rxjs';
+import { firstValueFrom } from 'rxjs';
 
 import { matchSumValidator } from '../../../_helpers/match-form.validator';
 import { MatchService } from '../../../_services';
 import { State, selectCurrentMatch } from '../../../_store';
-import { Match } from '../../../_types';
 
 @Component({
   selector: 'app-report-result-form',
@@ -31,14 +30,14 @@ export class ReportResultFormComponent implements OnInit {
 
   private readonly store$ = inject(Store<State>);
 
-  readonly currentMatch$: Observable<Match | null> =
-    this.store$.select(selectCurrentMatch);
+  readonly currentMatch$ = this.store$.select(selectCurrentMatch);
 
   constructor(
     private formBuilder: FormBuilder,
     private readonly matchService: MatchService,
   ) {
     // Initialize result reporting form
+    // FIXME: move form controls to class members so template can see them
     this.form = this.formBuilder.group(
       {
         matchId: new FormControl(0, [Validators.required, Validators.min(0)]),
@@ -60,6 +59,7 @@ export class ReportResultFormComponent implements OnInit {
 
   async ngOnInit() {
     // Initial form values
+    // FIXME: ew
     const matchId = await firstValueFrom(this.currentMatch$);
     this.form.setValue({
       matchId,
@@ -73,9 +73,13 @@ export class ReportResultFormComponent implements OnInit {
   async onSubmit() {
     this.submitted = true;
 
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      // TODO: Maybe tell the user it didn't work
+      return;
+    }
     this.loading = true;
 
+    // FIXME: double ew
     await firstValueFrom(
       this.matchService.reportResult(this.f['matchId'].value, {
         player1Wins: this.f['player1Wins'].value,

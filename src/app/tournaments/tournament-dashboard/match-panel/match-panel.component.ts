@@ -68,6 +68,7 @@ export class MatchPanelComponent {
   }
 
   // Handles result confirmation
+  // FIXME: subscribe to things like a normal person
   async onConfirm() {
     const game = await firstValueFrom(this.currentMatch$);
     if (!game) {
