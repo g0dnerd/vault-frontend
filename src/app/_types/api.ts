@@ -4,6 +4,7 @@ export const API_ROUTES = {
   TOURNAMENTS: '/tournaments',
   ENROLLMENTS: '/enrollments',
   LOGIN: '/auth/login',
+  SOCIAL_LOGIN: '/auth/login/google',
   REGISTER: '/auth/register',
   STATUS: '/auth/status',
   USER: '/users',

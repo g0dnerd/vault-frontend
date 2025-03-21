@@ -74,6 +74,39 @@ export const login$ = createEffect(
   { functional: true, dispatch: true },
 );
 
+export const socialLogin$ = createEffect(
+  (actions$ = inject(Actions), authService = inject(AuthService)) => {
+    return actions$.pipe(
+      ofType(AuthActions.socialLogin),
+      mergeMap(({ loginData, returnUrl }) => {
+        return authService.socialLogin(loginData).pipe(
+          map(({ token, roles }) => {
+            if (!token) {
+              return AuthActions.socialLoginFailure({
+                errorMessage: 'JWT error',
+              });
+            }
+            return AuthActions.authSuccess({
+              token,
+              roles,
+              returnUrl,
+            });
+          }),
+          catchError((error: HttpErrorResponse) => {
+            const errorMessage =
+              error.status === HttpStatusCode.Unauthorized
+                ? 'Wrong username or password'
+                : 'An unexpected error occurred';
+
+            return of(AuthActions.loginFailure({ errorMessage }));
+          }),
+        );
+      }),
+    );
+  },
+  { functional: true, dispatch: true },
+);
+
 export const logout$ = createEffect(
   (actions$ = inject(Actions), router = inject(Router)) => {
     return actions$.pipe(
