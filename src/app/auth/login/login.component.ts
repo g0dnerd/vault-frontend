@@ -41,6 +41,8 @@ export class LoginComponent {
   private readonly authStore$ = inject(Store<AuthAppState>);
   readonly errorMessage$ = this.authStore$.select(selectAuthErrorMessage);
 
+  readonly loginUri = 'http://localhost:3000/api/auth/login';
+
   form!: FormGroup;
   loading = false;
   submitted = false;
