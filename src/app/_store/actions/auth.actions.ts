@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 
-import { AuthPayload, Role, User } from '../../_types';
+import { AuthPayload, GoogleAuthPayload, Role, User } from '../../_types';
 
 const TYPE = '[Auth]';
 
@@ -15,6 +15,8 @@ export enum AuthActionTypes {
   INIT_ROLES_FAILURE = `${TYPE} Initialize roles failure`,
   LOGIN = `${TYPE} Login`,
   LOGIN_FAILURE = `${TYPE} Login Failure`,
+  SOCIAL_LOGIN = `${TYPE} Social Login`,
+  SOCIAL_LOGIN_FAILURE = `${TYPE} Social Login Failure`,
   LOGOUT = `${TYPE} Logout`,
   REGISTER = `${TYPE} Register`,
   REGISTER_FAILURE = `${TYPE} Register Failure`,
@@ -43,6 +45,20 @@ export const login = createAction(
 // the login attempt failed
 export const loginFailure = createAction(
   AuthActionTypes.LOGIN_FAILURE,
+  props<{ errorMessage: string }>(),
+);
+
+// Tries to authenticate to the backend using loginData and
+// returns to returnUrl on success
+export const socialLogin = createAction(
+  AuthActionTypes.SOCIAL_LOGIN,
+  props<{ loginData: GoogleAuthPayload; returnUrl: string }>(),
+);
+
+// Stores an error message in state and resets authentication because
+// the login attempt failed
+export const socialLoginFailure = createAction(
+  AuthActionTypes.SOCIAL_LOGIN_FAILURE,
   props<{ errorMessage: string }>(),
 );
 
