@@ -1,5 +1,5 @@
 import { NgClass, NgIf } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -16,9 +16,11 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
+import { CredentialResponse } from 'google-one-tap';
 
 import { AuthAppState, selectAuthErrorMessage } from '../../_store';
-import { login } from '../../_store/actions/auth.actions';
+import { login, socialLogin } from '../../_store/actions/auth.actions';
+import { GoogleAuthPayload } from '../../_types';
 
 @Component({
   imports: [
@@ -37,7 +39,7 @@ import { login } from '../../_store/actions/auth.actions';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
   private readonly authStore$ = inject(Store<AuthAppState>);
   readonly errorMessage$ = this.authStore$.select(selectAuthErrorMessage);
 
@@ -64,6 +66,28 @@ export class LoginComponent {
       email: this.emailFormControl,
       password: this.passwordFormControl,
     });
+  }
+
+  ngOnInit() {
+    // @ts-ignore
+    window.onGoogleLibraryLoad = () => {
+      console.log("Google's One-tap sign in script loaded!");
+
+      // @ts-ignore
+      google.accounts.id.initialize({
+        client_id:
+          '57824242125-g7mjm9qdlp2dl5d67hkhids8ho78gbse.apps.googleusercontent.com',
+        callback: this.handleCredentialResponse.bind(this),
+        auto_select: true,
+        cancel_on_tap_outside: false,
+      });
+
+      const parent = document.getElementById('google_btn')!;
+      // @ts-ignore
+      google.accounts.id.renderButton(parent, { theme: 'filled_black' });
+      // @ts-ignore
+      google.accounts.id.prompt();
+    };
   }
 
   get f() {
@@ -98,5 +122,32 @@ export class LoginComponent {
   clickEvent(event: MouseEvent) {
     this.hide.set(!this.hide());
     event.stopPropagation();
+  }
+
+  handleCredentialResponse(response: CredentialResponse) {
+    this.submitted = true;
+    let responsePayload: GoogleAuthPayload | null = null;
+
+    try {
+      responsePayload = JSON.parse(atob(response?.credential.split('.')[1]));
+    } catch (e) {
+      console.error('Error while trying to decode token', e);
+    }
+
+    this.loading = true;
+
+    const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+
+    if (!responsePayload) {
+      console.error('Received no response payload');
+      return;
+    }
+
+    this.authStore$.dispatch(
+      socialLogin({
+        loginData: responsePayload,
+        returnUrl,
+      }),
+    );
   }
 }
