@@ -1,10 +1,11 @@
 import { inject, Injectable } from '@angular/core';
 import { CanActivate } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { map, take } from 'rxjs';
+import { catchError, map, mergeMap, of, take, tap } from 'rxjs';
 
-import { AuthAppState, selectAuthStatus } from '../_store';
+import { selectAuthToken, State } from '../_store';
 import { logout, refreshAuth } from '../_store/actions/auth.actions';
+import { AuthService } from '../_services';
 
 @Injectable({
   providedIn: 'root',
@@ -13,32 +14,40 @@ import { logout, refreshAuth } from '../_store/actions/auth.actions';
 // Waits for the store to fully resolve auth status before
 // allowing or disallowing route access.
 export class AuthGuard implements CanActivate {
-  private readonly authStore$ = inject(Store<AuthAppState>);
-  private readonly authStatus$ = this.authStore$.select(selectAuthStatus);
+  private readonly authService = inject(AuthService);
+  private readonly store$ = inject(Store<State>);
+  private readonly authToken$ = this.store$.select(selectAuthToken);
 
   canActivate() {
-    return this.authStatus$.pipe(
+    return this.authToken$.pipe(
       take(1),
-      map((isAuthenticated) => {
-        // If there's an authentication status in state, return it
-        if (isAuthenticated) {
-          return isAuthenticated;
-        }
-
-        // If not, check for a token in local storage
-        const token = localStorage.getItem('token');
+      mergeMap((token) => {
         if (!token) {
-          // If there is none, dispatch a logout action and deny the routing request.
-          this.authStore$.dispatch(logout());
-          return false;
+          token = localStorage.getItem('token');
+          if (!token) {
+            this.store$.dispatch(logout());
+            return of(false);
+          }
+          return this.authService.refreshAuth().pipe(
+            map(({ token, roles }) => {
+              this.store$.dispatch(refreshAuth({ token, roles }));
+              return true;
+            }),
+            catchError(() => {
+              this.store$.dispatch(logout());
+              return of(false);
+            }),
+          );
         }
-
-        // If there was a token, check its status with the backend
-        // before adjudicating the routing request.
-        // FIXME: this isn't good enough because it shows a flash of the protected
-        // route content before a negative auth status resolves
-        this.authStore$.dispatch(refreshAuth());
-        return false;
+        return this.authService.checkToken().pipe(
+          tap(() => {
+            return true;
+          }),
+          catchError(() => {
+            this.store$.dispatch(logout());
+            return of(false);
+          }),
+        );
       }),
     );
   }

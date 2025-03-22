@@ -9,7 +9,7 @@ import { PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 
 import {
-  AuthAppState,
+  State,
   selectAdminStatus,
   selectPlayerAdminStatus,
   selectProfileData,
@@ -31,14 +31,14 @@ import { initRoles, initProfile } from '../../_store/actions/auth.actions';
   styleUrl: './profile.component.scss',
 })
 export class ProfileComponent implements OnInit {
-  private readonly authStore$ = inject(Store<AuthAppState>);
+  private readonly store$ = inject(Store<State>);
 
-  readonly user$ = this.authStore$.select(selectProfileData);
-  readonly isAdmin$ = this.authStore$.select(selectAdminStatus);
-  readonly isPlayerAdmin$ = this.authStore$.select(selectPlayerAdminStatus);
+  readonly user$ = this.store$.select(selectProfileData);
+  readonly isAdmin$ = this.store$.select(selectAdminStatus);
+  readonly isPlayerAdmin$ = this.store$.select(selectPlayerAdminStatus);
 
   ngOnInit() {
-    this.authStore$.dispatch(initProfile());
-    this.authStore$.dispatch(initRoles());
+    this.store$.dispatch(initProfile());
+    this.store$.dispatch(initRoles());
   }
 }

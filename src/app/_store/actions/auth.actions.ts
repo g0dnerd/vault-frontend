@@ -25,7 +25,10 @@ export enum AuthActionTypes {
   UPDATE_USER_FAILURE = `${TYPE} Update User Failure`,
 }
 
-export const refreshAuth = createAction(AuthActionTypes.REFRESH_AUTH);
+export const refreshAuth = createAction(
+  AuthActionTypes.REFRESH_AUTH,
+  props<{ token: string; roles: Role[] }>(),
+);
 
 // Stores auth data in redux state and local storage and returns
 // to returnUrl, if given

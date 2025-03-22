@@ -19,6 +19,12 @@ export const initialState: AuthState = {
 
 export const authReducer = createReducer(
   initialState,
+  on(AuthActions.refreshAuth, (state, { token, roles }) => ({
+    ...state,
+    token,
+    roles,
+    errorMessage: null,
+  })),
   on(AuthActions.authSuccess, (state, { token, roles }) => ({
     ...state,
     token,

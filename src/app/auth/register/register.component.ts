@@ -18,7 +18,7 @@ import { PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 
 import { register } from '../../_store/actions/auth.actions';
-import { AuthAppState, selectAuthErrorMessage } from '../../_store';
+import { State, selectAuthErrorMessage } from '../../_store';
 import { AuthPayload } from '../../_types';
 
 @Component({
@@ -40,7 +40,7 @@ import { AuthPayload } from '../../_types';
   standalone: true,
 })
 export class RegisterComponent {
-  private readonly store$ = inject(Store<AuthAppState>);
+  private readonly store$ = inject(Store<State>);
   readonly errorMessage$ = this.store$.select(selectAuthErrorMessage);
 
   form: FormGroup;

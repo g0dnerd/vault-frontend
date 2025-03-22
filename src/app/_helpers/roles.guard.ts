@@ -7,14 +7,14 @@ import {
   RouterStateSnapshot,
 } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { AuthAppState, selectCurrentUserRoles } from '../_store';
+import { State, selectCurrentUserRoles } from '../_store';
 import { Role } from '../_types';
 import { map, take } from 'rxjs';
 
 @Injectable()
 export class RolesGuard implements CanActivate {
-  private readonly authStore$ = inject(Store<AuthAppState>);
-  private readonly roles$ = this.authStore$.select(selectCurrentUserRoles);
+  private readonly store$ = inject(Store<State>);
+  private readonly roles$ = this.store$.select(selectCurrentUserRoles);
 
   canActivate(
     route: ActivatedRouteSnapshot,

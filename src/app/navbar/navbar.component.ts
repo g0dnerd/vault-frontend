@@ -5,7 +5,7 @@ import { RouterLink, RouterModule } from '@angular/router';
 import { Store } from '@ngrx/store';
 
 import {
-  AuthAppState,
+  State,
   selectAdminStatus,
   selectAuthStatus,
   selectPlayerAdminStatus,
@@ -19,13 +19,13 @@ import { logout } from '../_store/actions/auth.actions';
   styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent {
-  private readonly authStore$ = inject(Store<AuthAppState>);
+  private readonly store$ = inject(Store<State>);
 
-  authState$ = this.authStore$.select(selectAuthStatus);
-  isAdmin$ = this.authStore$.select(selectAdminStatus);
-  isPlayerAdmin$ = this.authStore$.select(selectPlayerAdminStatus);
+  authState$ = this.store$.select(selectAuthStatus);
+  isAdmin$ = this.store$.select(selectAdminStatus);
+  isPlayerAdmin$ = this.store$.select(selectPlayerAdminStatus);
 
   logout() {
-    this.authStore$.dispatch(logout());
+    this.store$.dispatch(logout());
   }
 }

@@ -7,33 +7,13 @@ import { catchError, map, mergeMap, of, tap } from 'rxjs';
 import * as AuthActions from '../actions/auth.actions';
 import { AccountService, AuthService } from '../../_services';
 
-export const refreshAuth$ = createEffect(
-  (actions$ = inject(Actions), authService = inject(AuthService)) => {
-    return actions$.pipe(
-      ofType(AuthActions.refreshAuth),
-      mergeMap(() => {
-        return authService.checkToken().pipe(
-          map(({ token, roles }) => {
-            return AuthActions.authSuccess({
-              token,
-              roles,
-            });
-          }),
-          catchError(() => {
-            return of(AuthActions.logout());
-          }),
-        );
-      }),
-    );
-  },
-  { functional: true, dispatch: true },
-);
-
 export const authSuccess$ = createEffect(
   (actions$ = inject(Actions), router = inject(Router)) => {
     return actions$.pipe(
       ofType(AuthActions.authSuccess),
-      tap(({ token, returnUrl }) => {
+      tap(({ token, returnUrl, roles }) => {
+        console.log('AuthSuccess effect has token', token);
+        console.log('AuthSuccess effect has roles', roles);
         localStorage.setItem('token', token);
         if (returnUrl) {
           router.navigate([returnUrl || '/']);

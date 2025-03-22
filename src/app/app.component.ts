@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
 
-import { AuthAppState } from './_store';
+import { State } from './_store';
 import { logout, refreshAuth } from './_store/actions/auth.actions';
 import { NavbarComponent } from './navbar/navbar.component';
 
@@ -15,17 +15,17 @@ import { NavbarComponent } from './navbar/navbar.component';
 })
 export class AppComponent implements OnInit {
   constructor(
-    private readonly authStore$: Store<AuthAppState>,
+    private readonly store$: Store<State>,
     private readonly router: Router,
   ) {}
 
   ngOnInit() {
     const token = localStorage.getItem('token');
-    if (token == null) {
-      this.authStore$.dispatch(logout());
-      this.router.navigateByUrl('/account/login');
-    } else {
-      this.authStore$.dispatch(refreshAuth());
-    }
+    // if (token == null) {
+    //   this.authStore$.dispatch(logout());
+    //   this.router.navigateByUrl('/account/login');
+    // } else {
+    //   this.authStore$.dispatch(refreshAuth());
+    // }
   }
 }

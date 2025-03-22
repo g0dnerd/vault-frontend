@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
 
-import { AuthAppState } from '../_store';
+import { State } from '../_store';
 import { initProfile } from '../_store/actions/auth.actions';
 
 @Component({
@@ -11,9 +11,9 @@ import { initProfile } from '../_store/actions/auth.actions';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent {
-  constructor(private readonly authStore$: Store<AuthAppState>) {}
+  constructor(private readonly store$: Store<State>) {}
 
   ngOnInit() {
-    this.authStore$.dispatch(initProfile());
+    this.store$.dispatch(initProfile());
   }
 }

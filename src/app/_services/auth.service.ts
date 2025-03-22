@@ -17,6 +17,7 @@ export class AuthService {
   private readonly loginApiUrl = `${dev.apiUrl}${API_ROUTES.LOGIN}`;
   private readonly registerApiUrl = `${dev.apiUrl}${API_ROUTES.REGISTER}`;
   private readonly statusApiUrl = `${dev.apiUrl}${API_ROUTES.STATUS}`;
+  private readonly refreshApiUrl = `${dev.apiUrl}${API_ROUTES.REFRESH_AUTH}`;
   private readonly socialLoginApiUrl = `${dev.apiUrl}${API_ROUTES.SOCIAL_LOGIN}`;
 
   constructor(private readonly http: HttpClient) {}
@@ -29,8 +30,12 @@ export class AuthService {
     return this.http.post<AuthInterface>(this.registerApiUrl, payload);
   }
 
-  checkToken(): Observable<AuthInterface> {
-    return this.http.get<AuthInterface>(this.statusApiUrl);
+  checkToken(): Observable<boolean> {
+    return this.http.get<boolean>(this.statusApiUrl);
+  }
+
+  refreshAuth(): Observable<AuthInterface> {
+    return this.http.get<AuthInterface>(this.refreshApiUrl);
   }
 
   socialLogin(payload: GoogleAuthPayload): Observable<AuthInterface> {
