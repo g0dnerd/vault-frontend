@@ -1,37 +1,67 @@
 import { NgClass, NgIf } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import {
   FormBuilder,
+  FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { RouterLink } from '@angular/router';
+import { PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 
 import { register } from '../../_store/actions/auth.actions';
-import { AuthAppState } from '../../_store';
+import { AuthAppState, selectAuthErrorMessage } from '../../_store';
 import { AuthPayload } from '../../_types';
 
 @Component({
-  imports: [NgClass, NgIf, ReactiveFormsModule, RouterLink],
+  imports: [
+    MatButtonModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatProgressBarModule,
+    NgClass,
+    NgIf,
+    PushPipe,
+    ReactiveFormsModule,
+    RouterLink,
+  ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
   standalone: true,
 })
 export class RegisterComponent {
-  form!: FormGroup;
+  private readonly store$ = inject(Store<AuthAppState>);
+  readonly errorMessage$ = this.store$.select(selectAuthErrorMessage);
+
+  form: FormGroup;
   loading = false;
   submitted = false;
 
-  constructor(
-    private formBuilder: FormBuilder,
-    private readonly store$: Store<AuthAppState>,
-  ) {
+  // Password is hidden by default
+  hide = signal(true);
+
+  emailFormControl = new FormControl('', [
+    Validators.required,
+    Validators.email,
+  ]);
+  usernameFormControl = new FormControl('', [Validators.required]);
+  passwordFormControl = new FormControl('', [Validators.required]);
+
+  constructor(private formBuilder: FormBuilder) {
     this.form = this.formBuilder.group({
-      username: ['', [Validators.required, Validators.minLength(5)]],
-      email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(8)]],
+      username: this.usernameFormControl,
+      email: this.emailFormControl,
+      password: this.passwordFormControl,
     });
   }
 
@@ -42,7 +72,10 @@ export class RegisterComponent {
   onSubmit() {
     this.submitted = true;
 
-    if (this.form.invalid) return;
+    if (this.form.invalid) {
+      this.submitted = false;
+      return;
+    }
 
     this.loading = true;
 
@@ -53,6 +86,11 @@ export class RegisterComponent {
     };
 
     this.store$.dispatch(register({ registerData }));
-    this.loading = false;
+  }
+
+  // Toggle show/hide password state
+  clickEvent(event: MouseEvent) {
+    this.hide.set(!this.hide());
+    event.stopPropagation();
   }
 }

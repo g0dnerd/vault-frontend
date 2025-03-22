@@ -40,8 +40,8 @@ import { GoogleAuthPayload } from '../../_types';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent implements OnInit {
-  private readonly authStore$ = inject(Store<AuthAppState>);
-  readonly errorMessage$ = this.authStore$.select(selectAuthErrorMessage);
+  private readonly store$ = inject(Store<AuthAppState>);
+  readonly errorMessage$ = this.store$.select(selectAuthErrorMessage);
 
   readonly loginUri = 'http://localhost:3000/api/auth/login';
 
@@ -107,7 +107,7 @@ export class LoginComponent implements OnInit {
 
     const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
 
-    this.authStore$.dispatch(
+    this.store$.dispatch(
       login({
         loginData: {
           email: this.f['email'].value,
@@ -143,7 +143,7 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this.authStore$.dispatch(
+    this.store$.dispatch(
       socialLogin({
         loginData: responsePayload,
         returnUrl,
