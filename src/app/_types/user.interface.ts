@@ -9,5 +9,8 @@ export interface User {
   email: string;
   username: string;
   roles?: Role[];
+  bio?: string | undefined;
   profilePicture?: string;
+  numTournaments?: number;
+  numCubes?: number;
 }
