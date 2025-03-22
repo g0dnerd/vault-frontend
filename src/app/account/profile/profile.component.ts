@@ -11,6 +11,7 @@ import { Store } from '@ngrx/store';
 import {
   AuthAppState,
   selectAdminStatus,
+  selectPlayerAdminStatus,
   selectProfileData,
 } from '../../_store';
 import { initRoles, initProfile } from '../../_store/actions/auth.actions';
@@ -34,6 +35,7 @@ export class ProfileComponent implements OnInit {
 
   readonly user$ = this.authStore$.select(selectProfileData);
   readonly isAdmin$ = this.authStore$.select(selectAdminStatus);
+  readonly isPlayerAdmin$ = this.authStore$.select(selectPlayerAdminStatus);
 
   ngOnInit() {
     this.authStore$.dispatch(initProfile());

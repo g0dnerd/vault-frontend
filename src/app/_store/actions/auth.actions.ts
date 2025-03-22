@@ -105,7 +105,7 @@ export const initRolesFailure = createAction(
 // Attempts a PATCH request to the API to update the currently logged in user.
 export const updateUser = createAction(
   AuthActionTypes.UPDATE_USER,
-  props<{ email: string; username: string }>(),
+  props<{ user: { email: string; username: string; bio?: string } }>(),
 );
 
 // Returns authentication data for the now changed user to ensure validity

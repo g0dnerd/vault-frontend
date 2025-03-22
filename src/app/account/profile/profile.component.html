@@ -6,14 +6,19 @@
   <mat-card-header>
     <mat-card-title-group>
       <mat-card-title>{{ user.username }}</mat-card-title>
-      <mat-card-subtitle>{{ user.email }}</mat-card-subtitle>
+      <mat-card-subtitle
+        >{{ user.email }}
+        <a
+          class="edit-profile-button"
+          mat-stroked-button
+          routerLink="/profile/edit"
+          >Edit Profile</a
+        ></mat-card-subtitle
+      >
       <img mat-card-md-image src="/images/frogger.jpeg" alt="Profile Picture" />
     </mat-card-title-group>
   </mat-card-header>
-  <mat-card-actions>
-    <a mat-stroked-button routerLink="/profile/edit">Edit Profile</a>
-  </mat-card-actions>
-  <mat-card-footer class="profile-card-footer">
+  <mat-card-actions class="profile-header">
     <mat-chip-set aria-label="Profile facts">
       <mat-chip>
         <mat-icon
@@ -24,38 +29,54 @@
           person </mat-icon
         >he/him</mat-chip
       >
-      <mat-chip>
-        <mat-icon
-          matChipAvatar
-          aria-label="tournament count"
-          class="material-symbols-outlined"
-        >
-          event_available
-        </mat-icon>
-        999 Tournaments
-      </mat-chip>
-      <mat-chip>
-        <mat-icon
-          matChipAvatar
-          aria-label="cube count"
-          class="material-symbols-outlined"
-        >
-          deployed_code
-        </mat-icon>
-        3 Cubes
-      </mat-chip>
+      <ng-container *ngIf="user.numTournaments as numTournaments">
+        <mat-chip *ngIf="numTournaments > 0">
+          <mat-icon
+            matChipAvatar
+            aria-label="tournament count"
+            class="material-symbols-outlined"
+          >
+            event_available
+          </mat-icon>
+          {{ user.numTournaments }} Tournaments
+        </mat-chip>
+      </ng-container>
+      <ng-container *ngIf="user.numCubes as numCubes">
+        <mat-chip *ngIf="numCubes > 0">
+          <mat-icon
+            matChipAvatar
+            aria-label="cube count"
+            class="material-symbols-outlined"
+          >
+            deployed_code
+          </mat-icon>
+          <ng-container *ngIf="user.numCubes == 1; else manyCubes">
+            {{ user.numCubes }} Cube
+          </ng-container>
+          <ng-template #manyCubes> {{ user.numCubes }} Cubes </ng-template>
+        </mat-chip>
+      </ng-container>
       <mat-chip *ngIf="isAdmin$ | ngrxPush">
         <mat-icon
           matChipAvatar
-          aria-label="pronouns"
+          aria-label="staff_member"
           class="material-symbols-outlined"
         >
           shield_person </mat-icon
         >Staff Member</mat-chip
       >
+      <mat-chip *ngIf="isPlayerAdmin$ | ngrxPush">
+        <mat-icon
+          matChipAvatar
+          aria-label="player_admin"
+          class="material-symbols-outlined"
+        >
+          admin_panel_settings</mat-icon
+        >Player Admin</mat-chip
+      >
     </mat-chip-set>
-  </mat-card-footer>
+  </mat-card-actions>
   <mat-card-content>
-    <p>Test Description 1234</p>
+    <p *ngIf="user.bio">{{ user.bio }}</p>
   </mat-card-content>
 </mat-card>
