@@ -43,8 +43,6 @@ export class LoginComponent implements OnInit {
   private readonly store$ = inject(Store<AuthAppState>);
   readonly errorMessage$ = this.store$.select(selectAuthErrorMessage);
 
-  readonly loginUri = 'http://localhost:3000/api/auth/login';
-
   form!: FormGroup;
   loading = false;
   submitted = false;
@@ -69,10 +67,9 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
+    // Initialize the Google One-Tap iframe with our client ID and config
     // @ts-ignore
     window.onGoogleLibraryLoad = () => {
-      console.log("Google's One-tap sign in script loaded!");
-
       // @ts-ignore
       google.accounts.id.initialize({
         client_id:
@@ -82,9 +79,7 @@ export class LoginComponent implements OnInit {
         cancel_on_tap_outside: false,
       });
 
-      const parent = document.getElementById('google_btn')!;
-      // @ts-ignore
-      google.accounts.id.renderButton(parent, { theme: 'filled_black' });
+      // Render the Google One-Tap popup
       // @ts-ignore
       google.accounts.id.prompt();
     };
@@ -131,6 +126,7 @@ export class LoginComponent implements OnInit {
     try {
       responsePayload = JSON.parse(atob(response?.credential.split('.')[1]));
     } catch (e) {
+      // TODO: Render error response
       console.error('Error while trying to decode token', e);
     }
 
@@ -139,6 +135,7 @@ export class LoginComponent implements OnInit {
     const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
 
     if (!responsePayload) {
+      // TODO: Render error response
       console.error('Received no response payload');
       return;
     }
