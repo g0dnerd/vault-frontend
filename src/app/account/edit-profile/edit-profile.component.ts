@@ -1,28 +1,30 @@
-import { NgClass, NgIf } from '@angular/common';
+import { NgIf } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
+  FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
 import { PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
-import { Observable, of } from 'rxjs';
 
 import { AuthAppState, selectProfileData } from '../../_store';
 import { initProfile, updateUser } from '../../_store/actions/auth.actions';
-import { User } from '../../_types';
 
 @Component({
   standalone: true,
   imports: [
     MatButtonModule,
     MatCardModule,
-    NgClass,
+    MatFormFieldModule,
+    MatInputModule,
     NgIf,
     PushPipe,
     ReactiveFormsModule,
@@ -32,10 +34,22 @@ import { User } from '../../_types';
 })
 export class EditProfileComponent implements OnInit {
   private readonly authStore$ = inject(Store<AuthAppState>);
-
-  user$: Observable<User | null> = of(null);
+  readonly user$ = this.authStore$.select(selectProfileData);
 
   form!: FormGroup;
+  usernameFormControl = new FormControl('', [Validators.required]);
+  emailFormControl = new FormControl<string>(
+    {
+      value: '',
+      disabled: true,
+    },
+    [Validators.required, Validators.email],
+  );
+  bioFormControl = new FormControl<string | undefined>({
+    value: undefined,
+    disabled: false,
+  });
+
   loading = false;
   submitted = false;
 
@@ -46,18 +60,24 @@ export class EditProfileComponent implements OnInit {
 
   ngOnInit() {
     this.authStore$.dispatch(initProfile());
-    this.user$ = this.authStore$.select(selectProfileData);
 
     this.form = this.formBuilder.group({
-      username: ['', Validators.required],
-      email: ['', Validators.required],
+      email: this.emailFormControl,
+      username: this.usernameFormControl,
+      bio: this.bioFormControl,
     });
+
     this.user$.subscribe((user) => {
       if (user) {
-        this.form.setValue({
-          username: user?.username,
-          email: user?.email,
+        this.form.patchValue({
+          email: user.email,
+          username: user.username,
         });
+        if (user.bio) {
+          this.form.patchValue({
+            bio: user.bio,
+          });
+        }
       }
     });
   }
@@ -72,10 +92,14 @@ export class EditProfileComponent implements OnInit {
     if (this.form.invalid) return;
 
     this.loading = true;
+    let user = {
+      email: this.f['email'].value,
+      username: this.f['username'].value,
+      bio: this.f['bio'].value,
+    };
     this.authStore$.dispatch(
       updateUser({
-        email: this.f['email'].value,
-        username: this.f['username'].value,
+        user,
       }),
     );
     this.router.navigate(['/profile']);
