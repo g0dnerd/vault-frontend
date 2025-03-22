@@ -1,16 +1,39 @@
 <h1>Available Tournaments</h1>
-<ul class="event-list">
-  @defer {
-  <li *ngFor="let tournament of availableTournaments$ | ngrxPush; index as i">
-    <app-enroll-panel
-      [tournamentId]="tournament.id"
-      [tournamentName]="tournament.name"
-      [tournamentCapacity]="tournament.playerCapacity"
-      (enrollInTournament)="enrollInTournament($event)"
-    />
-  </li>
-  }
-  <p *ngIf="!(availableTournaments$ | ngrxPush)?.length">
-    There are currently no tournaments available.
-  </p>
-</ul>
+<ng-container
+  *ngIf="!(availableTournaments$ | ngrxPush)?.length; else showTournaments"
+>
+  <p>There are currently no tournaments available.</p>
+</ng-container>
+<ng-template #showTournaments>
+  <mat-card
+    *ngFor="let tournament of availableTournaments$ | ngrxPush"
+    class="event-list"
+    appearance="outlined"
+  >
+    <mat-card-header>
+      <mat-card-title-group>
+        <mat-card-title id="tournament-name">{{
+          tournament.name
+        }}</mat-card-title>
+        <mat-card-subtitle
+          *ngIf="tournament.playerCapacity as cap; else league"
+        >
+          Player capacity: {{ cap }}
+        </mat-card-subtitle>
+        <ng-template #league>
+          <mat-card-subtitle> League </mat-card-subtitle>
+        </ng-template>
+      </mat-card-title-group>
+    </mat-card-header>
+    <mat-card-content>
+      <p>{{ tournament.description }}</p>
+      <button
+        mat-stroked-button
+        [disabled]="loading"
+        (click)="onSubmit(tournament.id)"
+      >
+        Enroll
+      </button>
+    </mat-card-content>
+  </mat-card>
+</ng-template>
