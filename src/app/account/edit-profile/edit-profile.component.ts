@@ -15,7 +15,7 @@ import { Router } from '@angular/router';
 import { PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 
-import { AuthAppState, selectProfileData } from '../../_store';
+import { State, selectProfileData } from '../../_store';
 import { initProfile, updateUser } from '../../_store/actions/auth.actions';
 
 @Component({
@@ -33,8 +33,8 @@ import { initProfile, updateUser } from '../../_store/actions/auth.actions';
   styleUrl: './edit-profile.component.scss',
 })
 export class EditProfileComponent implements OnInit {
-  private readonly authStore$ = inject(Store<AuthAppState>);
-  readonly user$ = this.authStore$.select(selectProfileData);
+  private readonly store$ = inject(Store<State>);
+  readonly user$ = this.store$.select(selectProfileData);
 
   form!: FormGroup;
   usernameFormControl = new FormControl('', [Validators.required]);
@@ -59,7 +59,7 @@ export class EditProfileComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.authStore$.dispatch(initProfile());
+    this.store$.dispatch(initProfile());
 
     this.form = this.formBuilder.group({
       email: this.emailFormControl,
@@ -97,7 +97,7 @@ export class EditProfileComponent implements OnInit {
       username: this.f['username'].value,
       bio: this.f['bio'].value,
     };
-    this.authStore$.dispatch(
+    this.store$.dispatch(
       updateUser({
         user,
       }),

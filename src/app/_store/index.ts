@@ -21,7 +21,7 @@ import * as fromImage from './reducers/image.reducer';
 import * as fromPhase from './reducers/phase.reducer';
 import * as fromTournament from './reducers/tournament.reducer';
 import * as fromUser from './reducers/user.reducer';
-import { AuthState } from './reducers/auth.reducer';
+import { authReducer, AuthState } from './reducers/auth.reducer';
 import { draftReducer, DraftState } from './reducers/draft.reducer';
 import { matchReducer, MatchState } from './reducers/match.reducer';
 import { playerReducer, PlayerState } from './reducers/player.reducer';
@@ -29,6 +29,7 @@ import { standingsReducer, StandingsState } from './reducers/standings.reducer';
 import { hydrationMetaReducer } from './reducers/hydration.reducer';
 
 export interface State {
+  auth: AuthState;
   cubes: fromCube.CubeState;
   drafts: DraftState;
   enrollments: fromEnrollment.EnrollmentState;
@@ -42,6 +43,7 @@ export interface State {
 }
 
 export const reducers: ActionReducerMap<State> = {
+  auth: authReducer,
   cubes: fromCube.cubeReducer,
   drafts: draftReducer,
   enrollments: fromEnrollment.enrollmentReducer,

@@ -7,6 +7,7 @@ export const API_ROUTES = {
   SOCIAL_LOGIN: '/auth/login/google',
   REGISTER: '/auth/register',
   STATUS: '/auth/status',
+  REFRESH_AUTH: '/auth/refresh',
   USER: '/users',
   PLAYERS: '/draft-players',
   DRAFTS: '/drafts',

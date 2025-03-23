@@ -52,6 +52,7 @@ export const appRoutes: Route[] = [
         component: CubeDetailComponent,
       },
     ],
+    canActivate: [AuthGuard],
   },
   {
     path: 'profile',
@@ -65,6 +66,7 @@ export const appRoutes: Route[] = [
         component: EditProfileComponent,
       },
     ],
+    canActivate: [AuthGuard],
   },
   {
     path: 'tournaments',
@@ -72,6 +74,7 @@ export const appRoutes: Route[] = [
       import('./tournaments/tournaments.routes').then(
         (m) => m.TOURNAMENT_ROUTES,
       ),
+    canActivate: [AuthGuard],
   },
   { path: '**', redirectTo: '' },
 ];

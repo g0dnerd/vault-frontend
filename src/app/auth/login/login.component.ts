@@ -18,7 +18,7 @@ import { PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 import { CredentialResponse } from 'google-one-tap';
 
-import { AuthAppState, selectAuthErrorMessage } from '../../_store';
+import { State, selectAuthErrorMessage } from '../../_store';
 import { login, socialLogin } from '../../_store/actions/auth.actions';
 import { GoogleAuthPayload } from '../../_types';
 
@@ -40,7 +40,7 @@ import { GoogleAuthPayload } from '../../_types';
   styleUrl: './login.component.scss',
 })
 export class LoginComponent implements OnInit {
-  private readonly store$ = inject(Store<AuthAppState>);
+  private readonly store$ = inject(Store<State>);
   readonly errorMessage$ = this.store$.select(selectAuthErrorMessage);
 
   form!: FormGroup;

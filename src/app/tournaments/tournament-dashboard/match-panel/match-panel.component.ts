@@ -7,12 +7,7 @@ import { Store } from '@ngrx/store';
 import { firstValueFrom, Observable } from 'rxjs';
 
 import { MatchWebSocketService, MatchService } from '../../../_services';
-import {
-  AuthAppState,
-  selectCurrentMatch,
-  selectUsername,
-  State,
-} from '../../../_store';
+import { selectCurrentMatch, selectUsername, State } from '../../../_store';
 import { updateCurrentMatch } from '../../../_store/actions/match.actions';
 import { Match } from '../../../_types';
 import { ReportResultFormComponent } from '../report-result-form/report-result-form.component';
@@ -31,7 +26,6 @@ import { ReportResultFormComponent } from '../report-result-form/report-result-f
   styleUrl: './match-panel.component.scss',
 })
 export class MatchPanelComponent {
-  private readonly authStore$ = inject(Store<AuthAppState>);
   private readonly store$ = inject(Store<State>);
   private readonly matchWebSocketService = inject(MatchWebSocketService);
 
@@ -41,7 +35,7 @@ export class MatchPanelComponent {
   currentMatch$: Observable<Match | null> =
     this.store$.select(selectCurrentMatch);
   username$: Observable<string | undefined> =
-    this.authStore$.select(selectUsername);
+    this.store$.select(selectUsername);
 
   constructor(private readonly matchService: MatchService) {
     // Listen to the WebSocket service and

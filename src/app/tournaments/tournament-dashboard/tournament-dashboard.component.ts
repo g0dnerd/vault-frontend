@@ -12,7 +12,6 @@ import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 
 import {
-  AuthAppState,
   selectAdminStatus,
   selectEnrollmentByQuery,
   selectOngoingDrafts,
@@ -56,16 +55,15 @@ export class TournamentDashboardComponent implements OnInit {
   tournamentId = input.required<number>();
 
   private readonly store$ = inject(Store<State>);
-  private readonly authStore$ = inject(Store<AuthAppState>);
 
   tournament$: Observable<Tournament | undefined> = of(undefined);
   enrollment$: Observable<Enrollment | undefined> = of(undefined);
   readonly drafts$ = this.store$.select(selectOngoingDrafts);
-  readonly isAdmin$ = this.authStore$.select(selectAdminStatus);
-  readonly isPlayerAdmin$ = this.authStore$.select(selectPlayerAdminStatus);
+  readonly isAdmin$ = this.store$.select(selectAdminStatus);
+  readonly isPlayerAdmin$ = this.store$.select(selectPlayerAdminStatus);
 
   async ngOnInit() {
-    this.authStore$.dispatch(initProfile());
+    this.store$.dispatch(initProfile());
     this.store$.dispatch(initializePublicTournaments());
     this.store$.dispatch(initializeAllEnrollments());
 

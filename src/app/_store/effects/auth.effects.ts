@@ -7,28 +7,6 @@ import { catchError, map, mergeMap, of, tap } from 'rxjs';
 import * as AuthActions from '../actions/auth.actions';
 import { AccountService, AuthService } from '../../_services';
 
-export const refreshAuth$ = createEffect(
-  (actions$ = inject(Actions), authService = inject(AuthService)) => {
-    return actions$.pipe(
-      ofType(AuthActions.refreshAuth),
-      mergeMap(() => {
-        return authService.checkToken().pipe(
-          map(({ token, roles }) => {
-            return AuthActions.authSuccess({
-              token,
-              roles,
-            });
-          }),
-          catchError(() => {
-            return of(AuthActions.logout());
-          }),
-        );
-      }),
-    );
-  },
-  { functional: true, dispatch: true },
-);
-
 export const authSuccess$ = createEffect(
   (actions$ = inject(Actions), router = inject(Router)) => {
     return actions$.pipe(

@@ -4,11 +4,12 @@ import { MatCardModule } from '@angular/material/card';
 import { RouterLink } from '@angular/router';
 import { PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
 
-import { Tournament } from '../../_types';
 import { selectAllTournaments, State } from '../../_store';
-import { initializeEnrolledTournaments } from '../../_store/actions/tournament.actions';
+import {
+  initializeAllTournaments,
+  initializeEnrolledTournaments,
+} from '../../_store/actions/tournament.actions';
 
 @Component({
   standalone: true,
@@ -19,10 +20,10 @@ import { initializeEnrolledTournaments } from '../../_store/actions/tournament.a
 export class MyTournamentsComponent implements OnInit {
   private readonly store$ = inject(Store<State>);
 
-  readonly enrolledTournaments$: Observable<Tournament[]> =
-    this.store$.select(selectAllTournaments);
+  readonly enrolledTournaments$ = this.store$.select(selectAllTournaments);
 
   ngOnInit() {
+    this.store$.dispatch(initializeAllTournaments());
     this.store$.dispatch(initializeEnrolledTournaments());
   }
 }

@@ -3,11 +3,11 @@ import { inject } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { take } from 'rxjs';
 
-import { AuthAppState, selectAuthToken } from '../_store';
+import { State, selectAuthToken } from '../_store';
 
 export const jwtInterceptor: HttpInterceptorFn = (req, next) => {
-  const authStore$ = inject(Store<AuthAppState>);
-  let accessToken = authStore$.select(selectAuthToken).pipe(take(1));
+  const store$ = inject(Store<State>);
+  let accessToken = store$.select(selectAuthToken).pipe(take(1));
 
   accessToken.subscribe((token) => {
     if (!token) {
