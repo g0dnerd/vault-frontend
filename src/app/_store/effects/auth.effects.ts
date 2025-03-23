@@ -11,9 +11,7 @@ export const authSuccess$ = createEffect(
   (actions$ = inject(Actions), router = inject(Router)) => {
     return actions$.pipe(
       ofType(AuthActions.authSuccess),
-      tap(({ token, returnUrl, roles }) => {
-        console.log('AuthSuccess effect has token', token);
-        console.log('AuthSuccess effect has roles', roles);
+      tap(({ token, returnUrl }) => {
         localStorage.setItem('token', token);
         if (returnUrl) {
           router.navigate([returnUrl || '/']);
