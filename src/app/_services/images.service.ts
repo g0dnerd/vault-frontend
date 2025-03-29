@@ -8,7 +8,7 @@ import { Image, API_ROUTES } from '../_types';
 @Injectable({
   providedIn: 'root',
 })
-export class ImageService {
+export class ImagesService {
   private readonly apiUrl = `${dev.apiUrl}${API_ROUTES.IMAGES}`;
 
   constructor(private readonly http: HttpClient) {}

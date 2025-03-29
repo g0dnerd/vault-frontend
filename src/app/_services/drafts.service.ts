@@ -8,7 +8,7 @@ import { dev } from '../../environments/environment';
 @Injectable({
   providedIn: 'root',
 })
-export class DraftService {
+export class DraftsService {
   private readonly apiUrl = `${dev.apiUrl}${API_ROUTES.DRAFTS}`;
 
   constructor(private readonly http: HttpClient) {}

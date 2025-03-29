@@ -6,7 +6,7 @@ import { Match } from '../_types';
 @Injectable({
   providedIn: 'root',
 })
-export class MatchWebSocketService {
+export class MatchesWebSocketService {
   constructor(private webSocket: Socket) {}
 
   listenForMatchUpdates() {

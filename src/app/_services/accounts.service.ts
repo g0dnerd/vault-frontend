@@ -8,7 +8,7 @@ import { API_ROUTES, Role, User } from '../_types';
 @Injectable({
   providedIn: 'root',
 })
-export class AccountService {
+export class AccountsService {
   private readonly apiUrl = `${dev.apiUrl}${API_ROUTES.USER}`;
 
   constructor(private readonly http: HttpClient) {}

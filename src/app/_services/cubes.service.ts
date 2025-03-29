@@ -8,12 +8,12 @@ import { API_ROUTES, Cube } from '../_types';
 @Injectable({
   providedIn: 'root',
 })
-export class CubeService {
+export class CubesService {
   private readonly apiUrl = `${dev.apiUrl}${API_ROUTES.CUBES}`;
 
   constructor(private readonly http: HttpClient) {}
 
-  getAllCubes(): Observable<Cube[]> {
+  get(): Observable<Cube[]> {
     return this.http.get<Cube[]>(this.apiUrl);
   }
 }

@@ -8,7 +8,7 @@ import { API_ROUTES, Match, Result } from '../_types';
 @Injectable({
   providedIn: 'root',
 })
-export class MatchService {
+export class MatchesService {
   private readonly apiUrl = `${dev.apiUrl}${API_ROUTES.MATCHES}`;
 
   constructor(private readonly http: HttpClient) {}

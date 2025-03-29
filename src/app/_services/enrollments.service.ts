@@ -8,13 +8,13 @@ import { Enrollment, API_ROUTES, Scorecard } from '../_types';
 @Injectable({
   providedIn: 'root',
 })
-export class EnrollmentService {
+export class EnrollmentsService {
   private readonly apiUrl = `${dev.apiUrl}${API_ROUTES.ENROLLMENTS}`;
 
   constructor(private readonly http: HttpClient) {}
 
-  getForUser(): Observable<Enrollment[]> {
-    return this.http.get<Enrollment[]>(`${this.apiUrl}/current`);
+  get(): Observable<Enrollment[]> {
+    return this.http.get<Enrollment[]>(this.apiUrl);
   }
 
   getForTournament(tournamentId: number): Observable<Enrollment[]> {

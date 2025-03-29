@@ -8,7 +8,7 @@ import { API_ROUTES, CreatePhaseDto, Phase } from '../_types';
 @Injectable({
   providedIn: 'root',
 })
-export class PhaseService {
+export class PhasesService {
   private readonly apiUrl = `${dev.apiUrl}${API_ROUTES.PHASES}`;
 
   constructor(private readonly http: HttpClient) {}

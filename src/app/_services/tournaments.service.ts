@@ -8,7 +8,7 @@ import { API_ROUTES, Tournament } from '../_types';
 @Injectable({
   providedIn: 'root',
 })
-export class TournamentService {
+export class TournamentsService {
   private readonly apiUrl = `${dev.apiUrl}${API_ROUTES.TOURNAMENTS}`;
 
   constructor(private readonly http: HttpClient) {}
