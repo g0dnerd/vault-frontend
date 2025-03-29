@@ -7,13 +7,13 @@ import { Observable, of } from 'rxjs';
 
 import {
   selectEnrollmentByQuery,
-  selectLeaguePlayers,
+  selectEnrollmentsForTournament,
   selectTournamentById,
   State,
 } from '../../../_store';
-import { initializeAllLeaguePlayers } from '../../../_store/actions/enrollment.actions';
-import { initializePublicTournaments } from '../../../_store/actions/tournament.actions';
+import { initializeAllTournaments } from '../../../_store/actions/tournaments.actions';
 import { Enrollment, Tournament } from '../../../_types';
+import { initializeEnrollments } from '../../../_store/actions/enrollments.actions';
 
 @Component({
   selector: 'app-league-detail',
@@ -31,10 +31,12 @@ export class LeagueDetailComponent implements OnInit {
   enrollment$: Observable<Enrollment | undefined> = of(undefined);
 
   ngOnInit() {
-    this.store$.dispatch(initializePublicTournaments());
-    this.store$.dispatch(initializeAllLeaguePlayers());
+    this.store$.dispatch(initializeAllTournaments());
+    this.store$.dispatch(initializeEnrollments());
     this.league$ = this.store$.select(selectTournamentById(this.leagueId()));
-    this.players$ = this.store$.select(selectLeaguePlayers(this.leagueId()));
+    this.players$ = this.store$.select(
+      selectEnrollmentsForTournament(this.leagueId()),
+    );
     this.enrollment$ = this.store$.select(
       selectEnrollmentByQuery(
         (enrollment: Enrollment) => enrollment?.tournamentId == this.leagueId(),

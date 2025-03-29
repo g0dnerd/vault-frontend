@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 import { dev } from '../../../../../environments/environment';
-import { ImageService } from '../../../../_services';
+import { ImagesService } from '../../../../_services';
 import { selectAllImages, State } from '../../../../_store';
 import { Image } from '../../../../_types';
 
@@ -26,7 +26,7 @@ export class ManagePoolComponent {
   private readonly store$ = inject(Store<State>);
   readonly images$: Observable<Image[]> = this.store$.select(selectAllImages);
 
-  constructor(private readonly imageService: ImageService) {}
+  constructor(private readonly imageService: ImagesService) {}
 
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
@@ -36,7 +36,7 @@ export class ManagePoolComponent {
     }
   }
 
-  async onSubmit() {
+  onSubmit() {
     this.submitted = true;
 
     if (!this.imgFile) {

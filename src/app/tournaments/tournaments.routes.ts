@@ -3,22 +3,22 @@ import { provideEffects } from '@ngrx/effects';
 import { provideState } from '@ngrx/store';
 
 import { RolesGuard } from '../_helpers';
-import * as draftEffects from '../_store/effects/draft.effects';
-import * as enrollmentEffects from '../_store/effects/enrollment.effects';
-import * as imageEffects from '../_store/effects/image.effects';
-import * as matchEffects from '../_store/effects/match.effects';
-import * as phaseEffects from '../_store/effects/phase.effects';
-import * as playerEffects from '../_store/effects/player.effects';
-import * as standingsEffects from '../_store/effects/standings.effects';
-import * as tournamentEffects from '../_store/effects/tournament.effects';
-import { draftReducer } from '../_store/reducers/draft.reducer';
-import { enrollmentReducer } from '../_store/reducers/enrollment.reducer';
-import { imageReducer } from '../_store/reducers/image.reducer';
-import { matchReducer } from '../_store/reducers/match.reducer';
-import { phaseReducer } from '../_store/reducers/phase.reducer';
-import { playerReducer } from '../_store/reducers/player.reducer';
+import { DraftsEffects } from '../_store/effects/drafts.effects';
+import { EnrollmentsEffects } from '../_store/effects/enrollments.effects';
+import { ImagesEffects } from '../_store/effects/images.effects';
+import { MatchesEffects } from '../_store/effects/matches.effects';
+import { PhasesEffects } from '../_store/effects/phases.effects';
+import { PlayersEffects } from '../_store/effects/players.effects';
+import { StandingsEffects } from '../_store/effects/standings.effects';
+import { TournamentsEffects } from '../_store/effects/tournaments.effects';
+import { draftsReducer } from '../_store/reducers/drafts.reducer';
+import { enrollmentsReducer } from '../_store/reducers/enrollments.reducer';
+import { imagesReducer } from '../_store/reducers/images.reducer';
+import { matchesReducer } from '../_store/reducers/matches.reducer';
+import { phasesReducer } from '../_store/reducers/phases.reducer';
+import { playersReducer } from '../_store/reducers/players.reducer';
 import { standingsReducer } from '../_store/reducers/standings.reducer';
-import { tournamentReducer } from '../_store/reducers/tournament.reducer';
+import { tournamentsReducer } from '../_store/reducers/tournaments.reducer';
 import { Role } from '../_types';
 
 import { AvailableTournamentsComponent } from './available-tournaments/available-tournaments.component';
@@ -34,22 +34,24 @@ export const TOURNAMENT_ROUTES: Routes = [
     path: '',
     component: MyTournamentsComponent,
     providers: [
-      provideEffects(tournamentEffects),
-      provideState('tournaments', tournamentReducer),
-      provideEffects(draftEffects),
-      provideState('drafts', draftReducer),
-      provideEffects(enrollmentEffects),
-      provideState('enrollments', enrollmentReducer),
-      provideEffects(matchEffects),
-      provideState('matches', matchReducer),
-      provideEffects(imageEffects),
-      provideState('images', imageReducer),
-      provideEffects(phaseEffects),
-      provideState('phases', phaseReducer),
-      provideEffects(playerEffects),
-      provideState('players', playerReducer),
-      provideEffects(standingsEffects),
+      provideEffects(
+        DraftsEffects,
+        EnrollmentsEffects,
+        ImagesEffects,
+        MatchesEffects,
+        PhasesEffects,
+        PlayersEffects,
+        StandingsEffects,
+        TournamentsEffects,
+      ),
+      provideState('drafts', draftsReducer),
+      provideState('enrollments', enrollmentsReducer),
+      provideState('images', imagesReducer),
+      provideState('matches', matchesReducer),
+      provideState('phases', phasesReducer),
+      provideState('players', playersReducer),
       provideState('standings', standingsReducer),
+      provideState('tournaments', tournamentsReducer),
     ],
   },
   {

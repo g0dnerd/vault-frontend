@@ -19,7 +19,7 @@ import { Store } from '@ngrx/store';
 import { firstValueFrom } from 'rxjs';
 
 import { matchSumValidator } from '../../../_helpers/match-form.validator';
-import { MatchService, MatchWebSocketService } from '../../../_services';
+import { MatchesService, MatchesWebSocketService } from '../../../_services';
 import {
   selectCurrentDraft,
   selectOngoingMatches,
@@ -28,12 +28,12 @@ import {
 import {
   initializeSingleDraft,
   seatDraft,
-} from '../../../_store/actions/draft.actions';
+} from '../../../_store/actions/drafts.actions';
 import {
   initDraftMatches,
   pairRound,
   updateDraftMatch,
-} from '../../../_store/actions/match.actions';
+} from '../../../_store/actions/matches.actions';
 import { Match } from '../../../_types';
 
 @Component({
@@ -70,8 +70,8 @@ export class AdminDraftPanelComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private readonly matchService: MatchService,
-    private readonly matchWebSocketService: MatchWebSocketService,
+    private readonly matchService: MatchesService,
+    private readonly matchWebSocketService: MatchesWebSocketService,
   ) {
     this.matchWebSocketService
       .listenForMatchUpdates()

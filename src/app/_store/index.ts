@@ -15,68 +15,77 @@ import {
   Tournament,
   User,
 } from '../_types';
-import * as fromCube from './reducers/cube.reducer';
-import * as fromEnrollment from './reducers/enrollment.reducer';
-import * as fromImage from './reducers/image.reducer';
-import * as fromPhase from './reducers/phase.reducer';
-import * as fromTournament from './reducers/tournament.reducer';
-import * as fromUser from './reducers/user.reducer';
+import * as fromCube from './reducers/cubes.reducer';
+import * as fromEnrollment from './reducers/enrollments.reducer';
+import * as fromImage from './reducers/images.reducer';
+import * as fromPhase from './reducers/phases.reducer';
+import * as fromTournament from './reducers/tournaments.reducer';
+import * as fromUser from './reducers/users.reducer';
 import { authReducer, AuthState } from './reducers/auth.reducer';
-import { draftReducer, DraftState } from './reducers/draft.reducer';
-import { matchReducer, MatchState } from './reducers/match.reducer';
-import { playerReducer, PlayerState } from './reducers/player.reducer';
+import { draftsReducer, DraftsState } from './reducers/drafts.reducer';
+import { matchesReducer, MatchesState } from './reducers/matches.reducer';
+import { playersReducer, PlayersState } from './reducers/players.reducer';
 import { standingsReducer, StandingsState } from './reducers/standings.reducer';
 import { hydrationMetaReducer } from './reducers/hydration.reducer';
 
 export interface State {
   auth: AuthState;
-  cubes: fromCube.CubeState;
-  drafts: DraftState;
-  enrollments: fromEnrollment.EnrollmentState;
-  images: fromImage.ImageState;
-  matches: MatchState;
-  phases: fromPhase.PhaseState;
-  players: PlayerState;
+  cubes: fromCube.CubesState;
+  drafts: DraftsState;
+  enrollments: fromEnrollment.EnrollmentsState;
+  images: fromImage.ImagesState;
+  matches: MatchesState;
+  phases: fromPhase.PhasesState;
+  players: PlayersState;
   standings: StandingsState;
-  tournaments: fromTournament.TournamentState;
-  users: fromUser.UserState;
+  tournaments: fromTournament.TournamentsState;
+  users: fromUser.UsersState;
 }
 
 export const reducers: ActionReducerMap<State> = {
   auth: authReducer,
-  cubes: fromCube.cubeReducer,
-  drafts: draftReducer,
-  enrollments: fromEnrollment.enrollmentReducer,
-  images: fromImage.imageReducer,
-  matches: matchReducer,
-  phases: fromPhase.phaseReducer,
-  players: playerReducer,
+  cubes: fromCube.cubesReducer,
+  drafts: draftsReducer,
+  enrollments: fromEnrollment.enrollmentsReducer,
+  images: fromImage.imagesReducer,
+  matches: matchesReducer,
+  phases: fromPhase.phasesReducer,
+  players: playersReducer,
   standings: standingsReducer,
-  tournaments: fromTournament.tournamentReducer,
-  users: fromUser.userReducer,
+  tournaments: fromTournament.tournamentsReducer,
+  users: fromUser.usersReducer,
 };
 
 // MATCHES
 export const selectMatches = (state: State) => state.matches;
 export const selectCurrentMatch = createSelector(
   selectMatches,
-  (state: MatchState) => state.current,
+  (state: MatchesState) => state.current,
 );
 export const selectOngoingMatches = createSelector(
   selectMatches,
-  (state: MatchState) => state.ongoing,
+  (state: MatchesState) => state.ongoing,
 );
 
 // PLAYERS
 export const selectPlayers = (state: State) => state.players;
+export const selectAllPlayers = createSelector(
+  selectPlayers,
+  (state: PlayersState) => state.players,
+);
+export const selectPlayersForDraft = (draftId: number) =>
+  createSelector(selectAllPlayers, (players) =>
+    players.filter((player) => player.draftId == draftId),
+  );
+
 export const selectCurrentPoolStatus = createSelector(
   selectPlayers,
-  (state: PlayerState) => state.status,
+  (state: PlayersState) => state.status,
 );
 
 // TOURNAMENTS
 export const selectTournamentState =
-  createFeatureSelector<fromTournament.TournamentState>('tournaments');
+  createFeatureSelector<fromTournament.TournamentsState>('tournaments');
 export const selectTournamentIds = createSelector(
   selectTournamentState,
   fromTournament.selectTournamentIds,
@@ -121,46 +130,10 @@ export const selectAvailableTournaments = createSelector(
         (tournament): tournament is Tournament => tournament !== undefined,
       ),
 );
-export const selectEnrolledTournamentIds = createSelector(
-  selectTournamentState,
-  fromTournament.getEnrolledIds,
-);
-export const selectEnrolledTournaments = createSelector(
-  selectTournamentEntities,
-  selectEnrolledTournamentIds,
-  (tournaments, ids) =>
-    ids
-      .map((id) => tournaments[id])
-      .filter(
-        (tournament): tournament is Tournament => tournament !== undefined,
-      ),
-);
-export const selectAvailableLeagues = createSelector(
-  selectTournamentEntities,
-  selectAvailableTournamentIds,
-  (tournaments, ids) =>
-    ids
-      .map((id) => tournaments[id])
-      .filter(
-        (tournament): tournament is Tournament =>
-          tournament !== undefined && tournament.isLeague,
-      ),
-);
-export const selectEnrolledLeagues = createSelector(
-  selectTournamentEntities,
-  selectEnrolledTournamentIds,
-  (tournaments, ids) =>
-    ids
-      .map((id) => tournaments[id])
-      .filter(
-        (tournament): tournament is Tournament =>
-          tournament !== undefined && tournament.isLeague,
-      ),
-);
 
 // IMAGES
 export const selectImageState =
-  createFeatureSelector<fromImage.ImageState>('images');
+  createFeatureSelector<fromImage.ImagesState>('images');
 export const selectImageIds = createSelector(
   selectImageState,
   fromImage.selectImageIds,
@@ -243,11 +216,11 @@ export const selectAuthErrorMessage = createSelector(
 export const selectDrafts = (state: State) => state.drafts;
 export const selectOngoingDrafts = createSelector(
   selectDrafts,
-  (state: DraftState) => state.ongoing,
+  (state: DraftsState) => state.ongoing,
 );
 export const selectCurrentDraft = createSelector(
   selectDrafts,
-  (state: DraftState) => state.current,
+  (state: DraftsState) => state.current,
 );
 export const selectDraftById = (draftId: number) =>
   createSelector(selectOngoingDrafts, (ongoing: Draft[]) => {
@@ -256,7 +229,7 @@ export const selectDraftById = (draftId: number) =>
 
 // ENROLLMENTS
 export const selectEnrollmentState =
-  createFeatureSelector<fromEnrollment.EnrollmentState>('enrollments');
+  createFeatureSelector<fromEnrollment.EnrollmentsState>('enrollments');
 export const selectEnrollmentIds = createSelector(
   selectEnrollmentState,
   fromEnrollment.selectEnrollmentIds,
@@ -278,6 +251,28 @@ export const selectEnrollmentById = (enrollmentId: number) =>
     selectEnrollmentState,
     (enrollmentState) => enrollmentState.entities[enrollmentId],
   );
+export const selectDistinctEnrollments = createSelector(
+  selectEnrollmentState,
+  (state) => {
+    const distinctTournaments = [];
+    const map = new Map();
+    for (const enrollment of Object.values(state.entities)) {
+      if (!enrollment) continue;
+      if (!map.has(enrollment.tournamentId)) {
+        map.set(enrollment.tournamentId, true);
+        distinctTournaments.push(enrollment);
+      }
+    }
+    return distinctTournaments;
+  },
+);
+export const selectEnrollmentsForTournament = (tournamentId: number) =>
+  createSelector(selectEnrollmentState, (state) => {
+    return Object.values(state.entities).filter(
+      (enrollment): enrollment is Enrollment =>
+        !!enrollment && enrollment.tournamentId === tournamentId,
+    );
+  });
 export const selectEnrollmentByQuery = (
   query: (enrollment: Enrollment) => boolean,
 ) =>
@@ -287,37 +282,11 @@ export const selectEnrollmentByQuery = (
         !!enrollment && query(enrollment),
     );
   });
-export const selectLeaguePlayers = (tournamentId: number) =>
-  createSelector(
-    selectEnrollmentEntities,
-    selectEnrollmentIds,
-    (enrollments, ids) =>
-      ids
-        .map((id) => enrollments[id])
-        .filter(
-          (enrollment): enrollment is Enrollment =>
-            enrollment !== undefined && enrollment.tournamentId == tournamentId,
-        ),
-  );
-export const selectDraftEnrollmentIds = createSelector(
-  selectEnrollmentState,
-  fromEnrollment.getDraftEnrollmentIds,
-);
-export const selectDraftEnrollments = createSelector(
-  selectEnrollmentEntities,
-  selectDraftEnrollmentIds,
-  (enrollments, ids) =>
-    ids
-      .map((id) => enrollments[id])
-      .filter(
-        (enrollment): enrollment is Enrollment => enrollment !== undefined,
-      ),
-);
 
 // CUBES
 export const selectCubeState =
-  createFeatureSelector<fromCube.CubeState>('cubes');
-export const selectcubeIds = createSelector(
+  createFeatureSelector<fromCube.CubesState>('cubes');
+export const selectCubeIds = createSelector(
   selectCubeState,
   fromCube.selectCubeIds,
 );
@@ -351,7 +320,7 @@ export const selectTournamentStandings = createSelector(
 
 // USERS
 export const selectUserState =
-  createFeatureSelector<fromUser.UserState>('users');
+  createFeatureSelector<fromUser.UsersState>('users');
 export const selectUserIds = createSelector(
   selectUserState,
   fromUser.selectUserIds,
@@ -379,7 +348,7 @@ export const selectUserByQuery = (query: (user: User) => boolean) =>
 
 // PHASES
 export const selectPhaseState =
-  createFeatureSelector<fromPhase.PhaseState>('phases');
+  createFeatureSelector<fromPhase.PhasesState>('phases');
 export const selectPhaseIds = createSelector(
   selectPhaseState,
   fromPhase.selectPhaseIds,

@@ -5,12 +5,12 @@ import { MatCardModule } from '@angular/material/card';
 import { Store } from '@ngrx/store';
 import { PushPipe } from '@ngrx/component';
 
-import { selectAvailableTournaments, State } from '../../_store';
 import {
-  initializePublicTournaments,
   initializeAvailableTournaments,
   enroll,
-} from '../../_store/actions/tournament.actions';
+  initializeAllTournaments,
+} from '../../_store/actions/tournaments.actions';
+import { selectAvailableTournaments, State } from '../../_store';
 
 @Component({
   standalone: true,
@@ -27,7 +27,7 @@ export class AvailableTournamentsComponent implements OnInit {
   loading = false;
 
   ngOnInit() {
-    this.store$.dispatch(initializePublicTournaments());
+    this.store$.dispatch(initializeAllTournaments());
     this.store$.dispatch(initializeAvailableTournaments());
   }
 

@@ -8,7 +8,7 @@ import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 
 import { selectAllCubes, State } from '../../_store';
-import { initializeAllCubes } from '../../_store/actions/cube.actions';
+import { initializeCubes } from '../../_store/actions/cubes.actions';
 import { Cube } from '../../_types';
 
 @Component({
@@ -24,7 +24,7 @@ export class CubeListComponent implements OnInit {
   private readonly store$ = inject(Store<State>);
 
   ngOnInit() {
-    this.store$.dispatch(initializeAllCubes());
+    this.store$.dispatch(initializeCubes());
     this.cubes$ = this.store$.select(selectAllCubes);
   }
 }
