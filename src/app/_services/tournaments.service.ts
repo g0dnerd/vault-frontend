@@ -34,10 +34,6 @@ export class TournamentsService {
     return this.http.get<Tournament[]>(this.apiUrl);
   }
 
-  getPublicTournaments(): Observable<Tournament[]> {
-    return this.http.get<Tournament[]>(`${this.apiUrl}/public`);
-  }
-
   getAvailableTournaments(): Observable<Tournament[]> {
     return this.http.get<Tournament[]>(`${this.apiUrl}/available`);
   }
