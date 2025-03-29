@@ -104,6 +104,7 @@ export class AuthEffects {
         tap(() => {
           console.log('Logging out');
           localStorage.removeItem('token');
+          localStorage.removeItem('state');
           this.router.navigateByUrl('/account/login');
         }),
       );
