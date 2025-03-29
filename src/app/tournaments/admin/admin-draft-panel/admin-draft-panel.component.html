@@ -9,7 +9,7 @@
   <mat-card-header>
     <mat-card-title>Draft setup</mat-card-title>
   </mat-card-header>
-  <mat-card-content *ngIf="tournamentId() as tId">
+  <mat-card-content *ngIf="tournamentId()">
     <mat-card-actions>
       <button
         mat-stroked-button
@@ -24,7 +24,7 @@
         mat-stroked-button
         type="button"
         class="regular-button"
-        [disabled]="(matches$ | ngrxPush)?.length"
+        [disabled]="pairingsDisabled()"
         (click)="pairRound()"
       >
         Pair Round
@@ -33,11 +33,7 @@
         mat-stroked-button
         type="button"
         class="regular-button"
-        [routerLink]="[
-          '/tournaments/admin/draft/create',
-          tId,
-          { draftId: draftId() },
-        ]"
+        [routerLink]="['../create', { draftId: draftId() }]"
       >
         <mat-icon>edit</mat-icon>
         Edit this draft

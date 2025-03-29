@@ -1,7 +1,7 @@
 <ng-container *ngIf="currentMatch$ | ngrxPush as game">
   <mat-expansion-panel
     class="match-panel"
-    [disabled]="!(currentMatch$ | ngrxPush)?.player1Wins"
+    [disabled]="!game.player1 && !game.player2"
   >
     <mat-expansion-panel-header>
       <mat-panel-title>My Opponent</mat-panel-title>

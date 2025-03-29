@@ -77,7 +77,7 @@ export const TOURNAMENT_ROUTES: Routes = [
             data: { requiredRoles: [Role.Admin, Role.PlayerAdmin] },
           },
           {
-            path: ':tournamentId/draft/:draftId',
+            path: ':draftId',
             component: AdminDraftPanelComponent,
             data: { requiredRoles: [Role.Admin, Role.PlayerAdmin] },
             canActivate: [RolesGuard],

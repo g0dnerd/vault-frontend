@@ -77,7 +77,7 @@ export class TournamentDashboardComponent implements OnInit {
       } else {
         this.enrollment$ = this.store$.select(
           selectEnrollmentByQuery(
-            (enrollment) => enrollment.tournamentId === this.tournamentId(),
+            (enrollment) => enrollment.tournamentId == this.tournamentId(),
           ),
         );
       }

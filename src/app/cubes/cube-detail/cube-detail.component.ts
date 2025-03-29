@@ -36,7 +36,6 @@ export class CubeDetailComponent implements OnInit {
   cubeId = input.required<number>();
 
   private readonly store$ = inject(Store<State>);
-
   cube$: Observable<Cube | undefined> = of(undefined);
 
   ngOnInit() {

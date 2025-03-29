@@ -1,5 +1,5 @@
 import { NgFor, NgIf } from '@angular/common';
-import { Component, inject, input, OnInit } from '@angular/core';
+import { Component, inject, input, OnInit, signal } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -64,9 +64,10 @@ export class AdminDraftPanelComponent implements OnInit {
   submitted = false;
 
   private readonly store$ = inject(Store<State>);
-
   draft$ = this.store$.select(selectCurrentDraft);
   matches$ = this.store$.select(selectOngoingMatches);
+
+  pairingsDisabled = signal(false);
 
   constructor(
     private formBuilder: FormBuilder,
@@ -107,6 +108,22 @@ export class AdminDraftPanelComponent implements OnInit {
 
     this.store$.dispatch(initializeSingleDraft({ draftId: this.draftId() }));
     this.store$.dispatch(initDraftMatches({ draftId: this.draftId() }));
+
+    this.matches$.subscribe((matches) => {
+      if (matches.length > 0) {
+        this.pairingsDisabled.set(true);
+      }
+    });
+
+    this.draft$.subscribe((draft) => {
+      if (!draft) {
+        this.pairingsDisabled.set(true);
+      } else {
+        if (!draft.seated) {
+          this.pairingsDisabled.set(true);
+        }
+      }
+    });
   }
 
   get f() {
