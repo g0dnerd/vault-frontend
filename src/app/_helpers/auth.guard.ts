@@ -1,10 +1,10 @@
 import { inject, Injectable } from '@angular/core';
 import { CanActivate } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { catchError, map, mergeMap, of, take, tap } from 'rxjs';
+import { catchError, mergeMap, of, take, tap } from 'rxjs';
 
 import { selectAuthToken, State } from '../_store';
-import { logout, refreshAuth } from '../_store/actions/auth.actions';
+import { logout } from '../_store/actions/auth.actions';
 import { AuthService } from '../_services';
 
 @Injectable({
@@ -28,20 +28,10 @@ export class AuthGuard implements CanActivate {
             this.store$.dispatch(logout());
             return of(false);
           }
-          return this.authService.refreshAuth().pipe(
-            map(({ token, roles }) => {
-              this.store$.dispatch(refreshAuth({ token, roles }));
-              return true;
-            }),
-            catchError(() => {
-              this.store$.dispatch(logout());
-              return of(false);
-            }),
-          );
         }
         return this.authService.checkToken().pipe(
           tap(() => {
-            return true;
+            return of(true);
           }),
           catchError(() => {
             this.store$.dispatch(logout());
