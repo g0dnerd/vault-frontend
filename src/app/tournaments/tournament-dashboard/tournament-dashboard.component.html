@@ -2,16 +2,15 @@
 <h5>Tournament Dashboard</h5>
 @defer {
   <ng-container *ngIf="tournament$ | ngrxPush as tournament">
-    <ng-container
-      *ngIf="(isAdmin$ | ngrxPush) || (isPlayerAdmin$ | ngrxPush); else noAdmin"
-    >
+    <ng-container *ngIf="isAdmin; else noAdmin">
       <mat-tab-group animationDuration="0ms">
         <mat-tab label="Player View">
-          <app-draft-panel></app-draft-panel>
-          <app-tournament-standings
-            [tournamentId]="tournament.id"
-          ></app-tournament-standings
-        ></mat-tab>
+          <ng-container *ngIf="enrollment$ | ngrxPush as enrollment">
+            <app-draft-panel></app-draft-panel>
+            <app-tournament-standings [tournamentId]="tournament.id">
+            </app-tournament-standings>
+          </ng-container>
+        </mat-tab>
         <mat-tab label="Admin View">
           <mat-card class="edit-tournament-card admin">
             <mat-card-header>
@@ -74,10 +73,11 @@
       </mat-tab-group>
     </ng-container>
     <ng-template #noAdmin>
-      <app-draft-panel></app-draft-panel>
-      <app-tournament-standings
-        [tournamentId]="tournament.id"
-      ></app-tournament-standings>
+      <ng-container *ngIf="enrollment$ | ngrxPush as enrollment">
+        <app-draft-panel></app-draft-panel>
+        <app-tournament-standings [tournamentId]="tournament.id">
+        </app-tournament-standings>
+      </ng-container>
     </ng-template>
   </ng-container>
 }

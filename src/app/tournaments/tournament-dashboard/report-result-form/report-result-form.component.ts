@@ -13,7 +13,7 @@ import { Store } from '@ngrx/store';
 import { firstValueFrom } from 'rxjs';
 
 import { matchSumValidator } from '../../../_helpers/match-form.validator';
-import { MatchService } from '../../../_services';
+import { MatchesService } from '../../../_services';
 import { State, selectCurrentMatch } from '../../../_store';
 
 @Component({
@@ -34,7 +34,7 @@ export class ReportResultFormComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private readonly matchService: MatchService,
+    private readonly matchService: MatchesService,
   ) {
     // Initialize result reporting form
     // FIXME: move form controls to class members so template can see them

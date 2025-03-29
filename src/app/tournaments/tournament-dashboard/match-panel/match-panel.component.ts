@@ -6,9 +6,9 @@ import { PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 import { firstValueFrom, Observable } from 'rxjs';
 
-import { MatchWebSocketService, MatchService } from '../../../_services';
+import { MatchesWebSocketService, MatchesService } from '../../../_services';
 import { selectCurrentMatch, selectUsername, State } from '../../../_store';
-import { updateCurrentMatch } from '../../../_store/actions/match.actions';
+import { updateCurrentMatch } from '../../../_store/actions/matches.actions';
 import { Match } from '../../../_types';
 import { ReportResultFormComponent } from '../report-result-form/report-result-form.component';
 
@@ -27,7 +27,7 @@ import { ReportResultFormComponent } from '../report-result-form/report-result-f
 })
 export class MatchPanelComponent {
   private readonly store$ = inject(Store<State>);
-  private readonly matchWebSocketService = inject(MatchWebSocketService);
+  private readonly matchWebSocketService = inject(MatchesWebSocketService);
 
   loading = false;
   result = signal(-1);
@@ -37,7 +37,7 @@ export class MatchPanelComponent {
   username$: Observable<string | undefined> =
     this.store$.select(selectUsername);
 
-  constructor(private readonly matchService: MatchService) {
+  constructor(private readonly matchService: MatchesService) {
     // Listen to the WebSocket service and
     // have it update matches on the corresponding event
     this.matchWebSocketService

@@ -2,90 +2,81 @@ import { createEntityAdapter, EntityAdapter, EntityState } from '@ngrx/entity';
 import { createReducer, on } from '@ngrx/store';
 
 import { Enrollment } from '../../_types';
-import * as EnrollmentActions from '../actions/enrollment.actions';
+import * as EnrollmentActions from '../actions/enrollments.actions';
 
-export interface EnrollmentState extends EntityState<Enrollment> {
+export interface EnrollmentsState extends EntityState<Enrollment> {
   selectedEnrollmentId: number | null;
-  draftEnrollmentIds: number[];
 }
 
 export function selectEnrollmentId(a: Enrollment): number {
   return a.id;
 }
 
-export const enrollmentAdapter: EntityAdapter<Enrollment> =
+export const enrollmentsAdapter: EntityAdapter<Enrollment> =
   createEntityAdapter<Enrollment>({
     selectId: selectEnrollmentId,
     sortComparer: false,
   });
 
-export const initialState: EnrollmentState = enrollmentAdapter.getInitialState({
-  selectedEnrollmentId: null,
-  draftEnrollmentIds: [],
-});
+export const initialState: EnrollmentsState =
+  enrollmentsAdapter.getInitialState({
+    selectedEnrollmentId: null,
+  });
 
-export const enrollmentReducer = createReducer(
+export const enrollmentsReducer = createReducer(
   initialState,
-  on(EnrollmentActions.setEnrollmentsForDraft, (state, { ids }) => ({
-    ...state,
-    draftEnrollmentIds: ids,
-  })),
   on(EnrollmentActions.addEnrollment, (state, { enrollment }) => {
-    return enrollmentAdapter.addOne(enrollment, state);
+    return enrollmentsAdapter.addOne(enrollment, state);
   }),
   on(EnrollmentActions.setEnrollment, (state, { enrollment }) => {
-    return enrollmentAdapter.setOne(enrollment, state);
+    return enrollmentsAdapter.setOne(enrollment, state);
   }),
   on(EnrollmentActions.upsertEnrollment, (state, { enrollment }) => {
-    return enrollmentAdapter.upsertOne(enrollment, state);
+    return enrollmentsAdapter.upsertOne(enrollment, state);
   }),
   on(EnrollmentActions.addEnrollments, (state, { enrollments }) => {
-    return enrollmentAdapter.addMany(enrollments, state);
+    return enrollmentsAdapter.addMany(enrollments, state);
   }),
   on(EnrollmentActions.upsertEnrollments, (state, { enrollments }) => {
-    return enrollmentAdapter.upsertMany(enrollments, state);
+    return enrollmentsAdapter.upsertMany(enrollments, state);
   }),
   on(EnrollmentActions.updateEnrollment, (state, { update }) => {
-    return enrollmentAdapter.updateOne(update, state);
+    return enrollmentsAdapter.updateOne(update, state);
   }),
   on(EnrollmentActions.updateEnrollments, (state, { updates }) => {
-    return enrollmentAdapter.updateMany(updates, state);
+    return enrollmentsAdapter.updateMany(updates, state);
   }),
   on(EnrollmentActions.mapEnrollment, (state, { entityMap }) => {
-    return enrollmentAdapter.mapOne(entityMap, state);
+    return enrollmentsAdapter.mapOne(entityMap, state);
   }),
   on(EnrollmentActions.mapEnrollments, (state, { entityMap }) => {
-    return enrollmentAdapter.map(entityMap, state);
+    return enrollmentsAdapter.map(entityMap, state);
   }),
   on(EnrollmentActions.deleteEnrollment, (state, { id }) => {
-    return enrollmentAdapter.removeOne(id, state);
+    return enrollmentsAdapter.removeOne(id, state);
   }),
   on(EnrollmentActions.deleteEnrollments, (state, { ids }) => {
-    return enrollmentAdapter.removeMany(ids, state);
+    return enrollmentsAdapter.removeMany(ids, state);
   }),
   on(EnrollmentActions.deleteEnrollmentsByPredicate, (state, { predicate }) => {
-    return enrollmentAdapter.removeMany(predicate, state);
+    return enrollmentsAdapter.removeMany(predicate, state);
   }),
   on(EnrollmentActions.loadEnrollments, (state, { enrollments }) => {
-    return enrollmentAdapter.setAll(enrollments, state);
+    return enrollmentsAdapter.setAll(enrollments, state);
   }),
   on(EnrollmentActions.setEnrollments, (state, { enrollments }) => {
-    return enrollmentAdapter.setMany(enrollments, state);
+    return enrollmentsAdapter.setMany(enrollments, state);
   }),
   on(EnrollmentActions.clearEnrollments, (state) => {
-    return enrollmentAdapter.removeAll({
+    return enrollmentsAdapter.removeAll({
       ...state,
       selectedEnrollmentId: null,
-      draftEnrollmentIds: [],
     });
   }),
 );
 
-export const getDraftEnrollmentIds = (state: EnrollmentState) =>
-  state.draftEnrollmentIds;
-
 const { selectIds, selectEntities, selectAll, selectTotal } =
-  enrollmentAdapter.getSelectors();
+  enrollmentsAdapter.getSelectors();
 
 export const selectEnrollmentIds = selectIds;
 export const selectEnrollmentEntities = selectEntities;

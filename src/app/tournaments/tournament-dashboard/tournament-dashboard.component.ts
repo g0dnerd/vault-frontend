@@ -12,23 +12,22 @@ import { Store } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 
 import {
-  selectAdminStatus,
+  selectCurrentUserRoles,
   selectEnrollmentByQuery,
   selectOngoingDrafts,
-  selectPlayerAdminStatus,
   selectTournamentById,
   State,
 } from '../../_store';
 import {
   initializeCurrentDraft,
   initializeOngoingDrafts,
-} from '../../_store/actions/draft.actions';
+} from '../../_store/actions/drafts.actions';
 import { initProfile } from '../../_store/actions/auth.actions';
-import { initializeAllEnrollments } from '../../_store/actions/enrollment.actions';
-import { initCurrentMatch } from '../../_store/actions/match.actions';
-import { initializePoolStatus } from '../../_store/actions/player.actions';
-import { initializePublicTournaments } from '../../_store/actions/tournament.actions';
-import { Enrollment, Tournament } from '../../_types';
+import { initializeEnrollments } from '../../_store/actions/enrollments.actions';
+import { initCurrentMatch } from '../../_store/actions/matches.actions';
+import { initializePoolStatus } from '../../_store/actions/players.actions';
+import { initializeAllTournaments } from '../../_store/actions/tournaments.actions';
+import { Enrollment, Role, Tournament } from '../../_types';
 import { DraftPanelComponent } from './draft-panel/draft-panel.component';
 import { TournamentStandingsComponent } from './tournament-standings/tournament-standings.component';
 
@@ -59,25 +58,27 @@ export class TournamentDashboardComponent implements OnInit {
   tournament$: Observable<Tournament | undefined> = of(undefined);
   enrollment$: Observable<Enrollment | undefined> = of(undefined);
   readonly drafts$ = this.store$.select(selectOngoingDrafts);
-  readonly isAdmin$ = this.store$.select(selectAdminStatus);
-  readonly isPlayerAdmin$ = this.store$.select(selectPlayerAdminStatus);
+  readonly roles$ = this.store$.select(selectCurrentUserRoles);
+  readonly userId$ = this.store$.select(selectCurrentUserRoles);
+
+  isAdmin = false;
 
   async ngOnInit() {
     this.store$.dispatch(initProfile());
-    this.store$.dispatch(initializePublicTournaments());
-    this.store$.dispatch(initializeAllEnrollments());
+    this.store$.dispatch(initializeAllTournaments());
+    this.store$.dispatch(initializeEnrollments());
 
-    this.isAdmin$.subscribe((admin) => {
-      if (admin) {
+    this.roles$.subscribe((roles) => {
+      if (roles.includes(Role.Admin) || roles.includes(Role.PlayerAdmin)) {
+        this.isAdmin = true;
         this.store$.dispatch(
           initializeOngoingDrafts({ tournamentId: this.tournamentId() }),
         );
-      }
-    });
-    this.isPlayerAdmin$.subscribe((playerAdmin) => {
-      if (playerAdmin) {
-        this.store$.dispatch(
-          initializeOngoingDrafts({ tournamentId: this.tournamentId() }),
+      } else {
+        this.enrollment$ = this.store$.select(
+          selectEnrollmentByQuery(
+            (enrollment) => enrollment.tournamentId === this.tournamentId(),
+          ),
         );
       }
     });
@@ -94,12 +95,6 @@ export class TournamentDashboardComponent implements OnInit {
     );
     this.tournament$ = this.store$.select(
       selectTournamentById(this.tournamentId()),
-    );
-    this.enrollment$ = this.store$.select(
-      selectEnrollmentByQuery(
-        (enrollment: Enrollment) =>
-          enrollment?.tournamentId == this.tournamentId(),
-      ),
     );
   }
 }

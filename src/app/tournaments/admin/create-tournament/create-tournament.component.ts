@@ -26,10 +26,10 @@ import { PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 import { firstValueFrom } from 'rxjs';
 
-import { EnrollmentService, TournamentService } from '../../../_services';
+import { EnrollmentsService, TournamentsService } from '../../../_services';
 import { selectAllUsers, State } from '../../../_store';
-import { initializeEnrollmentsForTournament } from '../../../_store/actions/enrollment.actions';
-import { initializeAvailableUsersForTournament } from '../../../_store/actions/user.actions';
+import { initializeAvailableUsersForTournament } from '../../../_store/actions/users.actions';
+import { initializeEnrollments } from '../../../_store/actions/enrollments.actions';
 
 @Component({
   selector: 'app-create-tournament',
@@ -80,8 +80,8 @@ export class CreateTournamentComponent implements OnInit {
   selectedUsers: WritableSignal<number[]> = signal([]);
 
   constructor(
-    private readonly tournamentService: TournamentService,
-    private readonly enrollmentService: EnrollmentService,
+    private readonly tournamentService: TournamentsService,
+    private readonly enrollmentService: EnrollmentsService,
     private readonly route: ActivatedRoute,
   ) {
     this.enrollForm = this.formBuilder.group({
@@ -144,9 +144,7 @@ export class CreateTournamentComponent implements OnInit {
       this.store$.dispatch(
         initializeAvailableUsersForTournament({ tournamentId: tournament.id }),
       );
-      this.store$.dispatch(
-        initializeEnrollmentsForTournament({ tournamentId: tournament.id }),
-      );
+      this.store$.dispatch(initializeEnrollments());
     } catch (error) {
       this.loading = false;
     }

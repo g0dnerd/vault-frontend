@@ -18,7 +18,7 @@ import {
   jwtInterceptor,
   RolesGuard,
 } from './_helpers';
-import * as authEffects from './_store/effects/auth.effects';
+import { AuthEffects } from './_store/effects/auth.effects';
 import { authReducer } from './_store/reducers/auth.reducer';
 import { hydrationMetaReducer } from './_store/reducers/hydration.reducer';
 import { dev } from '../environments/environment';
@@ -47,8 +47,8 @@ export const appConfig: ApplicationConfig = {
       metaReducers: [hydrationMetaReducer],
     }),
     provideEffects(HydrationEffects),
+    provideEffects(AuthEffects),
     provideState({ name: 'auth', reducer: authReducer }),
-    provideEffects(authEffects),
     provideRouter(appRoutes, withComponentInputBinding()),
     provideHttpClient(
       withFetch(),

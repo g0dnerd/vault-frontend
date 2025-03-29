@@ -4,7 +4,6 @@ import { Action, Store } from '@ngrx/store';
 import { distinctUntilChanged, map, switchMap, tap } from 'rxjs';
 
 import * as HydrationActions from '../actions/hydration.actions';
-import * as AuthActions from '../actions/auth.actions';
 import { State } from '..';
 
 @Injectable()
@@ -12,27 +11,32 @@ export class HydrationEffects implements OnInitEffects {
   private actions$ = inject(Actions);
   private store = inject(Store<State>);
 
-  hydrate$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(HydrationActions.hydrate),
-      map(() => {
-        const storageValue = localStorage.getItem('state');
-        if (storageValue) {
-          try {
-            const state = JSON.parse(storageValue);
-            return HydrationActions.hydrateSuccess({ state });
-          } catch {
-            localStorage.removeItem('state');
+  hydrate$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(HydrationActions.hydrate),
+        map(() => {
+          const storageValue = localStorage.getItem('state');
+          if (storageValue) {
+            try {
+              const state = JSON.parse(storageValue);
+              console.log('Hydration success');
+              return HydrationActions.hydrateSuccess({ state });
+            } catch {
+              localStorage.removeItem('state');
+            }
           }
-        }
-        return HydrationActions.hydrateFailure();
-      }),
-    ),
+          console.log('Hydration failure');
+          return HydrationActions.hydrateFailure();
+        }),
+      );
+    },
+    { dispatch: true },
   );
 
   serialize$ = createEffect(
-    () =>
-      this.actions$.pipe(
+    () => {
+      return this.actions$.pipe(
         ofType(
           HydrationActions.hydrateSuccess,
           HydrationActions.hydrateFailure,
@@ -40,22 +44,8 @@ export class HydrationEffects implements OnInitEffects {
         switchMap(() => this.store),
         distinctUntilChanged(),
         tap((state) => localStorage.setItem('state', JSON.stringify(state))),
-      ),
-    { dispatch: false },
-  );
-
-  // Clear state from local storage on any auth failure and on logout
-  purge$ = createEffect(
-    () =>
-      this.actions$.pipe(
-        ofType(
-          AuthActions.logout,
-          AuthActions.loginFailure,
-          AuthActions.registerFailure,
-        ),
-        switchMap(() => this.store),
-        tap(() => localStorage.removeItem('state')),
-      ),
+      );
+    },
     { dispatch: false },
   );
 

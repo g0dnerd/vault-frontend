@@ -3,10 +3,10 @@ import { provideEffects } from '@ngrx/effects';
 import { provideState } from '@ngrx/store';
 
 import { AuthGuard } from './_helpers';
-import * as cubeEffects from './_store/effects/cube.effects';
-import * as userEffects from './_store/effects/user.effects';
-import { cubeReducer } from './_store/reducers/cube.reducer';
-import { userReducer } from './_store/reducers/user.reducer';
+import { CubesEffects } from './_store/effects/cubes.effects';
+import { UsersEffects } from './_store/effects/users.effects';
+import { cubesReducer } from './_store/reducers/cubes.reducer';
+import { usersReducer } from './_store/reducers/users.reducer';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { ProfileComponent } from './account/profile/profile.component';
@@ -21,10 +21,9 @@ export const appRoutes: Route[] = [
     component: HomeComponent,
     canActivate: [AuthGuard],
     providers: [
-      provideEffects(userEffects),
-      provideState('users', userReducer),
-      provideState({ name: 'cubes', reducer: cubeReducer }),
-      provideEffects(cubeEffects),
+      provideEffects(CubesEffects, UsersEffects),
+      provideState({ name: 'users', reducer: usersReducer }),
+      provideState({ name: 'cubes', reducer: cubesReducer }),
     ],
   },
   {

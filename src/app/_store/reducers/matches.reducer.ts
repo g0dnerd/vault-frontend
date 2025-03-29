@@ -1,36 +1,36 @@
 import { createReducer, on } from '@ngrx/store';
 
 import { Match } from '../../_types';
-import * as MatchActions from '../actions/match.actions';
+import * as MatchesActions from '../actions/matches.actions';
 
-export interface MatchState {
+export interface MatchesState {
   current: Match | null;
   ongoing: Match[];
 }
 
-export const initialState: MatchState = {
+export const initialState: MatchesState = {
   current: null,
   ongoing: [],
 };
 
-export const matchReducer = createReducer(
+export const matchesReducer = createReducer(
   initialState,
-  on(MatchActions.matchStoreFailure, (_state, { errorMessage }) => ({
+  on(MatchesActions.matchStoreFailure, (_state, { errorMessage }) => ({
     current: null,
     errorMessage,
     ongoing: [],
   })),
-  on(MatchActions.initCurrentMatchSuccess, (state, { current }) => ({
+  on(MatchesActions.initCurrentMatchSuccess, (state, { current }) => ({
     ...state,
     current,
     errorMessage: null,
   })),
-  on(MatchActions.initDraftMatchesSuccess, (state, { ongoing }) => ({
+  on(MatchesActions.initDraftMatchesSuccess, (state, { ongoing }) => ({
     ...state,
     ongoing,
     errorMessage: null,
   })),
-  on(MatchActions.updateDraftMatch, (state, { changes }) => ({
+  on(MatchesActions.updateDraftMatch, (state, { changes }) => ({
     ...state,
     ongoing: state.ongoing.map((g) =>
       g.id === changes.id ? { ...g, ...changes } : g,

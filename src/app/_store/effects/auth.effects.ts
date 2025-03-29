@@ -1,196 +1,212 @@
 import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
-import { inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, of, tap } from 'rxjs';
 
 import * as AuthActions from '../actions/auth.actions';
-import { AccountService, AuthService } from '../../_services';
+import { AccountsService, AuthService } from '../../_services';
 
-export const authSuccess$ = createEffect(
-  (actions$ = inject(Actions), router = inject(Router)) => {
-    return actions$.pipe(
-      ofType(AuthActions.authSuccess),
-      tap(({ token, returnUrl }) => {
-        localStorage.setItem('token', token);
-        if (returnUrl) {
-          router.navigate([returnUrl || '/']);
-        }
-      }),
-    );
-  },
-  { functional: true, dispatch: false },
-);
+@Injectable()
+export class AuthEffects {
+  private readonly actions$ = inject(Actions);
+  private readonly accountsService = inject(AccountsService);
+  private readonly authService = inject(AuthService);
+  private readonly router = inject(Router);
 
-export const login$ = createEffect(
-  (actions$ = inject(Actions), authService = inject(AuthService)) => {
-    return actions$.pipe(
-      ofType(AuthActions.login),
-      mergeMap(({ loginData, returnUrl }) => {
-        return authService.login(loginData).pipe(
-          map(({ token, roles }) => {
-            if (!token)
-              return AuthActions.loginFailure({ errorMessage: 'JWT error' });
-            return AuthActions.authSuccess({
-              token,
-              roles,
-              returnUrl,
-            });
-          }),
-          catchError((error: HttpErrorResponse) => {
-            const errorMessage =
-              error.status === HttpStatusCode.Unauthorized
-                ? 'Wrong username or password'
-                : 'An unexpected error occurred';
+  authSuccess$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(AuthActions.authSuccess),
+        tap(({ token, returnUrl }) => {
+          localStorage.setItem('token', token);
+          if (returnUrl) {
+            this.router.navigate([returnUrl || '/']);
+          }
+        }),
+      );
+    },
+    { dispatch: false },
+  );
 
-            return of(AuthActions.loginFailure({ errorMessage }));
-          }),
-        );
-      }),
-    );
-  },
-  { functional: true, dispatch: true },
-);
-
-export const socialLogin$ = createEffect(
-  (actions$ = inject(Actions), authService = inject(AuthService)) => {
-    return actions$.pipe(
-      ofType(AuthActions.socialLogin),
-      mergeMap(({ loginData, returnUrl }) => {
-        return authService.socialLogin(loginData).pipe(
-          map(({ token, roles }) => {
-            if (!token) {
-              return AuthActions.socialLoginFailure({
-                errorMessage: 'JWT error',
+  login$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(AuthActions.login),
+        mergeMap(({ loginData, returnUrl }) => {
+          return this.authService.login(loginData).pipe(
+            map(({ token, roles }) => {
+              if (!token) {
+                console.log('Login failure');
+                return AuthActions.loginFailure({ errorMessage: 'JWT error' });
+              }
+              return AuthActions.authSuccess({
+                token,
+                roles,
+                returnUrl,
               });
-            }
-            return AuthActions.authSuccess({
-              token,
-              roles,
-              returnUrl,
-            });
-          }),
-          catchError((error: HttpErrorResponse) => {
-            const errorMessage =
-              error.status === HttpStatusCode.Unauthorized
-                ? 'Wrong username or password'
-                : 'An unexpected error occurred';
+            }),
+            catchError((error: HttpErrorResponse) => {
+              const errorMessage =
+                error.status === HttpStatusCode.Unauthorized
+                  ? 'Wrong username or password'
+                  : 'An unexpected error occurred';
 
-            return of(AuthActions.loginFailure({ errorMessage }));
-          }),
-        );
-      }),
-    );
-  },
-  { functional: true, dispatch: true },
-);
+              console.log('Login failure');
+              return of(AuthActions.loginFailure({ errorMessage }));
+            }),
+          );
+        }),
+      );
+    },
+    { dispatch: true },
+  );
 
-export const logout$ = createEffect(
-  (actions$ = inject(Actions), router = inject(Router)) => {
-    return actions$.pipe(
-      ofType(AuthActions.logout),
-      tap(() => {
-        localStorage.removeItem('token');
-        router.navigateByUrl('/account/login');
-      }),
-    );
-  },
-  { functional: true, dispatch: false },
-);
-
-export const initProfile$ = createEffect(
-  (actions$ = inject(Actions), accountService = inject(AccountService)) => {
-    return actions$.pipe(
-      ofType(AuthActions.initProfile),
-      mergeMap(() => {
-        return accountService.getUserProfile().pipe(
-          map((user) => {
-            return AuthActions.initProfileSuccess({ user });
-          }),
-          catchError((error) => {
-            const errorMessage = error
-              ? error[0]
-              : `${AuthActions.initProfile.type} Error while updating user`;
-            return of(AuthActions.initProfileFailure({ errorMessage }));
-          }),
-        );
-      }),
-    );
-  },
-  { functional: true, dispatch: true },
-);
-
-export const initRoles$ = createEffect(
-  (actions$ = inject(Actions), accountService = inject(AccountService)) => {
-    return actions$.pipe(
-      ofType(AuthActions.initRoles),
-      mergeMap(() => {
-        return accountService.getCurrentUserRoles().pipe(
-          map((roles) => {
-            return AuthActions.initRolesSuccess({ roles });
-          }),
-          catchError((error) => {
-            const errorMessage = error
-              ? error[0]
-              : `${AuthActions.initRoles.type} Error while updating user`;
-            return of(AuthActions.initRolesFailure({ errorMessage }));
-          }),
-        );
-      }),
-    );
-  },
-  { functional: true, dispatch: true },
-);
-
-export const updateUser$ = createEffect(
-  (actions$ = inject(Actions), accountService = inject(AccountService)) => {
-    return actions$.pipe(
-      ofType(AuthActions.updateUser),
-      mergeMap(({ user }) => {
-        return accountService.updateUserProfile(user).pipe(
-          map((authBlob) => {
-            return AuthActions.updateUserSuccess({ user: authBlob });
-          }),
-          catchError((error) => {
-            const errorMessage = error
-              ? error[0]
-              : `${AuthActions.updateUser.type} Error while updating user`;
-            return of(AuthActions.updateUserFailure({ errorMessage }));
-          }),
-        );
-      }),
-    );
-  },
-  { functional: true, dispatch: true },
-);
-
-export const register$ = createEffect(
-  (
-    actions$ = inject(Actions),
-    authService = inject(AuthService),
-    router = inject(Router),
-  ) => {
-    return actions$.pipe(
-      ofType(AuthActions.register),
-      mergeMap(({ registerData }) => {
-        return authService.register(registerData).pipe(
-          map(({ token, roles }) => {
-            if (!token)
-              return AuthActions.registerFailure({
-                errorMessage: 'JWT error ',
+  socialLogin$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(AuthActions.socialLogin),
+        mergeMap(({ loginData, returnUrl }) => {
+          return this.authService.socialLogin(loginData).pipe(
+            map(({ token, roles }) => {
+              if (!token) {
+                console.log('social login failure');
+                return AuthActions.socialLoginFailure({
+                  errorMessage: 'JWT error',
+                });
+              }
+              return AuthActions.authSuccess({
+                token,
+                roles,
+                returnUrl,
               });
-            router.navigate(['/']);
-            return AuthActions.authSuccess({ token, roles });
-          }),
-          catchError((error) => {
-            const errorMessage = error
-              ? `${AuthActions.register.type} ${error[0]}`
-              : `${AuthActions.register.type} Error while registering`;
-            return of(AuthActions.registerFailure({ errorMessage }));
-          }),
-        );
-      }),
-    );
-  },
-  { functional: true, dispatch: true },
-);
+            }),
+            catchError((error: HttpErrorResponse) => {
+              const errorMessage =
+                error.status === HttpStatusCode.Unauthorized
+                  ? 'Wrong username or password'
+                  : 'An unexpected error occurred';
+
+              console.log('dispatching socialLoginFailure');
+              return of(AuthActions.socialLoginFailure({ errorMessage }));
+            }),
+          );
+        }),
+      );
+    },
+    { dispatch: true },
+  );
+
+  logout$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(AuthActions.logout),
+        tap(() => {
+          console.log('Logging out');
+          localStorage.removeItem('token');
+          this.router.navigateByUrl('/account/login');
+        }),
+      );
+    },
+    { dispatch: false },
+  );
+
+  initProfile$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(AuthActions.initProfile),
+        mergeMap(() => {
+          return this.accountsService.getUserProfile().pipe(
+            map((user) => {
+              return AuthActions.initProfileSuccess({ user });
+            }),
+            catchError((error) => {
+              const errorMessage = error
+                ? error[0]
+                : `${AuthActions.initProfile.type} Error while updating user`;
+              console.log('Init profile failure:', errorMessage);
+              return of(AuthActions.initProfileFailure({ errorMessage }));
+            }),
+          );
+        }),
+      );
+    },
+    { dispatch: true },
+  );
+
+  initRoles$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(AuthActions.initRoles),
+        mergeMap(() => {
+          return this.accountsService.getCurrentUserRoles().pipe(
+            map((roles) => {
+              return AuthActions.initRolesSuccess({ roles });
+            }),
+            catchError((error) => {
+              const errorMessage = error
+                ? error[0]
+                : `${AuthActions.initRoles.type} Error while updating user`;
+              console.log('Init roles failure:', errorMessage);
+              return of(AuthActions.initRolesFailure({ errorMessage }));
+            }),
+          );
+        }),
+      );
+    },
+    { dispatch: true },
+  );
+
+  updateUser$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(AuthActions.updateUser),
+        mergeMap(({ user }) => {
+          return this.accountsService.updateUserProfile(user).pipe(
+            map((authBlob) => {
+              return AuthActions.updateUserSuccess({ user: authBlob });
+            }),
+            catchError((error) => {
+              const errorMessage = error
+                ? error[0]
+                : `${AuthActions.updateUser.type} Error while updating user`;
+              console.log('Update user failure:', errorMessage);
+              return of(AuthActions.updateUserFailure({ errorMessage }));
+            }),
+          );
+        }),
+      );
+    },
+    { dispatch: true },
+  );
+
+  register$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(AuthActions.register),
+        mergeMap(({ registerData }) => {
+          return this.authService.register(registerData).pipe(
+            map(({ token, roles }) => {
+              if (!token) {
+                console.log('register failure');
+                return AuthActions.registerFailure({
+                  errorMessage: 'JWT error ',
+                });
+              }
+              this.router.navigate(['/']);
+              return AuthActions.authSuccess({ token, roles });
+            }),
+            catchError((error) => {
+              const errorMessage = error
+                ? `${AuthActions.register.type} ${error[0]}`
+                : `${AuthActions.register.type} Error while registering`;
+              console.log('Register failure:', errorMessage);
+              return of(AuthActions.registerFailure({ errorMessage }));
+            }),
+          );
+        }),
+      );
+    },
+    { dispatch: true },
+  );
+}

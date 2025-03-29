@@ -1,33 +1,33 @@
 import { createReducer, on } from '@ngrx/store';
 
 import { Draft } from '../../_types';
-import * as DraftActions from '../actions/draft.actions';
+import * as DraftsActions from '../actions/drafts.actions';
 
-export interface DraftState {
+export interface DraftsState {
   ongoing: Draft[];
   current: Draft | null;
   errorMessage: string | null;
 }
 
-export const initialState: DraftState = {
+export const initialState: DraftsState = {
   ongoing: [],
   current: null,
   errorMessage: null,
 };
 
-export const draftReducer = createReducer(
+export const draftsReducer = createReducer(
   initialState,
-  on(DraftActions.draftStoreFailure, (_state, { errorMessage }) => ({
+  on(DraftsActions.draftStoreFailure, (_state, { errorMessage }) => ({
     ongoing: [],
     current: null,
     errorMessage,
   })),
-  on(DraftActions.initializeCurrentDraftSuccess, (state, { current }) => ({
+  on(DraftsActions.initializeCurrentDraftSuccess, (state, { current }) => ({
     ...state,
     current,
     errorMessage: null,
   })),
-  on(DraftActions.initializeOngoingDraftsSuccess, (state, { ongoing }) => ({
+  on(DraftsActions.initializeOngoingDraftsSuccess, (state, { ongoing }) => ({
     ...state,
     ongoing,
     errorMessage: null,

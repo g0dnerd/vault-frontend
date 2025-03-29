@@ -7,12 +7,8 @@ import { Enrollment } from '../../_types';
 const TYPE = '[Enrollments/API]';
 
 export enum EnrollmentActionTypes {
-  ENROLLMENT_STORE_FAILURE = `${TYPE} Error`,
-  INITIALIZE_ALL_ENROLLMENTS = `${TYPE} Initialize all enrollments`,
-  INITIALIZE_ALL_LEAGUE_PLAYERS = `${TYPE} Initialize league players`,
-  INITIALIZE_ENROLLMENTS_FOR_TOURNAMENT = `${TYPE} Initialize enrollments for tournament`,
-  INITIALIZE_ENROLLMENTS_FOR_DRAFT = `${TYPE} Initialize enrollments for draft`,
-  SET_ENROLLMENTS_FOR_DRAFT = `${TYPE} Set enrollments for draft`,
+  ENROLLMENT_STORE_FAILURE = `${TYPE} Failure`,
+  INITIALIZE_ENROLLMENTS = `${TYPE} Initialize enrollments`,
   SELECT_ENROLLMENT = `${TYPE} Select enrollment`,
   LOAD_ENROLLMENTS = `${TYPE} Load enrollments`,
   SET_ENROLLMENTS = `${TYPE} Set enrollments`,
@@ -35,23 +31,8 @@ export const enrollmentStoreFailure = createAction(
   EnrollmentActionTypes.ENROLLMENT_STORE_FAILURE,
   props<{ errorMessage: string }>(),
 );
-export const initializeAllEnrollments = createAction(
-  EnrollmentActionTypes.INITIALIZE_ALL_ENROLLMENTS,
-);
-export const initializeEnrollmentsForTournament = createAction(
-  EnrollmentActionTypes.INITIALIZE_ENROLLMENTS_FOR_TOURNAMENT,
-  props<{ tournamentId: number }>(),
-);
-export const initializeEnrollmentsForDraft = createAction(
-  EnrollmentActionTypes.INITIALIZE_ENROLLMENTS_FOR_DRAFT,
-  props<{ draftId: number }>(),
-);
-export const initializeAllLeaguePlayers = createAction(
-  EnrollmentActionTypes.INITIALIZE_ALL_LEAGUE_PLAYERS,
-);
-export const setEnrollmentsForDraft = createAction(
-  EnrollmentActionTypes.SET_ENROLLMENTS_FOR_DRAFT,
-  props<{ ids: number[] }>(),
+export const initializeEnrollments = createAction(
+  EnrollmentActionTypes.INITIALIZE_ENROLLMENTS,
 );
 export const selectEnrollment = createAction(
   EnrollmentActionTypes.SELECT_ENROLLMENT,

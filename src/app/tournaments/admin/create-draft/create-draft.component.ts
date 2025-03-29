@@ -35,29 +35,27 @@ import {
   selectAllEnrollments,
   selectAllPhases,
   selectCurrentDraft,
-  selectDraftEnrollments,
+  selectPlayersForDraft,
   selectTournamentById,
   State,
 } from '../../../_store';
-import {
-  initializeEnrollmentsForDraft,
-  initializeEnrollmentsForTournament,
-} from '../../../_store/actions/enrollment.actions';
-import { initializeAllCubes } from '../../../_store/actions/cube.actions';
+import { initializeCubes } from '../../../_store/actions/cubes.actions';
 import {
   CreateDraftDto,
   CreatePhaseDto,
   Draft,
+  Player,
   Tournament,
 } from '../../../_types';
-import { initializeAllTournaments } from '../../../_store/actions/tournament.actions';
-import { initializeSingleDraft } from '../../../_store/actions/draft.actions';
-import { initializePhasesForTournament } from '../../../_store/actions/phase.actions';
+import { initializeAllTournaments } from '../../../_store/actions/tournaments.actions';
+import { initializeSingleDraft } from '../../../_store/actions/drafts.actions';
+import { initializePhasesForTournament } from '../../../_store/actions/phases.actions';
 import {
-  DraftService,
-  EnrollmentService,
-  PhaseService,
+  DraftsService,
+  EnrollmentsService,
+  PhasesService,
 } from '../../../_services';
+import { initializeEnrollments } from '../../../_store/actions/enrollments.actions';
 
 @Component({
   selector: 'app-create-draft',
@@ -86,8 +84,8 @@ export class CreateDraftComponent implements OnInit {
 
   readonly cubes$ = this.store$.select(selectAllCubes);
   readonly availableEnrollments$ = this.store$.select(selectAllEnrollments);
-  readonly alreadyEnrolled$ = this.store$.select(selectDraftEnrollments);
   readonly phases$ = this.store$.select(selectAllPhases);
+  alreadyEnrolled$: Observable<Player[]> = of([]);
   draft$: Observable<Draft | null> = of(null);
   tournament$: Observable<Tournament | undefined> = of(undefined);
 
@@ -140,10 +138,10 @@ export class CreateDraftComponent implements OnInit {
   tableSliderEnabled = false;
 
   constructor(
-    private readonly draftService: DraftService,
-    private readonly enrollmentService: EnrollmentService,
+    private readonly draftService: DraftsService,
+    private readonly enrollmentService: EnrollmentsService,
     private readonly route: ActivatedRoute,
-    private readonly phaseService: PhaseService,
+    private readonly phaseService: PhasesService,
   ) {
     this.form = this.formBuilder.group({
       cubeId: this.cubeFormControl,
@@ -160,9 +158,9 @@ export class CreateDraftComponent implements OnInit {
   ngOnInit() {
     const tournamentId: number = this.tournamentId();
 
-    this.store$.dispatch(initializeEnrollmentsForTournament({ tournamentId }));
+    this.store$.dispatch(initializeEnrollments());
     this.store$.dispatch(initializeAllTournaments());
-    this.store$.dispatch(initializeAllCubes());
+    this.store$.dispatch(initializeCubes());
     this.store$.dispatch(initializePhasesForTournament({ tournamentId }));
     this.tournament$ = this.store$.select(selectTournamentById(tournamentId));
 
@@ -173,8 +171,10 @@ export class CreateDraftComponent implements OnInit {
       const draftId = parseInt(id);
       this.draftId = draftId;
       this.draft$ = this.store$.select(selectCurrentDraft);
+      this.alreadyEnrolled$ = this.store$.select(
+        selectPlayersForDraft(draftId),
+      );
       this.store$.dispatch(initializeSingleDraft({ draftId }));
-      this.store$.dispatch(initializeEnrollmentsForDraft({ draftId }));
     }
 
     this.draft$.subscribe((draft) => {

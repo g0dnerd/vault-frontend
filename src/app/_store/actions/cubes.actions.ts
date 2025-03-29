@@ -5,9 +5,9 @@ import { Cube } from '../../_types';
 
 const TYPE = '[Cubes/API]';
 
-export enum CubeActionTypes {
+export enum CubesActionTypes {
   CUBE_STORE_FAILURE = `${TYPE} Error`,
-  INITIALIZE_ALL_CUBES = `${TYPE} Initialize all cubes`,
+  INITIALIZE_CUBES = `${TYPE} Initialize all cubes`,
   SELECT_CUBE = `${TYPE} Select cube`,
   LOAD_CUBES = `${TYPE} Load cubes`,
   SET_CUBES = `${TYPE} Set cubes`,
@@ -27,70 +27,68 @@ export enum CubeActionTypes {
 }
 
 export const cubeStoreFailure = createAction(
-  CubeActionTypes.CUBE_STORE_FAILURE,
+  CubesActionTypes.CUBE_STORE_FAILURE,
   props<{ errorMessage: string }>(),
 );
-export const initializeAllCubes = createAction(
-  CubeActionTypes.INITIALIZE_ALL_CUBES,
-);
+export const initializeCubes = createAction(CubesActionTypes.INITIALIZE_CUBES);
 export const selectCube = createAction(
-  CubeActionTypes.SELECT_CUBE,
+  CubesActionTypes.SELECT_CUBE,
   props<{ cubeId: number }>(),
 );
 export const loadCubes = createAction(
-  CubeActionTypes.LOAD_CUBES,
+  CubesActionTypes.LOAD_CUBES,
   props<{ cubes: Cube[] }>(),
 );
 export const setCubes = createAction(
-  CubeActionTypes.SET_CUBES,
+  CubesActionTypes.SET_CUBES,
   props<{ cubes: Cube[] }>(),
 );
 export const addCube = createAction(
-  CubeActionTypes.ADD_CUBE,
+  CubesActionTypes.ADD_CUBE,
   props<{ cube: Cube }>(),
 );
 export const setCube = createAction(
-  CubeActionTypes.SET_CUBE,
+  CubesActionTypes.SET_CUBE,
   props<{ cube: Cube }>(),
 );
 export const upsertCube = createAction(
-  CubeActionTypes.UPSERT_CUBE,
+  CubesActionTypes.UPSERT_CUBE,
   props<{ cube: Cube }>(),
 );
 export const addCubes = createAction(
-  CubeActionTypes.ADD_CUBES,
+  CubesActionTypes.ADD_CUBES,
   props<{ cubes: Cube[] }>(),
 );
 export const upsertCubes = createAction(
-  CubeActionTypes.UPSERT_CUBES,
+  CubesActionTypes.UPSERT_CUBES,
   props<{ cubes: Cube[] }>(),
 );
 export const updateCube = createAction(
-  CubeActionTypes.UPDATE_CUBE,
+  CubesActionTypes.UPDATE_CUBE,
   props<{ update: Update<Cube> }>(),
 );
 export const updateCubes = createAction(
-  CubeActionTypes.UPDATE_CUBES,
+  CubesActionTypes.UPDATE_CUBES,
   props<{ updates: Update<Cube>[] }>(),
 );
 export const mapCube = createAction(
-  CubeActionTypes.MAP_CUBE,
+  CubesActionTypes.MAP_CUBE,
   props<{ entityMap: EntityMapOne<Cube> }>(),
 );
 export const mapCubes = createAction(
-  CubeActionTypes.MAP_CUBES,
+  CubesActionTypes.MAP_CUBES,
   props<{ entityMap: EntityMap<Cube> }>(),
 );
 export const deleteCube = createAction(
-  CubeActionTypes.DELETE_CUBE,
+  CubesActionTypes.DELETE_CUBE,
   props<{ id: number }>(),
 );
 export const deleteCubes = createAction(
-  CubeActionTypes.DELETE_CUBES,
+  CubesActionTypes.DELETE_CUBES,
   props<{ ids: number[] }>(),
 );
 export const deleteCubesByPredicate = createAction(
-  CubeActionTypes.DELETE_CUBES_BY_PREDICATE,
+  CubesActionTypes.DELETE_CUBES_BY_PREDICATE,
   props<{ predicate: Predicate<Cube> }>(),
 );
-export const clearCubes = createAction(CubeActionTypes.CLEAR_CUBES);
+export const clearCubes = createAction(CubesActionTypes.CLEAR_CUBES);
