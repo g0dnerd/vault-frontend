@@ -1,5 +1,9 @@
 <h1 class="my-tournaments">My Tournaments</h1>
-<mat-card *ngIf="!(enrollments$ | ngrxPush)?.length">
+<mat-card
+  *ngIf="
+    !(enrollments$ | ngrxPush)?.length && !(tournaments$ | ngrxPush)?.length
+  "
+>
   <mat-card-content>You are not enrolled in any tournaments.</mat-card-content>
 </mat-card>
 <ng-container *ngIf="isAdmin(); else noAdmin">

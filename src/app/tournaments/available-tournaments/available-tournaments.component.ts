@@ -8,7 +8,7 @@ import { PushPipe } from '@ngrx/component';
 import {
   initializeAvailableTournaments,
   enroll,
-  initializeAllTournaments,
+  initializeTournaments,
 } from '../../_store/actions/tournaments.actions';
 import { selectAvailableTournaments, State } from '../../_store';
 
@@ -27,7 +27,7 @@ export class AvailableTournamentsComponent implements OnInit {
   loading = false;
 
   ngOnInit() {
-    this.store$.dispatch(initializeAllTournaments());
+    this.store$.dispatch(initializeTournaments());
     this.store$.dispatch(initializeAvailableTournaments());
   }
 

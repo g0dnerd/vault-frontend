@@ -38,7 +38,7 @@ export const setAvailableTournaments = createAction(
   TournamentsActionTypes.SET_AVAILABLE_TOURNAMENTS,
   props<{ ids: number[] }>(),
 );
-export const initializeAllTournaments = createAction(
+export const initializeTournaments = createAction(
   TournamentsActionTypes.INITIALIZE_TOURNAMENTS,
 );
 export const initializeAvailableTournaments = createAction(

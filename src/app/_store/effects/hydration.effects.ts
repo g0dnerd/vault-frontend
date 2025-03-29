@@ -20,13 +20,11 @@ export class HydrationEffects implements OnInitEffects {
           if (storageValue) {
             try {
               const state = JSON.parse(storageValue);
-              console.log('Hydration success');
               return HydrationActions.hydrateSuccess({ state });
             } catch {
               localStorage.removeItem('state');
             }
           }
-          console.log('Hydration failure');
           return HydrationActions.hydrateFailure();
         }),
       );

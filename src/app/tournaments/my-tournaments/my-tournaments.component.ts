@@ -8,13 +8,13 @@ import { Observable, of } from 'rxjs';
 
 import {
   selectAllEnrollments,
+  selectAllTournaments,
   selectCurrentUserRoles,
   State,
 } from '../../_store';
 import { initializeEnrollments } from '../../_store/actions/enrollments.actions';
 import { Enrollment, Role, Tournament } from '../../_types';
-import { selectAllTournaments } from '../../_store/reducers/tournaments.reducer';
-import { initializeAllTournaments } from '../../_store/actions/tournaments.actions';
+import { initializeTournaments } from '../../_store/actions/tournaments.actions';
 
 @Component({
   standalone: true,
@@ -37,7 +37,7 @@ export class MyTournamentsComponent implements OnInit {
     this.roles$.subscribe((roles) => {
       if (roles.includes(Role.Admin) || roles.includes(Role.PlayerAdmin)) {
         this.isAdmin.set(true);
-        this.store$.dispatch(initializeAllTournaments());
+        this.store$.dispatch(initializeTournaments());
         this.tournaments$ = this.store$.select(selectAllTournaments);
       } else {
         this.isAdmin.set(false);

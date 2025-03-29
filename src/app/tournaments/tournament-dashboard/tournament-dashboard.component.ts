@@ -26,7 +26,7 @@ import { initProfile } from '../../_store/actions/auth.actions';
 import { initializeEnrollments } from '../../_store/actions/enrollments.actions';
 import { initCurrentMatch } from '../../_store/actions/matches.actions';
 import { initializePoolStatus } from '../../_store/actions/players.actions';
-import { initializeAllTournaments } from '../../_store/actions/tournaments.actions';
+import { initializeTournaments } from '../../_store/actions/tournaments.actions';
 import { Enrollment, Role, Tournament } from '../../_types';
 import { DraftPanelComponent } from './draft-panel/draft-panel.component';
 import { TournamentStandingsComponent } from './tournament-standings/tournament-standings.component';
@@ -65,7 +65,7 @@ export class TournamentDashboardComponent implements OnInit {
 
   async ngOnInit() {
     this.store$.dispatch(initProfile());
-    this.store$.dispatch(initializeAllTournaments());
+    this.store$.dispatch(initializeTournaments());
     this.store$.dispatch(initializeEnrollments());
 
     this.roles$.subscribe((roles) => {

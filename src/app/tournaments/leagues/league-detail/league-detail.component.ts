@@ -11,7 +11,7 @@ import {
   selectTournamentById,
   State,
 } from '../../../_store';
-import { initializeAllTournaments } from '../../../_store/actions/tournaments.actions';
+import { initializeTournaments } from '../../../_store/actions/tournaments.actions';
 import { Enrollment, Tournament } from '../../../_types';
 import { initializeEnrollments } from '../../../_store/actions/enrollments.actions';
 
@@ -31,7 +31,7 @@ export class LeagueDetailComponent implements OnInit {
   enrollment$: Observable<Enrollment | undefined> = of(undefined);
 
   ngOnInit() {
-    this.store$.dispatch(initializeAllTournaments());
+    this.store$.dispatch(initializeTournaments());
     this.store$.dispatch(initializeEnrollments());
     this.league$ = this.store$.select(selectTournamentById(this.leagueId()));
     this.players$ = this.store$.select(

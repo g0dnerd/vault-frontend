@@ -14,7 +14,7 @@ export class TournamentsEffects {
   initializeTournaments$ = createEffect(
     () => {
       return this.actions$.pipe(
-        ofType(TournamentsActions.initializeAllTournaments),
+        ofType(TournamentsActions.initializeTournaments),
         mergeMap(() => {
           return this.tournamentsService.getAllTournaments().pipe(
             map((tournaments) => {
