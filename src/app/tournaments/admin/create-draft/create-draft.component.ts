@@ -28,7 +28,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute } from '@angular/router';
 import { PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
-import { catchError, Observable, of, switchMap, tap } from 'rxjs';
+import { catchError, Observable, of, switchMap } from 'rxjs';
 
 import {
   selectAllCubes,
@@ -47,7 +47,7 @@ import {
   Player,
   Tournament,
 } from '../../../_types';
-import { initializeAllTournaments } from '../../../_store/actions/tournaments.actions';
+import { initializeTournaments } from '../../../_store/actions/tournaments.actions';
 import { initializeSingleDraft } from '../../../_store/actions/drafts.actions';
 import { initializePhasesForTournament } from '../../../_store/actions/phases.actions';
 import {
@@ -159,9 +159,10 @@ export class CreateDraftComponent implements OnInit {
     const tournamentId: number = this.tournamentId();
 
     this.store$.dispatch(initializeEnrollments());
-    this.store$.dispatch(initializeAllTournaments());
+    this.store$.dispatch(initializeTournaments());
     this.store$.dispatch(initializeCubes());
     this.store$.dispatch(initializePhasesForTournament({ tournamentId }));
+
     this.tournament$ = this.store$.select(selectTournamentById(tournamentId));
 
     // If a draftId gets passed as an optional route parameter,
@@ -183,7 +184,6 @@ export class CreateDraftComponent implements OnInit {
           cubeId: draft.cube?.id,
           phaseId: draft.phase?.id,
           numRounds: draft.phase?.roundAmount,
-          players: this.f['players'].value,
           tableFirst: this.f['tableFirst'].value,
           tableLast: this.f['tableLast'].value,
         });
@@ -210,7 +210,6 @@ export class CreateDraftComponent implements OnInit {
 
   async createDraft() {
     this.submitted = true;
-    console.log('Form submitted');
 
     if (this.form.invalid) {
       // FIXME: Handle error
@@ -252,19 +251,12 @@ export class CreateDraftComponent implements OnInit {
           }),
         )
         .subscribe((draft) => {
-          console.log('Got draft', JSON.stringify(draft));
           if (draft) {
             const enrollmentIds = this.pf['players'].value;
             if (enrollmentIds.length > 0) {
               this.enrollmentService
                 .enrollMany(tournamentId, enrollmentIds)
                 .pipe(
-                  tap((enrollments) => {
-                    console.log(
-                      'Enrolled players',
-                      JSON.stringify(enrollments),
-                    );
-                  }),
                   catchError((error) => {
                     return of(console.error(error));
                   }),
