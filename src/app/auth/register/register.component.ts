@@ -13,13 +13,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
 
 import { register } from '../../_store/actions/auth.actions';
 import { State, selectAuthErrorMessage } from '../../_store';
-import { AuthPayload } from '../../_types';
+import { AuthPayload, strongPasswordPattern } from '../../_types';
 
 @Component({
   imports: [
@@ -29,6 +30,7 @@ import { AuthPayload } from '../../_types';
     MatIconModule,
     MatInputModule,
     MatProgressBarModule,
+    MatTooltipModule,
     NgClass,
     NgIf,
     PushPipe,
@@ -54,8 +56,15 @@ export class RegisterComponent {
     Validators.required,
     Validators.email,
   ]);
-  usernameFormControl = new FormControl('', [Validators.required]);
-  passwordFormControl = new FormControl('', [Validators.required]);
+  usernameFormControl = new FormControl('', [
+    Validators.required,
+    Validators.minLength(3),
+  ]);
+  passwordFormControl = new FormControl('', [
+    Validators.required,
+    Validators.minLength(8),
+    Validators.pattern(strongPasswordPattern),
+  ]);
 
   constructor(private formBuilder: FormBuilder) {
     this.form = this.formBuilder.group({

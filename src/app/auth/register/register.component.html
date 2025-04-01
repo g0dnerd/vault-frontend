@@ -33,6 +33,15 @@
             placeholder="uncleIstvan99xXx"
             class="form-control"
           />
+          @if (
+            usernameFormControl.hasError("minlength") &&
+            !usernameFormControl.hasError("required")
+          ) {
+            <mat-error
+              >Please choose a username with
+              <strong>at least 3 characters</strong></mat-error
+            >
+          }
           @if (usernameFormControl.hasError("required")) {
             <mat-error>Username is <strong>required</strong></mat-error>
           }
@@ -44,6 +53,8 @@
             [type]="hide() ? 'password' : 'text'"
             [formControl]="passwordFormControl"
             [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
+            matTooltip="Please choose a password with at least total 8 characters, 1 lowercase and 1 uppercase character, 1 special character and 1 digit"
+            matTooltipPosition="after"
           />
           <button
             mat-icon-button
@@ -56,6 +67,18 @@
           >
             <mat-icon>{{ hide() ? "visibility_off" : "visibility" }}</mat-icon>
           </button>
+          @if (
+            passwordFormControl.hasError("pattern") &&
+            !passwordFormControl.hasError("required")
+          ) {
+            <mat-error
+              >Please choose a password with
+              <strong
+                >at least 1 lowercase, 1 uppercase, 1 special and 8 total
+                characters, and at least 1 digit</strong
+              ></mat-error
+            >
+          }
           @if (passwordFormControl.hasError("required")) {
             <mat-error>Password is <strong>required</strong></mat-error>
           }
@@ -67,7 +90,9 @@
       <p *ngIf="errorMessage$ | ngrxPush as msg" class="message-alert-error">
         {{ msg }}
       </p>
-      <button mat-stroked-button [disabled]="loading">Login</button>
+      <button mat-stroked-button [disabled]="loading || form.errors">
+        Register
+      </button>
       <a mat-stroked-button routerLink="../login" class="cancel-button"
         >Cancel</a
       >

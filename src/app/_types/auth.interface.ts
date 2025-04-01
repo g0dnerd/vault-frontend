@@ -27,3 +27,6 @@ export interface GoogleAuthPayload {
   email_verified?: boolean | undefined;
   hd?: string | undefined;
 }
+
+export const strongPasswordPattern: RegExp =
+  /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
