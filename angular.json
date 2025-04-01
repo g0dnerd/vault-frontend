@@ -30,7 +30,6 @@
               }
             ],
             "styles": ["src/styles.scss"],
-            "prerender": false,
             "scripts": [],
             "server": "src/main.server.ts",
             "outputMode": "server",
