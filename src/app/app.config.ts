@@ -24,6 +24,7 @@ import { hydrationMetaReducer } from './_store/reducers/hydration.reducer';
 import { dev } from '../environments/environment';
 import { HydrationEffects } from './_store/effects/hydration.effects';
 import { reducers } from './_store';
+import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 
 const config: SocketIoConfig = {
   url: dev.webSocketUrl,
@@ -55,6 +56,6 @@ export const appConfig: ApplicationConfig = {
       withInterceptors([jwtInterceptor, errorInterceptor]),
     ),
     importProvidersFrom(SocketIoModule.forRoot(config)),
-    provideAnimationsAsync(),
+    provideAnimationsAsync(), provideClientHydration(withEventReplay()),
   ],
 };
