@@ -1,4 +1,4 @@
-import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
+import { HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -37,7 +37,6 @@ export class AuthEffects {
           return this.authService.login(loginData).pipe(
             map(({ token, roles }) => {
               if (!token) {
-                console.log('Login failure');
                 return AuthActions.loginFailure({ errorMessage: 'JWT error' });
               }
               return AuthActions.authSuccess({
@@ -47,12 +46,7 @@ export class AuthEffects {
               });
             }),
             catchError((error: HttpErrorResponse) => {
-              const errorMessage =
-                error.status === HttpStatusCode.Unauthorized
-                  ? 'Wrong username or password'
-                  : 'An unexpected error occurred';
-
-              console.log('Login failure');
+              const errorMessage = error.error.message;
               return of(AuthActions.loginFailure({ errorMessage }));
             }),
           );
@@ -70,7 +64,6 @@ export class AuthEffects {
           return this.authService.socialLogin(loginData).pipe(
             map(({ token, roles }) => {
               if (!token) {
-                console.log('social login failure');
                 return AuthActions.socialLoginFailure({
                   errorMessage: 'JWT error',
                 });
@@ -82,12 +75,7 @@ export class AuthEffects {
               });
             }),
             catchError((error: HttpErrorResponse) => {
-              const errorMessage =
-                error.status === HttpStatusCode.Unauthorized
-                  ? 'Wrong username or password'
-                  : 'An unexpected error occurred';
-
-              console.log('dispatching socialLoginFailure');
+              const errorMessage = error.error.message;
               return of(AuthActions.socialLoginFailure({ errorMessage }));
             }),
           );
@@ -102,7 +90,6 @@ export class AuthEffects {
       return this.actions$.pipe(
         ofType(AuthActions.logout),
         tap(() => {
-          console.log('Logging out');
           localStorage.removeItem('token');
           localStorage.removeItem('state');
           this.router.navigateByUrl('/account/login');
@@ -122,10 +109,7 @@ export class AuthEffects {
               return AuthActions.initProfileSuccess({ user });
             }),
             catchError((error) => {
-              const errorMessage = error
-                ? error[0]
-                : `${AuthActions.initProfile.type} Error while updating user`;
-              console.log('Init profile failure:', errorMessage);
+              const errorMessage = error.error.message;
               return of(AuthActions.initProfileFailure({ errorMessage }));
             }),
           );
@@ -145,10 +129,7 @@ export class AuthEffects {
               return AuthActions.initRolesSuccess({ roles });
             }),
             catchError((error) => {
-              const errorMessage = error
-                ? error[0]
-                : `${AuthActions.initRoles.type} Error while updating user`;
-              console.log('Init roles failure:', errorMessage);
+              const errorMessage = error.error.message;
               return of(AuthActions.initRolesFailure({ errorMessage }));
             }),
           );
@@ -168,10 +149,7 @@ export class AuthEffects {
               return AuthActions.updateUserSuccess({ user: authBlob });
             }),
             catchError((error) => {
-              const errorMessage = error
-                ? error[0]
-                : `${AuthActions.updateUser.type} Error while updating user`;
-              console.log('Update user failure:', errorMessage);
+              const errorMessage = error.error.message;
               return of(AuthActions.updateUserFailure({ errorMessage }));
             }),
           );
@@ -189,7 +167,6 @@ export class AuthEffects {
           return this.authService.register(registerData).pipe(
             map(({ token, roles }) => {
               if (!token) {
-                console.log('register failure');
                 return AuthActions.registerFailure({
                   errorMessage: 'JWT error ',
                 });
@@ -198,10 +175,7 @@ export class AuthEffects {
               return AuthActions.authSuccess({ token, roles });
             }),
             catchError((error) => {
-              const errorMessage = error
-                ? `${AuthActions.register.type} ${error[0]}`
-                : `${AuthActions.register.type} Error while registering`;
-              console.log('Register failure:', errorMessage);
+              const errorMessage = error.error.message;
               return of(AuthActions.registerFailure({ errorMessage }));
             }),
           );

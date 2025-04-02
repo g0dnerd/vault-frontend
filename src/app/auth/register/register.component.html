@@ -54,7 +54,7 @@
             [formControl]="passwordFormControl"
             [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
             matTooltip="Please choose a password with at least total 8 characters, 1 lowercase and 1 uppercase character, 1 special character and 1 digit"
-            matTooltipPosition="after"
+            matTooltipPosition="above"
           />
           <button
             mat-icon-button
@@ -64,6 +64,8 @@
             (click)="clickEvent($event)"
             [attr.aria-label]="'Hide password'"
             [attr.aria-pressed]="hide()"
+            matTooltip="Show or hide password"
+            matTooltipPosition="before"
           >
             <mat-icon>{{ hide() ? "visibility_off" : "visibility" }}</mat-icon>
           </button>
@@ -71,28 +73,20 @@
             passwordFormControl.hasError("pattern") &&
             !passwordFormControl.hasError("required")
           ) {
-            <mat-error
-              >Please choose a password with
-              <strong
-                >at least 1 lowercase, 1 uppercase, 1 special and 8 total
-                characters, and at least 1 digit</strong
-              ></mat-error
-            >
+            <mat-error>
+              Please choose a password with at least 1 lowercase, 1 uppercase, 1
+              special and 8 total characters, and at least 1 digit.
+            </mat-error>
           }
           @if (passwordFormControl.hasError("required")) {
             <mat-error>Password is <strong>required</strong></mat-error>
           }
         </mat-form-field>
       </div>
-      <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
-        <div *ngIf="f['password'].errors['required']">Password is required</div>
-      </div>
-      <p *ngIf="errorMessage$ | ngrxPush as msg" class="message-alert-error">
+      <mat-error *ngIf="errorMessage$ | ngrxPush as msg">
         {{ msg }}
-      </p>
-      <button mat-stroked-button [disabled]="loading || form.errors">
-        Register
-      </button>
+      </mat-error>
+      <button mat-stroked-button [disabled]="loading">Register</button>
       <a mat-stroked-button routerLink="../login" class="cancel-button"
         >Cancel</a
       >

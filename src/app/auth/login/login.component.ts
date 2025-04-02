@@ -19,8 +19,13 @@ import { Store } from '@ngrx/store';
 import { CredentialResponse } from 'google-one-tap';
 
 import { State, selectAuthErrorMessage } from '../../_store';
-import { login, socialLogin } from '../../_store/actions/auth.actions';
+import {
+  login,
+  socialLogin,
+  socialLoginFailure,
+} from '../../_store/actions/auth.actions';
 import { GoogleAuthPayload } from '../../_types';
+import { distinctUntilChanged, tap } from 'rxjs';
 
 @Component({
   imports: [
@@ -83,6 +88,16 @@ export class LoginComponent implements OnInit {
       // @ts-ignore
       google.accounts.id.prompt();
     };
+
+    this.errorMessage$
+      .pipe(
+        distinctUntilChanged(),
+        tap(() => {
+          this.loading = false;
+          this.submitted = false;
+        }),
+      )
+      .subscribe();
   }
 
   get f() {
@@ -92,7 +107,6 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     this.submitted = true;
 
-    // FIXME: User feedback
     if (this.form.invalid) {
       this.submitted = false;
       return;
@@ -121,24 +135,27 @@ export class LoginComponent implements OnInit {
 
   handleCredentialResponse(response: CredentialResponse) {
     this.submitted = true;
+    this.loading = true;
+
     let responsePayload: GoogleAuthPayload | null = null;
 
     try {
       responsePayload = JSON.parse(atob(response?.credential.split('.')[1]));
-    } catch (e) {
-      // TODO: Render error response
-      console.error('Error while trying to decode token', e);
-    }
-
-    this.loading = true;
-
-    const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-
-    if (!responsePayload) {
-      // TODO: Render error response
-      console.error('Received no response payload');
+    } catch {
+      const errorMessage = 'Error while trying to decode token';
+      this.store$.dispatch(socialLoginFailure({ errorMessage }));
+      this.submitted = false;
       return;
     }
+
+    if (!responsePayload) {
+      const errorMessage = 'Received no response while trying to log in.';
+      this.store$.dispatch(socialLoginFailure({ errorMessage }));
+      this.submitted = false;
+      return;
+    }
+
+    const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
 
     this.store$.dispatch(
       socialLogin({
