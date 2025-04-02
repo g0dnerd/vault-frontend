@@ -16,16 +16,19 @@ export class HydrationEffects implements OnInitEffects {
       return this.actions$.pipe(
         ofType(HydrationActions.hydrate),
         map(() => {
-          const storageValue = localStorage.getItem('state');
-          if (storageValue) {
-            try {
-              const state = JSON.parse(storageValue);
-              return HydrationActions.hydrateSuccess({ state });
-            } catch {
-              localStorage.removeItem('state');
+          try {
+            const storageValue = localStorage.getItem('state');
+            if (storageValue) {
+              try {
+                const state = JSON.parse(storageValue);
+                return HydrationActions.hydrateSuccess({ state });
+              } catch {
+                localStorage.removeItem('state');
+              }
             }
+          } finally {
+            return HydrationActions.hydrateFailure();
           }
-          return HydrationActions.hydrateFailure();
         }),
       );
     },
@@ -41,7 +44,11 @@ export class HydrationEffects implements OnInitEffects {
         ),
         switchMap(() => this.store),
         distinctUntilChanged(),
-        tap((state) => localStorage.setItem('state', JSON.stringify(state))),
+        tap((state) => {
+          try {
+            localStorage.setItem('state', JSON.stringify(state));
+          } catch {}
+        }),
       );
     },
     { dispatch: false },

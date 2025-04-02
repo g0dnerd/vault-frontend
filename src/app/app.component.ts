@@ -1,9 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, RouterOutlet } from '@angular/router';
-import { Store } from '@ngrx/store';
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
 
-import { State } from './_store';
-import { logout, refreshAuth } from './_store/actions/auth.actions';
 import { NavbarComponent } from './navbar/navbar.component';
 
 @Component({
@@ -13,19 +10,4 @@ import { NavbarComponent } from './navbar/navbar.component';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent implements OnInit {
-  constructor(
-    private readonly store$: Store<State>,
-    private readonly router: Router,
-  ) {}
-
-  ngOnInit() {
-    const token = localStorage.getItem('token');
-    // if (token == null) {
-    //   this.authStore$.dispatch(logout());
-    //   this.router.navigateByUrl('/account/login');
-    // } else {
-    //   this.authStore$.dispatch(refreshAuth());
-    // }
-  }
-}
+export class AppComponent {}
