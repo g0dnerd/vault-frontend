@@ -6,15 +6,7 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Client,
   },
   {
-    path: 'account/login',
-    renderMode: RenderMode.Prerender,
-  },
-  {
     path: 'account/register',
-    renderMode: RenderMode.Prerender,
-  },
-  {
-    path: 'cubes',
     renderMode: RenderMode.Prerender,
   },
   {
