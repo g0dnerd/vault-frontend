@@ -48,12 +48,9 @@
           }
         </mat-form-field>
       </div>
-      <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
-        <div *ngIf="f['password'].errors['required']">Password is required</div>
-      </div>
-      <p *ngIf="errorMessage$ | ngrxPush as msg" class="message-alert-error">
+      <mat-error *ngIf="errorMessage$ | ngrxPush as msg">
         {{ msg }}
-      </p>
+      </mat-error>
       <button mat-stroked-button [disabled]="loading">Login</button>
       <a mat-stroked-button routerLink="../register" class="register-button"
         >Register</a

@@ -1,5 +1,5 @@
 import { NgClass, NgIf } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -21,6 +21,7 @@ import { Store } from '@ngrx/store';
 import { register } from '../../_store/actions/auth.actions';
 import { State, selectAuthErrorMessage } from '../../_store';
 import { AuthPayload, strongPasswordPattern } from '../../_types';
+import { distinctUntilChanged, tap } from 'rxjs';
 
 @Component({
   imports: [
@@ -41,7 +42,7 @@ import { AuthPayload, strongPasswordPattern } from '../../_types';
   styleUrl: './register.component.scss',
   standalone: true,
 })
-export class RegisterComponent {
+export class RegisterComponent implements OnInit {
   private readonly store$ = inject(Store<State>);
   readonly errorMessage$ = this.store$.select(selectAuthErrorMessage);
 
@@ -62,7 +63,6 @@ export class RegisterComponent {
   ]);
   passwordFormControl = new FormControl('', [
     Validators.required,
-    Validators.minLength(8),
     Validators.pattern(strongPasswordPattern),
   ]);
 
@@ -72,6 +72,18 @@ export class RegisterComponent {
       email: this.emailFormControl,
       password: this.passwordFormControl,
     });
+  }
+
+  ngOnInit() {
+    this.errorMessage$
+      .pipe(
+        distinctUntilChanged(),
+        tap(() => {
+          this.loading = false;
+          this.submitted = false;
+        }),
+      )
+      .subscribe();
   }
 
   get f() {
