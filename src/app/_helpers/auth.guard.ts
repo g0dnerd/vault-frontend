@@ -1,11 +1,11 @@
 import { inject, Injectable } from '@angular/core';
 import { CanActivate } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { catchError, mergeMap, of, take, tap } from 'rxjs';
+import { catchError, mergeMap, of, take } from 'rxjs';
 
 import { selectAuthToken, State } from '../_store';
-import { logout } from '../_store/actions/auth.actions';
-import { AuthService } from '../_services';
+import { logout, refreshAuth } from '../_store/actions/auth.actions';
+import { AccountsService } from '../_services';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +14,7 @@ import { AuthService } from '../_services';
 // Waits for the store to fully resolve auth status before
 // allowing or disallowing route access.
 export class AuthGuard implements CanActivate {
-  private readonly authService = inject(AuthService);
+  private readonly accountsService = inject(AccountsService);
   private readonly store$ = inject(Store<State>);
   private readonly authToken$ = this.store$.select(selectAuthToken);
 
@@ -29,8 +29,9 @@ export class AuthGuard implements CanActivate {
             return of(false);
           }
         }
-        return this.authService.checkToken().pipe(
-          tap(() => {
+        return this.accountsService.getCurrentUserRoles().pipe(
+          mergeMap((roles) => {
+            this.store$.dispatch(refreshAuth({ token, roles }));
             return of(true);
           }),
           catchError(() => {
