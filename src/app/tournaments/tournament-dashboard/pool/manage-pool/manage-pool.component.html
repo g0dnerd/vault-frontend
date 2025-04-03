@@ -1,18 +1,7 @@
-<mat-list class="image-list">
-  @defer {
-  <li *ngFor="let image of images$ | ngrxPush; index as i">
-    <img
-      src="{{ imageUrl }}{{ image.url }}"
-      alt="User uploaded image"
-      class="img-fluid img-thumbnail mt-4 mb-2"
-      style="max-height: 150px; max-width: 150px"
-    />
-  </li>
-  }
-</mat-list>
 <input
   type="file"
   class="file-input"
+  accept="image/jpeg"
   (change)="onFileSelected($event)"
   #fileUpload
 />

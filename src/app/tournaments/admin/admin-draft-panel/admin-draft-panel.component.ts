@@ -16,7 +16,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
 import { PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
-import { firstValueFrom } from 'rxjs';
+import { distinctUntilChanged, firstValueFrom, map } from 'rxjs';
 
 import { matchSumValidator } from '../../../_helpers/match-form.validator';
 import { MatchesService, MatchesWebSocketService } from '../../../_services';
@@ -109,21 +109,34 @@ export class AdminDraftPanelComponent implements OnInit {
     this.store$.dispatch(initializeSingleDraft({ draftId: this.draftId() }));
     this.store$.dispatch(initDraftMatches({ draftId: this.draftId() }));
 
-    this.matches$.subscribe((matches) => {
-      if (matches.length > 0) {
-        this.pairingsDisabled.set(true);
-      }
-    });
+    this.pairingsDisabled.set(false);
 
-    this.draft$.subscribe((draft) => {
-      if (!draft) {
-        this.pairingsDisabled.set(true);
-      } else {
-        if (!draft.seated) {
-          this.pairingsDisabled.set(true);
-        }
-      }
-    });
+    this.matches$
+      .pipe(
+        distinctUntilChanged(),
+        map((matches) => {
+          if (matches.length > 0) {
+            this.pairingsDisabled.set(true);
+          }
+        }),
+      )
+      .subscribe();
+
+    this.draft$
+      .pipe(
+        distinctUntilChanged(),
+        map((draft) => {
+          if (!draft) {
+            this.pairingsDisabled.set(true);
+          } else {
+            this.pairingsDisabled.set(false);
+            if (!draft.seated) {
+              this.pairingsDisabled.set(true);
+            }
+          }
+        }),
+      )
+      .subscribe();
   }
 
   get f() {

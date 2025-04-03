@@ -6,8 +6,6 @@ export enum ImageType {
 export interface Image {
   id: number;
   url: string;
-  draftPlayerId: number;
-  imageType: ImageType;
 }
 
 export enum ImageStatus {

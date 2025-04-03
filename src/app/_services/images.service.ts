@@ -17,7 +17,13 @@ export class ImagesService {
     return this.http.get<Image[]>(`${this.apiUrl}/user`);
   }
 
-  handleImageUpload(formData: FormData): Observable<Image> {
-    return this.http.post<Image>(`${this.apiUrl}/upload`, formData);
+  handleImageUpload(
+    formData: FormData,
+    tournamentId: number,
+  ): Observable<{ url: string }> {
+    return this.http.post<{ url: string }>(
+      `${this.apiUrl}/upload/checkin/${tournamentId}`,
+      formData,
+    );
   }
 }
