@@ -6,7 +6,7 @@
       <mat-tab-group animationDuration="0ms">
         <mat-tab label="Player View">
           <ng-container *ngIf="enrollment$ | ngrxPush as enrollment">
-            <app-draft-panel></app-draft-panel>
+            <app-draft-panel [tournamentId]="tournamentId()"></app-draft-panel>
             <app-tournament-standings [tournamentId]="tournament.id">
             </app-tournament-standings>
           </ng-container>
@@ -74,7 +74,7 @@
     </ng-container>
     <ng-template #noAdmin>
       <ng-container *ngIf="enrollment$ | ngrxPush as enrollment">
-        <app-draft-panel></app-draft-panel>
+        <app-draft-panel [tournamentId]="tournamentId()"></app-draft-panel>
         <app-tournament-standings [tournamentId]="tournament.id">
         </app-tournament-standings>
       </ng-container>

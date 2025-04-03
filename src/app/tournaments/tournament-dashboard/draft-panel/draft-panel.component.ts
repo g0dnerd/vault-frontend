@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { NgIf } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { RouterLink } from '@angular/router';
@@ -24,7 +24,8 @@ import { MyPoolComponent } from '../pool/my-pool/my-pool.component';
   styleUrl: './draft-panel.component.scss',
 })
 export class DraftPanelComponent {
-  private readonly store$ = inject(Store<State>);
+  tournamentId = input.required<number>();
 
+  private readonly store$ = inject(Store<State>);
   readonly draft$ = this.store$.select(selectCurrentDraft);
 }

@@ -16,5 +16,8 @@
       <mat-panel-description>I am not checked out.</mat-panel-description>
     </ng-template>
   </mat-expansion-panel-header>
-  <app-manage-pool />
+  <app-manage-pool [tournamentId]="tournamentId()" />
+  <section class="image-list">
+    <img *ngFor="let image of images$ | ngrxPush" src="{{ image.url }}" />
+  </section>
 </mat-expansion-panel>

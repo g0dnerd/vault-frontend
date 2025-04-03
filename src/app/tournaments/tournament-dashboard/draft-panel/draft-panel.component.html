@@ -15,7 +15,7 @@
   </mat-card-header>
   <mat-card-content>
     <ng-container *ngIf="draft$ | ngrxPush; else noDraft">
-      <app-my-pool />
+      <app-my-pool [tournamentId]="tournamentId()" />
       <app-match-panel />
     </ng-container>
     <ng-template #noDraft>

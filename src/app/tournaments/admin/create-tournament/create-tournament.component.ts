@@ -11,6 +11,7 @@ import {
 } from '@angular/core';
 import {
   FormBuilder,
+  FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
@@ -30,6 +31,7 @@ import { EnrollmentsService, TournamentsService } from '../../../_services';
 import { selectAllUsers, State } from '../../../_store';
 import { initializeAvailableUsersForTournament } from '../../../_store/actions/users.actions';
 import { initializeEnrollments } from '../../../_store/actions/enrollments.actions';
+import { User } from '../../../_types';
 
 @Component({
   selector: 'app-create-tournament',
@@ -57,18 +59,28 @@ export class CreateTournamentComponent implements OnInit {
 
   readonly availableUsers$ = this.store$.select(selectAllUsers);
 
-  tournamentForm = this.formBuilder.group({
-    name: ['', Validators.required],
-    public: [false, Validators.required],
-    league: [false, Validators.required],
-    playerCapacity: [
-      0,
-      [Validators.required, Validators.pattern(/[0-9]{1,2}/)],
-    ],
-    description: ['', Validators.required],
+  tournamentNameFormControl = new FormControl('', [
+    Validators.required,
+    Validators.minLength(4),
+  ]);
+  publicFormControl = new FormControl<boolean>({
+    value: false,
+    disabled: false,
   });
+  leagueFormControl = new FormControl<boolean>({
+    value: false,
+    disabled: true,
+  });
+  playerCapacityFormControl = new FormControl<number>(0, [
+    Validators.required,
+    Validators.pattern(/[0-9]{1,2}/),
+  ]);
+  descriptionFormControl = new FormControl<string>('', [Validators.required]);
 
-  enrollForm!: FormGroup;
+  usersFormControl = new FormControl<User[]>([]);
+
+  tournamentForm: FormGroup;
+  enrollForm: FormGroup;
 
   loading = false;
   submitted = false;
@@ -84,8 +96,16 @@ export class CreateTournamentComponent implements OnInit {
     private readonly enrollmentService: EnrollmentsService,
     private readonly route: ActivatedRoute,
   ) {
+    this.tournamentForm = this.formBuilder.group({
+      name: this.tournamentNameFormControl,
+      public: this.publicFormControl,
+      league: this.leagueFormControl,
+      playerCapacity: this.playerCapacityFormControl,
+      description: this.descriptionFormControl,
+    });
+
     this.enrollForm = this.formBuilder.group({
-      users: [[]],
+      users: this.usersFormControl,
     });
   }
 
@@ -101,9 +121,6 @@ export class CreateTournamentComponent implements OnInit {
       );
     }
 
-    this.enrollForm.setValue({
-      users: [],
-    });
     setTimeout(() => {
       this.stepper.next();
     }, 1);
