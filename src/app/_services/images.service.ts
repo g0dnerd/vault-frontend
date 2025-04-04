@@ -26,4 +26,8 @@ export class ImagesService {
       formData,
     );
   }
+
+  deleteImage(imageId: number): Observable<{ id: number }> {
+    return this.http.delete<{ id: number }>(`${this.apiUrl}/${imageId}`);
+  }
 }

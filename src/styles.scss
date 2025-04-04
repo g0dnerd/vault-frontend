@@ -704,7 +704,12 @@ body.vault-app {
   }
 }
 button {
-  &:not(.navbar-toggler, .mat-button-toggle-button, .show-password-button) {
+  &:not(
+      .navbar-toggler,
+      .mat-button-toggle-button,
+      .show-password-button,
+      .button-delete-image
+    ) {
     font-weight: 500;
     border: var(--border);
     border-color: $border-color_1;
@@ -720,13 +725,13 @@ button {
     color: $color_8;
   }
   &:active {
-    &:not(.navbar-toggler, .show-password-button) {
+    &:not(.navbar-toggler, .show-password-button, .button-delete-image) {
       background: var(--main-color);
       color: $color_2;
     }
   }
   &:hover {
-    &:not(.navbar-toggler, .show-password-button) {
+    &:not(.navbar-toggler, .show-password-button, .button-delete-image) {
       background: var(--main-color);
       color: $color_2;
     }
@@ -1283,7 +1288,7 @@ img {
     }
   }
   button {
-    &:not(.navbar-toggler, .show-password-button) {
+    &:not(.navbar-toggler, .show-password-button, .button-delete-image) {
       border: none;
       color: $color_2;
       background: #444;

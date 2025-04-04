@@ -18,6 +18,20 @@
   </mat-expansion-panel-header>
   <app-manage-pool [tournamentId]="tournamentId()" />
   <section class="image-list">
-    <img *ngFor="let image of images$ | ngrxPush" src="{{ image.url }}" />
+    @for (image of images$ | ngrxPush; track image.id) {
+      <div class="deck-image-container">
+        <img class="deck-image" src="{{ image.url }}" />
+        <div class="delete-button-container">
+          <button
+            class="button-delete-image"
+            mat-fab
+            aria-label="Icon button with a delete icon"
+            (click)="deleteImage(image.id)"
+          >
+            <mat-icon>delete</mat-icon>
+          </button>
+        </div>
+      </div>
+    }
   </section>
 </mat-expansion-panel>
