@@ -1,11 +1,11 @@
 import { NgIf } from '@angular/common';
-import { Component, inject, input, OnInit } from '@angular/core';
+import { Component, inject, input } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
-import { distinctUntilChanged, map, Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 
 import {
   selectAllImages,
@@ -31,7 +31,7 @@ import { deleteImage } from '../../../../_store/actions/images.actions';
   templateUrl: './my-pool.component.html',
   styleUrl: './my-pool.component.scss',
 })
-export class MyPoolComponent implements OnInit {
+export class MyPoolComponent {
   tournamentId = input.required<number>();
 
   private readonly store$ = inject(Store<State>);
@@ -41,15 +41,6 @@ export class MyPoolComponent implements OnInit {
   );
 
   constructor(private readonly imagesService: ImagesService) {}
-
-  ngOnInit() {
-    this.images$
-      .pipe(
-        distinctUntilChanged(),
-        map((images) => console.log(JSON.stringify(images))),
-      )
-      .subscribe();
-  }
 
   deleteImage(id: number) {
     this.imagesService
