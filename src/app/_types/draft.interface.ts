@@ -12,6 +12,8 @@ export interface Draft {
   players?: Player[];
   cube?: Cube;
   phase?: Phase;
+  checkinNeeded?: boolean;
+  checkoutNeeded?: boolean;
 }
 
 export interface CreateDraftDto {

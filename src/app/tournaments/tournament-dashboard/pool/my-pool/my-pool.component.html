@@ -1,22 +1,57 @@
-<mat-expansion-panel class="pool-panel">
+<mat-expansion-panel
+  class="pool-panel"
+  *ngIf="poolStatus$ | ngrxPush as poolStatus"
+>
   <mat-expansion-panel-header>
     <mat-panel-title>Decklist</mat-panel-title>
-    <ng-template *ngIf="(poolStatus$ | ngrxPush)?.checkedIn; else notCheckedIn">
-      <mat-panel-description> I am checked in. </mat-panel-description>
-      <mat-panel-description
-        *ngIf="(poolStatus$ | ngrxPush)?.checkedOut; else notCheckedOut"
-      >
-        I am checked out.
-      </mat-panel-description>
-    </ng-template>
-    <ng-template #notCheckedIn>
-      <mat-panel-description>I am not checked in.</mat-panel-description>
-    </ng-template>
-    <ng-template #notCheckedOut>
-      <mat-panel-description>I am not checked out.</mat-panel-description>
-    </ng-template>
+    <ng-container *ngIf="needsCheckIn()">
+      <ng-container *ngIf="!poolStatus.checkedIn; else notCheckedIn">
+        <mat-panel-description class="checkin-prompt"
+          >Please check in</mat-panel-description
+        >
+      </ng-container>
+      <ng-template #notCheckedIn>
+        <mat-panel-description class="checkin-success"
+          >Checked in</mat-panel-description
+        >
+      </ng-template>
+    </ng-container>
+    <ng-container *ngIf="needsCheckOut()">
+      <ng-container *ngIf="!poolStatus.checkedOut; else notCheckedOut">
+        <mat-panel-description class="checkout-prompt"
+          >Please check out</mat-panel-description
+        >
+      </ng-container>
+      <ng-template #notCheckedOut>
+        <mat-panel-description class="checkout-success"
+          >Checked out</mat-panel-description
+        >
+      </ng-template>
+    </ng-container>
   </mat-expansion-panel-header>
-  <app-manage-pool [tournamentId]="tournamentId()" />
+  <input
+    type="file"
+    class="file-input"
+    accept="image/jpeg"
+    (change)="onFileSelected($event)"
+    #fileUpload
+  />
+  <button [disabled]="loading" class="btn btn-primary" (click)="onSubmit()">
+    <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
+    Upload file
+  </button>
+  <p *ngIf="loading">Loading...</p>
+  <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
+  <div *ngIf="imgFile">
+    <section class="file-info">
+      File details:
+      <ul>
+        <li>Name: {{ imgFile.name }}</li>
+        <li>Type: {{ imgFile.type }}</li>
+        <li>Size: {{ imgFile.size }} bytes</li>
+      </ul>
+    </section>
+  </div>
   <section class="image-list">
     @for (image of images$ | ngrxPush; track image.id) {
       <div class="deck-image-container">
