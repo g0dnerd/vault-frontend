@@ -1,13 +1,11 @@
 <form [formGroup]="form" *ngIf="form" (ngSubmit)="onSubmit()">
   <div class="form-input player-wins">
-    <label class="form-label"
-      >{{
-        (currentMatch$ | ngrxPush)?.player1?.enrollment?.user?.username
-      }}
-      wins</label
-    >
+    <mat-label>
+      {{ (currentMatch$ | ngrxPush)?.player1?.enrollment?.user?.username }}
+      wins
+    </mat-label>
     <mat-button-toggle-group
-      formControlName="player1Wins"
+      [formControl]="player1WinsFormControl"
       aria-label="Player 1 Wins"
       exclusive
     >
@@ -22,14 +20,12 @@
     </div>
   </div>
   <div class="form-input player-wins">
-    <label class="form-label"
-      >{{
-        (currentMatch$ | ngrxPush)?.player2?.enrollment?.user?.username
-      }}
-      wins</label
-    >
+    <mat-label>
+      {{ (currentMatch$ | ngrxPush)?.player2?.enrollment?.user?.username }}
+      wins
+    </mat-label>
     <mat-button-toggle-group
-      formControlName="player2Wins"
+      [formControl]="player2WinsFormControl"
       aria-label="Player 2 Wins"
       exclusive
     >
