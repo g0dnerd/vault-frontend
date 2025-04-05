@@ -1,4 +1,7 @@
 export interface Round {
-  id: number | null;
-  draftId: number | null;
+  id: number;
+  draftId?: number;
+  roundIndex?: number;
+  started: boolean;
+  finished: boolean;
 }
