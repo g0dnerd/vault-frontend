@@ -286,6 +286,10 @@ export const selectEnrollmentByQuery = (
 // CUBES
 export const selectCubeState =
   createFeatureSelector<fromCube.CubesState>('cubes');
+export const selectCubesErrorMessage = createSelector(
+  selectCubeState,
+  (state) => state.errorMessage,
+);
 export const selectCubeIds = createSelector(
   selectCubeState,
   fromCube.selectCubeIds,

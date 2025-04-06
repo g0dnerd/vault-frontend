@@ -4,6 +4,7 @@ import { catchError, map, mergeMap, of } from 'rxjs';
 
 import * as CubesActions from '../actions/cubes.actions';
 import { CubesService } from '../../_services/cubes.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Injectable()
 export class CubesEffects {
@@ -19,10 +20,11 @@ export class CubesEffects {
             map((cubes) => {
               return CubesActions.loadCubes({ cubes });
             }),
-            catchError((error) => {
+            catchError((error: HttpErrorResponse) => {
+              const errorMessage = error.error.message;
               return of(
                 CubesActions.cubeStoreFailure({
-                  errorMessage: error.message,
+                  errorMessage,
                 }),
               );
             }),

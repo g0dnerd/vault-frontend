@@ -2,7 +2,7 @@ import { Route } from '@angular/router';
 import { provideEffects } from '@ngrx/effects';
 import { provideState } from '@ngrx/store';
 
-import { AuthGuard } from './_helpers';
+import { AuthGuard, RolesGuard } from './_helpers';
 import { CubesEffects } from './_store/effects/cubes.effects';
 import { UsersEffects } from './_store/effects/users.effects';
 import { cubesReducer } from './_store/reducers/cubes.reducer';
@@ -14,6 +14,8 @@ import { EditProfileComponent } from './account/edit-profile/edit-profile.compon
 import { HomeComponent } from './home/home.component';
 import { CubeListComponent } from './cubes/cube-list/cube-list.component';
 import { CubeDetailComponent } from './cubes/cube-detail/cube-detail.component';
+import { CreateCubeComponent } from './cubes/create-cube/create-cube.component';
+import { Role } from './_types';
 
 export const appRoutes: Route[] = [
   {
@@ -45,6 +47,12 @@ export const appRoutes: Route[] = [
       {
         path: '',
         component: CubeListComponent,
+      },
+      {
+        path: 'create',
+        component: CreateCubeComponent,
+        data: { requiredRoles: [Role.Admin, Role.PlayerAdmin] },
+        canActivate: [RolesGuard],
       },
       {
         path: ':cubeId',
