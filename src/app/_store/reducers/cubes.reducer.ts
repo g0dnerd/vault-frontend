@@ -6,6 +6,7 @@ import * as CubesActions from '../actions/cubes.actions';
 
 export interface CubesState extends EntityState<Cube> {
   selectedCubeId: number | null;
+  errorMessage: string | null;
 }
 
 export function selectCubeId(a: Cube): number {
@@ -19,6 +20,7 @@ export const cubesAdapter: EntityAdapter<Cube> = createEntityAdapter<Cube>({
 
 export const initialState: CubesState = cubesAdapter.getInitialState({
   selectedCubeId: null,
+  errorMessage: null,
 });
 
 export const cubesReducer = createReducer(
@@ -70,6 +72,9 @@ export const cubesReducer = createReducer(
       ...state,
       selectedCubeId: null,
     });
+  }),
+  on(CubesActions.cubeStoreFailure, (state, { errorMessage }) => {
+    return { ...state, errorMessage };
   }),
 );
 

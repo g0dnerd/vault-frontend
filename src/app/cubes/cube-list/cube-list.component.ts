@@ -1,6 +1,8 @@
 import { NgFor, NgIf } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { RouterLink } from '@angular/router';
 import { PushPipe } from '@ngrx/component';
@@ -14,7 +16,16 @@ import { Cube } from '../../_types';
 @Component({
   selector: 'app-cube-list',
   standalone: true,
-  imports: [MatCardModule, MatListModule, NgFor, NgIf, PushPipe, RouterLink],
+  imports: [
+    MatButtonModule,
+    MatCardModule,
+    MatIconModule,
+    MatListModule,
+    NgFor,
+    NgIf,
+    PushPipe,
+    RouterLink,
+  ],
   templateUrl: './cube-list.component.html',
   styleUrl: './cube-list.component.scss',
 })

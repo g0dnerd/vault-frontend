@@ -4,9 +4,9 @@ export interface Cube {
   id: number;
   creator?: User;
   name: string;
-  cardNumber: number;
-  description?: string;
-  longDescription?: string;
+  numCards?: number;
+  shortDescription?: string;
+  longDescription: string;
+  cobraUrl: string;
   imageUrl?: string;
-  url: string;
 }

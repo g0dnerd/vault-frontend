@@ -16,4 +16,8 @@ export class CubesService {
   get(): Observable<Cube[]> {
     return this.http.get<Cube[]>(this.apiUrl);
   }
+
+  create(data: FormData): Observable<Cube> {
+    return this.http.post<Cube>(this.apiUrl, data);
+  }
 }

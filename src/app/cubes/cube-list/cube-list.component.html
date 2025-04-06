@@ -4,6 +4,15 @@
       <mat-card-title>All cubes</mat-card-title>
     </mat-card-title-group>
   </mat-card-header>
+  <a
+    mat-stroked-button
+    type="button"
+    class="regular-button"
+    routerLink="./create"
+  >
+    <mat-icon>add</mat-icon>
+    Create a cube
+  </a>
   <mat-list class="cube-list">
     <mat-list-item
       *ngFor="let cube of cubes$ | ngrxPush; index as i"
@@ -15,7 +24,7 @@
         }}</a>
       </span>
       <span matListItemLine
-        >{{ cube.cardNumber }} card cube
+        >{{ cube.numCards }} card cube
         <span *ngIf="cube.creator">by {{ cube.creator.username }}</span>
       </span>
     </mat-list-item>

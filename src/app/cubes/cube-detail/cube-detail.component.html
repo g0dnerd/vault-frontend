@@ -1,31 +1,30 @@
-<mat-card class="cube-card" appearance="outlined">
+<mat-card
+  class="cube-card"
+  appearance="outlined"
+  *ngIf="cube$ | ngrxPush as cube"
+>
   <mat-card-header>
     <mat-card-title-group>
-      <mat-card-title>{{ (cube$ | ngrxPush)?.name }}</mat-card-title>
-      <mat-card-subtitle>{{
-        (cube$ | ngrxPush)?.description
+      <mat-card-title>{{ cube.name }}</mat-card-title>
+      <mat-card-subtitle *ngIf="cube.shortDescription">{{
+        cube.shortDescription
       }}</mat-card-subtitle>
     </mat-card-title-group>
   </mat-card-header>
 
   @defer {
-  <img
-    *ngIf="(cube$ | ngrxPush)?.imageUrl"
-    mat-card-image
-    src="/images/{{ (cube$ | ngrxPush)?.imageUrl }}"
-    alt="Cube Thumbnail"
-  />
-  <mat-card-content>
-    <p>{{ (cube$ | ngrxPush)?.longDescription }}</p>
-  </mat-card-content>
+    <img mat-card-image src="{{ cube.imageUrl }}" alt="Cube Thumbnail" />
+    <mat-card-content>
+      <p>{{ cube.longDescription }}</p>
+    </mat-card-content>
   } @loading {
-  <mat-spinner mode="indeterminate"></mat-spinner>
+    <mat-spinner mode="indeterminate"></mat-spinner>
   } @placeholder {
-  <mat-spinner mode="indeterminate"></mat-spinner>
+    <mat-spinner mode="indeterminate"></mat-spinner>
   }
   <mat-card-footer class="cube-card-footer">
     <mat-chip-set aria-label="Cube facts">
-      <mat-chip>
+      <mat-chip *ngIf="cube.creator as creator">
         <mat-icon
           matChipAvatar
           aria-label="created by"
@@ -33,9 +32,9 @@
         >
           person
         </mat-icon>
-        created by {{ (cube$ | ngrxPush)?.creator?.username }}
+        created by {{ creator.username }}
       </mat-chip>
-      <mat-chip>
+      <mat-chip *ngIf="cube.numCards as numCards">
         <mat-icon
           matChipAvatar
           aria-label="number of cards"
@@ -43,7 +42,7 @@
         >
           playing_cards
         </mat-icon>
-        {{ (cube$ | ngrxPush)?.cardNumber }} cards
+        {{ numCards }} cards
       </mat-chip>
       <mat-chip>
         <mat-icon
@@ -53,10 +52,7 @@
         >
           open_in_new
         </mat-icon>
-        <a
-          class="cube-link-external"
-          href="{{ (cube$ | ngrxPush)?.url }}"
-          target="_blank"
+        <a class="cube-link-external" href="{{ cube.cobraUrl }}" target="_blank"
           >View on CubeCobra</a
         >
       </mat-chip>
