@@ -61,7 +61,7 @@ export class CreateCubeComponent implements OnInit {
   ]);
   shortDescriptionFormControl = new FormControl<string | undefined>(undefined, [
     Validators.minLength(10),
-    Validators.maxLength(40),
+    Validators.maxLength(90),
   ]);
   longDescriptionFormControl = new FormControl<string>('', [
     Validators.minLength(10),
