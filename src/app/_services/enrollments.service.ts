@@ -17,16 +17,6 @@ export class EnrollmentsService {
     return this.http.get<Enrollment[]>(this.apiUrl);
   }
 
-  getForTournament(tournamentId: number): Observable<Enrollment[]> {
-    return this.http.get<Enrollment[]>(
-      `${this.apiUrl}/tournament/${tournamentId}`,
-    );
-  }
-
-  getForLeague(): Observable<Enrollment[]> {
-    return this.http.get<Enrollment[]>(`${this.apiUrl}/league`);
-  }
-
   enroll(tournamentId: number): Observable<Enrollment> {
     return this.http.get<Enrollment>(`${this.apiUrl}/enroll/${tournamentId}`);
   }
@@ -45,9 +35,5 @@ export class EnrollmentsService {
     return this.http.get<Scorecard[]>(
       `${this.apiUrl}/standings/${tournamentId}`,
     );
-  }
-
-  getEnrollmentsForDraft(draftId: number): Observable<Enrollment[]> {
-    return this.http.get<Enrollment[]>(`${this.apiUrl}/draft/${draftId}`);
   }
 }

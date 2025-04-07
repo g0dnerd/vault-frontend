@@ -9,8 +9,10 @@ const TYPE = '[Tournaments/API]';
 export enum TournamentsActionTypes {
   TOURNAMENT_STORE_FAILURE = `${TYPE} Error`,
   INITIALIZE_TOURNAMENTS = `${TYPE} Initialize tournaments`,
+  INITIALIZE_ENROLLED_TOURNAMENTS = `${TYPE} Initialize enrolled tournaments`,
   INITIALIZE_AVAILABLE_TOURNAMENTS = `${TYPE} Initialize available tournaments`,
   SET_AVAILABLE_TOURNAMENTS = `${TYPE} Set available tournaments`,
+  SET_ENROLLED_TOURNAMENTS = `${TYPE} Set enrolled tournaments`,
   SELECT_TOURNAMENT = `${TYPE} Select tournament`,
   LOAD_TOURNAMENTS = `${TYPE} Load tournaments`,
   SET_TOURNAMENTS = `${TYPE} Set tournaments`,
@@ -34,15 +36,22 @@ export const tournamentStoreFailure = createAction(
   TournamentsActionTypes.TOURNAMENT_STORE_FAILURE,
   props<{ errorMessage: string }>(),
 );
-export const setAvailableTournaments = createAction(
-  TournamentsActionTypes.SET_AVAILABLE_TOURNAMENTS,
-  props<{ ids: number[] }>(),
-);
 export const initializeTournaments = createAction(
   TournamentsActionTypes.INITIALIZE_TOURNAMENTS,
 );
+export const initializeEnrolledTournaments = createAction(
+  TournamentsActionTypes.INITIALIZE_ENROLLED_TOURNAMENTS,
+);
 export const initializeAvailableTournaments = createAction(
   TournamentsActionTypes.INITIALIZE_AVAILABLE_TOURNAMENTS,
+);
+export const setEnrolledTournaments = createAction(
+  TournamentsActionTypes.SET_ENROLLED_TOURNAMENTS,
+  props<{ enrolledIds: number[] }>(),
+);
+export const setAvailableTournaments = createAction(
+  TournamentsActionTypes.SET_AVAILABLE_TOURNAMENTS,
+  props<{ availableIds: number[] }>(),
 );
 export const selectTournament = createAction(
   TournamentsActionTypes.SELECT_TOURNAMENT,

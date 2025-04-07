@@ -1,62 +1,21 @@
-<h1 class="my-tournaments">My Tournaments</h1>
 <mat-card
-  *ngIf="
-    !(enrollments$ | ngrxPush)?.length && !(tournaments$ | ngrxPush)?.length
-  "
+  *ngFor="let tournament of tournaments$ | ngrxPush"
+  class="event-list"
+  appearance="outlined"
 >
-  <mat-card-content>You are not enrolled in any tournaments.</mat-card-content>
+  <mat-card-header>
+    <mat-card-title id="tournament-name">{{ tournament.name }}</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <a
+      routerLink="/tournaments/league/{{ tournament!.id }}"
+      *ngIf="tournament.isLeague; else noLeague"
+      >Go to league dashboard
+    </a>
+    <ng-template #noLeague>
+      <a routerLink="/tournaments/{{ tournament.id }}"
+        >Go to tournament dashboard
+      </a>
+    </ng-template>
+  </mat-card-content>
 </mat-card>
-<ng-container *ngIf="isAdmin(); else noAdmin">
-  <mat-card
-    *ngFor="let tournament of tournaments$ | ngrxPush"
-    class="event-list"
-    appearance="outlined"
-  >
-    <ng-container *ngIf="tournament as tournament">
-      <mat-card-header>
-        <mat-card-title id="tournament-name">{{
-          tournament.name
-        }}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <a
-          routerLink="/tournaments/league/{{ tournament!.id }}"
-          *ngIf="tournament.isLeague; else noLeague"
-          >Go to league dashboard
-        </a>
-        <ng-template #noLeague>
-          <a routerLink="/tournaments/{{ tournament.id }}"
-            >Go to tournament dashboard
-          </a>
-        </ng-template>
-      </mat-card-content>
-    </ng-container>
-  </mat-card>
-</ng-container>
-<ng-template #noAdmin>
-  <mat-card
-    *ngFor="let enrollment of enrollments$ | ngrxPush"
-    class="event-list"
-    appearance="outlined"
-  >
-    <ng-container *ngIf="enrollment.tournament as tournament">
-      <mat-card-header>
-        <mat-card-title id="tournament-name">{{
-          tournament.name
-        }}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <a
-          routerLink="/tournaments/league/{{ tournament!.id }}"
-          *ngIf="tournament.isLeague; else noLeague"
-          >Go to league dashboard
-        </a>
-        <ng-template #noLeague>
-          <a routerLink="/tournaments/{{ tournament.id }}"
-            >Go to tournament dashboard
-          </a>
-        </ng-template>
-      </mat-card-content>
-    </ng-container>
-  </mat-card>
-</ng-template>
