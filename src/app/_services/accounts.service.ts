@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { dev } from '../../environments/environment';
-import { API_ROUTES, Role, User } from '../_types';
+import { API_ROUTES, User } from '../_types';
 
 @Injectable({
   providedIn: 'root',
@@ -29,8 +29,8 @@ export class AccountsService {
     return this.http.patch<User>(this.apiUrl, user);
   }
 
-  getCurrentUserRoles(): Observable<Role[]> {
-    return this.http.get<Role[]>(`${this.apiUrl}/roles`);
+  getCurrentUserRoles(): Observable<User> {
+    return this.http.get<User>(`${this.apiUrl}/roles`);
   }
 
   getAvailableForTournament(tournamentId: number): Observable<User[]> {

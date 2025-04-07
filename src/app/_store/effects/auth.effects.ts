@@ -125,8 +125,13 @@ export class AuthEffects {
         ofType(AuthActions.initRoles),
         mergeMap(() => {
           return this.accountsService.getCurrentUserRoles().pipe(
-            map((roles) => {
-              return AuthActions.initRolesSuccess({ roles });
+            map((user) => {
+              if (!user.roles) {
+                return AuthActions.initRolesFailure({
+                  errorMessage: 'Could not get user permissions.',
+                });
+              }
+              return AuthActions.initRolesSuccess({ roles: user.roles });
             }),
             catchError((error) => {
               const errorMessage = error.error.message;

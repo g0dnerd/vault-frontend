@@ -30,8 +30,12 @@ export class AuthGuard implements CanActivate {
           }
         }
         return this.accountsService.getCurrentUserRoles().pipe(
-          mergeMap((roles) => {
-            this.store$.dispatch(refreshAuth({ token, roles }));
+          mergeMap((user) => {
+            if (!user.roles) {
+              this.store$.dispatch(logout());
+              return of(false);
+            }
+            this.store$.dispatch(refreshAuth({ token, roles: user.roles }));
             return of(true);
           }),
           catchError(() => {
