@@ -130,6 +130,20 @@ export const selectAvailableTournaments = createSelector(
         (tournament): tournament is Tournament => tournament !== undefined,
       ),
 );
+export const selectEnrolledTournamentIds = createSelector(
+  selectTournamentState,
+  fromTournament.getEnrolledIds,
+);
+export const selectEnrolledTournaments = createSelector(
+  selectTournamentEntities,
+  selectEnrolledTournamentIds,
+  (tournaments, ids) =>
+    ids
+      .map((id) => tournaments[id])
+      .filter(
+        (tournament): tournament is Tournament => tournament !== undefined,
+      ),
+);
 
 // IMAGES
 export const selectImageState =

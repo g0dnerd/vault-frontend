@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, mergeMap, of } from 'rxjs';
@@ -45,13 +46,41 @@ export class TournamentsEffects {
         mergeMap(() => {
           return this.tournamentsService.getAvailableTournaments().pipe(
             map((availableTournaments) => {
-              const ids = availableTournaments.map((t) => t.id);
-              return TournamentsActions.setAvailableTournaments({ ids });
+              const availableIds = availableTournaments.map((t) => t.id);
+              return TournamentsActions.setAvailableTournaments({
+                availableIds,
+              });
             }),
-            catchError((error) => {
+            catchError((error: HttpErrorResponse) => {
+              const errorMessage = error.error.message;
               return of(
                 TournamentsActions.tournamentStoreFailure({
-                  errorMessage: error.message,
+                  errorMessage,
+                }),
+              );
+            }),
+          );
+        }),
+      );
+    },
+    { dispatch: true },
+  );
+
+  initializeEnrolledTournaments$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(TournamentsActions.initializeEnrolledTournaments),
+        mergeMap(() => {
+          return this.tournamentsService.getEnrolledTournaments().pipe(
+            map((enrolledTournaments) => {
+              const enrolledIds = enrolledTournaments.map((t) => t.id);
+              return TournamentsActions.setEnrolledTournaments({ enrolledIds });
+            }),
+            catchError((error: HttpErrorResponse) => {
+              const errorMessage = error.error.message;
+              return of(
+                TournamentsActions.tournamentStoreFailure({
+                  errorMessage,
                 }),
               );
             }),
@@ -72,21 +101,14 @@ export class TournamentsEffects {
         ofType(TournamentsActions.enroll),
         mergeMap(({ tournamentId }) => {
           return this.enrollmentsService.enroll(tournamentId).pipe(
-            // FIXME: this is ugly
-            map((res) => {
-              // If the response did not contain a tournament,
-              // the user could not be enrolled. Return an error.
-              if (!res.tournament) {
-                return TournamentsActions.tournamentStoreFailure({
-                  errorMessage: 'Failed to register for tournament',
-                });
-              }
+            map(() => {
               return TournamentsActions.initializeAvailableTournaments();
             }),
-            catchError((error) => {
+            catchError((error: HttpErrorResponse) => {
+              const errorMessage = error.error.message;
               return of(
                 TournamentsActions.tournamentStoreFailure({
-                  errorMessage: error.message,
+                  errorMessage,
                 }),
               );
             }),

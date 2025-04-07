@@ -7,6 +7,7 @@ import * as TournamentsActions from '../actions/tournaments.actions';
 export interface TournamentsState extends EntityState<Tournament> {
   selectedTournamentId: number | null;
   availableIds: number[];
+  enrolledIds: number[];
 }
 
 export function selectTournamentId(a: Tournament): number {
@@ -23,13 +24,18 @@ export const initialState: TournamentsState =
   tournamentsAdapter.getInitialState({
     selectedTournamentId: null,
     availableIds: [],
+    enrolledIds: [],
   });
 
 export const tournamentsReducer = createReducer(
   initialState,
-  on(TournamentsActions.setAvailableTournaments, (state, { ids }) => ({
+  on(TournamentsActions.setAvailableTournaments, (state, { availableIds }) => ({
     ...state,
-    availableIds: ids,
+    availableIds,
+  })),
+  on(TournamentsActions.setEnrolledTournaments, (state, { enrolledIds }) => ({
+    ...state,
+    enrolledIds,
   })),
   on(TournamentsActions.addTournament, (state, { tournament }) => {
     return tournamentsAdapter.addOne(tournament, state);
@@ -81,11 +87,13 @@ export const tournamentsReducer = createReducer(
       ...state,
       selectedTournamentId: null,
       availableIds: [],
+      enrolledIds: [],
     });
   }),
 );
 
 export const getAvailableIds = (state: TournamentsState) => state.availableIds;
+export const getEnrolledIds = (state: TournamentsState) => state.enrolledIds;
 
 const { selectIds, selectEntities, selectAll, selectTotal } =
   tournamentsAdapter.getSelectors();
