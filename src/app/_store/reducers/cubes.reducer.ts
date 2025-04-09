@@ -7,6 +7,7 @@ import * as CubesActions from '../actions/cubes.actions';
 export interface CubesState extends EntityState<Cube> {
   selectedCubeId: number | null;
   errorMessage: string | null;
+  loading: boolean;
 }
 
 export function selectCubeId(a: Cube): number {
@@ -21,10 +22,15 @@ export const cubesAdapter: EntityAdapter<Cube> = createEntityAdapter<Cube>({
 export const initialState: CubesState = cubesAdapter.getInitialState({
   selectedCubeId: null,
   errorMessage: null,
+  loading: false,
 });
 
 export const cubesReducer = createReducer(
   initialState,
+  on(CubesActions.initializeCubes, (state) => ({
+    ...state,
+    loading: true,
+  })),
   on(CubesActions.addCube, (state, { cube }) => {
     return cubesAdapter.addOne(cube, state);
   }),
@@ -62,7 +68,7 @@ export const cubesReducer = createReducer(
     return cubesAdapter.removeMany(predicate, state);
   }),
   on(CubesActions.loadCubes, (state, { cubes }) => {
-    return cubesAdapter.setAll(cubes, state);
+    return cubesAdapter.setAll(cubes, { ...state, loading: false });
   }),
   on(CubesActions.setCubes, (state, { cubes }) => {
     return cubesAdapter.setMany(cubes, state);

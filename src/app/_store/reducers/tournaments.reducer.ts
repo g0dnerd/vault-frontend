@@ -8,6 +8,7 @@ export interface TournamentsState extends EntityState<Tournament> {
   selectedTournamentId: number | null;
   availableIds: number[];
   enrolledIds: number[];
+  loading: boolean;
 }
 
 export function selectTournamentId(a: Tournament): number {
@@ -25,17 +26,32 @@ export const initialState: TournamentsState =
     selectedTournamentId: null,
     availableIds: [],
     enrolledIds: [],
+    loading: false,
   });
 
 export const tournamentsReducer = createReducer(
   initialState,
+  on(TournamentsActions.initializeTournaments, (state) => ({
+    ...state,
+    loading: true,
+  })),
+  on(TournamentsActions.initializeEnrolledTournaments, (state) => ({
+    ...state,
+    loading: true,
+  })),
+  on(TournamentsActions.initializeAvailableTournaments, (state) => ({
+    ...state,
+    loading: true,
+  })),
   on(TournamentsActions.setAvailableTournaments, (state, { availableIds }) => ({
     ...state,
     availableIds,
+    loading: false,
   })),
   on(TournamentsActions.setEnrolledTournaments, (state, { enrolledIds }) => ({
     ...state,
     enrolledIds,
+    loading: false,
   })),
   on(TournamentsActions.addTournament, (state, { tournament }) => {
     return tournamentsAdapter.addOne(tournament, state);
@@ -77,23 +93,37 @@ export const tournamentsReducer = createReducer(
     },
   ),
   on(TournamentsActions.loadTournaments, (state, { tournaments }) => {
-    return tournamentsAdapter.setAll(tournaments, state);
+    return tournamentsAdapter.setAll(tournaments, {
+      ...state,
+      loading: false,
+    });
   }),
   on(TournamentsActions.setTournaments, (state, { tournaments }) => {
-    return tournamentsAdapter.setMany(tournaments, state);
+    return tournamentsAdapter.setMany(tournaments, {
+      ...state,
+      loading: false,
+    });
   }),
+  on(TournamentsActions.selectTournament, (state, { tournamentId }) => ({
+    ...state,
+    selectedTournamentId: tournamentId,
+  })),
   on(TournamentsActions.clearTournaments, (state) => {
     return tournamentsAdapter.removeAll({
       ...state,
       selectedTournamentId: null,
       availableIds: [],
       enrolledIds: [],
+      loading: false,
     });
   }),
 );
 
+export const getSelectedId = (state: TournamentsState) =>
+  state.selectedTournamentId;
 export const getAvailableIds = (state: TournamentsState) => state.availableIds;
 export const getEnrolledIds = (state: TournamentsState) => state.enrolledIds;
+export const getLoading = (state: TournamentsState) => state.loading;
 
 const { selectIds, selectEntities, selectAll, selectTotal } =
   tournamentsAdapter.getSelectors();

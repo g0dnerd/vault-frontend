@@ -41,7 +41,7 @@ export class MyPoolComponent implements OnInit {
   private readonly store$ = inject(Store<State>);
   readonly images$ = this.store$.select(selectAllImages);
   readonly poolStatus$ = this.store$.select(selectCurrentPoolStatus);
-  private readonly draft$ = this.store$.select(selectCurrentDraft);
+  readonly draft$ = this.store$.select(selectCurrentDraft);
 
   loading = false;
   submitted = false;
@@ -62,6 +62,7 @@ export class MyPoolComponent implements OnInit {
       .pipe(
         map((draft) => {
           if (draft) {
+            console.log('has draft', JSON.stringify(draft));
             if (draft.checkinNeeded) {
               this.needsCheckIn.set(draft.checkinNeeded);
             }

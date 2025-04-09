@@ -1,6 +1,9 @@
-<h1 *ngIf="tournament$ | ngrxPush as tournament">{{ tournament.name }}</h1>
-<h5>Tournament Dashboard</h5>
-@defer {
+<h1>Tournament Dashboard</h1>
+<ng-container *ngIf="loading$ | ngrxPush; else showContent">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</ng-container>
+<ng-template #showContent>
+  <h5 *ngIf="tournament$ | ngrxPush as tournament">{{ tournament.name }}</h5>
   <ng-container *ngIf="tournament$ | ngrxPush as tournament">
     <ng-container *ngIf="isAdmin; else noAdmin">
       <mat-tab-group animationDuration="0ms">
@@ -80,4 +83,4 @@
       </ng-container>
     </ng-template>
   </ng-container>
-}
+</ng-template>

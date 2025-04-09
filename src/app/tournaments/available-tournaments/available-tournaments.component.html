@@ -1,39 +1,44 @@
 <h1>Available Tournaments</h1>
-<ng-container
-  *ngIf="!(availableTournaments$ | ngrxPush)?.length; else showTournaments"
->
-  <p>There are currently no tournaments available.</p>
+<ng-container *ngIf="loading$ | ngrxPush; else showContent">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
 </ng-container>
-<ng-template #showTournaments>
-  <mat-card
-    *ngFor="let tournament of availableTournaments$ | ngrxPush"
-    class="event-list"
-    appearance="outlined"
+<ng-template #showContent>
+  <ng-container
+    *ngIf="!(availableTournaments$ | ngrxPush)?.length; else showTournaments"
   >
-    <mat-card-header>
-      <mat-card-title-group>
-        <mat-card-title id="tournament-name">{{
-          tournament.name
-        }}</mat-card-title>
-        <mat-card-subtitle
-          *ngIf="tournament.playerCapacity as cap; else league"
+    <p>There are currently no tournaments available.</p>
+  </ng-container>
+  <ng-template #showTournaments>
+    <mat-card
+      *ngFor="let tournament of availableTournaments$ | ngrxPush"
+      class="event-list"
+      appearance="outlined"
+    >
+      <mat-card-header>
+        <mat-card-title-group>
+          <mat-card-title id="tournament-name">{{
+            tournament.name
+          }}</mat-card-title>
+          <mat-card-subtitle
+            *ngIf="tournament.playerCapacity as cap; else league"
+          >
+            Player capacity: {{ cap }}
+          </mat-card-subtitle>
+          <ng-template #league>
+            <mat-card-subtitle> League </mat-card-subtitle>
+          </ng-template>
+        </mat-card-title-group>
+      </mat-card-header>
+      <mat-card-content>
+        <p>{{ tournament.description }}</p>
+        <button
+          mat-stroked-button
+          [disabled]="loading"
+          (click)="onSubmit(tournament.id)"
         >
-          Player capacity: {{ cap }}
-        </mat-card-subtitle>
-        <ng-template #league>
-          <mat-card-subtitle> League </mat-card-subtitle>
-        </ng-template>
-      </mat-card-title-group>
-    </mat-card-header>
-    <mat-card-content>
-      <p>{{ tournament.description }}</p>
-      <button
-        mat-stroked-button
-        [disabled]="loading"
-        (click)="onSubmit(tournament.id)"
-      >
-        Enroll
-      </button>
-    </mat-card-content>
-  </mat-card>
+          Enroll
+        </button>
+      </mat-card-content>
+    </mat-card>
+  </ng-template>
 </ng-template>

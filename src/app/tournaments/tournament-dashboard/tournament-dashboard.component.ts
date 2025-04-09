@@ -5,29 +5,33 @@ import { MatCardModule } from '@angular/material/card';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { RouterLink } from '@angular/router';
 import { PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
-import { Observable, of } from 'rxjs';
+import { distinctUntilChanged, map, Observable, of } from 'rxjs';
 
 import {
   selectCurrentUserRoles,
   selectEnrollmentByQuery,
   selectOngoingDrafts,
-  selectTournamentById,
+  selectSelectedTournament,
+  selectTournamentsLoading,
   State,
 } from '../../_store';
 import {
   initializeCurrentDraft,
   initializeOngoingDrafts,
 } from '../../_store/actions/drafts.actions';
-import { initProfile } from '../../_store/actions/auth.actions';
 import { initializeEnrollments } from '../../_store/actions/enrollments.actions';
 import { initCurrentMatch } from '../../_store/actions/matches.actions';
 import { initializePoolStatus } from '../../_store/actions/players.actions';
-import { initializeTournaments } from '../../_store/actions/tournaments.actions';
-import { Enrollment, Role, Tournament } from '../../_types';
+import {
+  initializeTournaments,
+  selectTournament,
+} from '../../_store/actions/tournaments.actions';
+import { Enrollment, Role } from '../../_types';
 import { DraftPanelComponent } from './draft-panel/draft-panel.component';
 import { TournamentStandingsComponent } from './tournament-standings/tournament-standings.component';
 
@@ -40,6 +44,7 @@ import { TournamentStandingsComponent } from './tournament-standings/tournament-
     MatExpansionModule,
     MatIconModule,
     MatListModule,
+    MatProgressBarModule,
     MatTabsModule,
     NgFor,
     NgIf,
@@ -55,33 +60,41 @@ export class TournamentDashboardComponent implements OnInit {
 
   private readonly store$ = inject(Store<State>);
 
-  tournament$: Observable<Tournament | undefined> = of(undefined);
   enrollment$: Observable<Enrollment | undefined> = of(undefined);
+  readonly tournament$ = this.store$.select(selectSelectedTournament);
   readonly drafts$ = this.store$.select(selectOngoingDrafts);
   readonly roles$ = this.store$.select(selectCurrentUserRoles);
   readonly userId$ = this.store$.select(selectCurrentUserRoles);
+  readonly loading$ = this.store$.select(selectTournamentsLoading);
 
   isAdmin = false;
 
   async ngOnInit() {
-    this.store$.dispatch(initProfile());
     this.store$.dispatch(initializeTournaments());
+    this.store$.dispatch(
+      selectTournament({ tournamentId: this.tournamentId() }),
+    );
     this.store$.dispatch(initializeEnrollments());
 
-    this.roles$.subscribe((roles) => {
-      if (roles.includes(Role.Admin) || roles.includes(Role.PlayerAdmin)) {
-        this.isAdmin = true;
-        this.store$.dispatch(
-          initializeOngoingDrafts({ tournamentId: this.tournamentId() }),
-        );
-      } else {
-        this.enrollment$ = this.store$.select(
-          selectEnrollmentByQuery(
-            (enrollment) => enrollment.tournamentId == this.tournamentId(),
-          ),
-        );
-      }
-    });
+    this.roles$
+      .pipe(
+        distinctUntilChanged(),
+        map((roles) => {
+          if (roles.includes(Role.Admin) || roles.includes(Role.PlayerAdmin)) {
+            this.isAdmin = true;
+            this.store$.dispatch(
+              initializeOngoingDrafts({ tournamentId: this.tournamentId() }),
+            );
+          } else {
+            this.enrollment$ = this.store$.select(
+              selectEnrollmentByQuery(
+                (enrollment) => enrollment.tournamentId == this.tournamentId(),
+              ),
+            );
+          }
+        }),
+      )
+      .subscribe();
 
     this.store$.dispatch(
       initializeCurrentDraft({ tournamentId: this.tournamentId() }),
@@ -93,8 +106,9 @@ export class TournamentDashboardComponent implements OnInit {
     this.store$.dispatch(
       initializePoolStatus({ tournamentId: this.tournamentId() }),
     );
-    this.tournament$ = this.store$.select(
-      selectTournamentById(this.tournamentId()),
-    );
+
+    this.tournament$
+      .pipe(map((tournament) => console.log(JSON.stringify(tournament))))
+      .subscribe();
   }
 }

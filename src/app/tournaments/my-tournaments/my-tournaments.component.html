@@ -1,21 +1,34 @@
-<mat-card
-  *ngFor="let tournament of tournaments$ | ngrxPush"
-  class="event-list"
-  appearance="outlined"
->
-  <mat-card-header>
-    <mat-card-title id="tournament-name">{{ tournament.name }}</mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <a
-      routerLink="/tournaments/league/{{ tournament!.id }}"
-      *ngIf="tournament.isLeague; else noLeague"
-      >Go to league dashboard
-    </a>
-    <ng-template #noLeague>
-      <a routerLink="/tournaments/{{ tournament.id }}"
-        >Go to tournament dashboard
-      </a>
-    </ng-template>
-  </mat-card-content>
-</mat-card>
+<h1>My Tournaments</h1>
+<ng-container *ngIf="loading$ | ngrxPush; else showContent">
+  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+</ng-container>
+<ng-template #showContent>
+  <p *ngIf="(tournaments$ | ngrxPush)?.length === 0; else showTournaments">
+    You are not yet registered for any tournaments.
+  </p>
+  <ng-template #showTournaments>
+    <mat-card
+      *ngFor="let tournament of tournaments$ | ngrxPush"
+      class="event-list"
+      appearance="outlined"
+    >
+      <mat-card-header>
+        <mat-card-title id="tournament-name">{{
+          tournament.name
+        }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <a
+          routerLink="/tournaments/league/{{ tournament!.id }}"
+          *ngIf="tournament.isLeague; else noLeague"
+          >Go to league dashboard
+        </a>
+        <ng-template #noLeague>
+          <a routerLink="/tournaments/{{ tournament.id }}"
+            >Go to tournament dashboard
+          </a>
+        </ng-template>
+      </mat-card-content>
+    </mat-card>
+  </ng-template>
+</ng-template>

@@ -86,6 +86,10 @@ export const selectCurrentPoolStatus = createSelector(
 // TOURNAMENTS
 export const selectTournamentState =
   createFeatureSelector<fromTournament.TournamentsState>('tournaments');
+export const selectTournamentsLoading = createSelector(
+  selectTournamentState,
+  (state) => state.loading,
+);
 export const selectTournamentIds = createSelector(
   selectTournamentState,
   fromTournament.selectTournamentIds,
@@ -101,6 +105,18 @@ export const selectAllTournaments = createSelector(
 export const selectTournamentTotal = createSelector(
   selectTournamentState,
   fromTournament.selectTournamentTotal,
+);
+export const selectSelectedTournamentId = createSelector(
+  selectTournamentState,
+  fromTournament.getSelectedId,
+);
+export const selectSelectedTournament = createSelector(
+  selectTournamentEntities,
+  selectSelectedTournamentId,
+  (entities, id) => {
+    if (id) return entities[id];
+    else return null;
+  },
 );
 export const selectTournamentById = (tournamentId: number) =>
   createSelector(
@@ -300,6 +316,10 @@ export const selectEnrollmentByQuery = (
 // CUBES
 export const selectCubeState =
   createFeatureSelector<fromCube.CubesState>('cubes');
+export const selectCubesLoading = createSelector(
+  selectCubeState,
+  (state) => state.loading,
+);
 export const selectCubesErrorMessage = createSelector(
   selectCubeState,
   (state) => state.errorMessage,
