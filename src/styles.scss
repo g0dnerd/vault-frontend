@@ -125,6 +125,11 @@ body.vault-app {
     }
   }
 }
+
+p{
+  text-wrap: none;
+}
+
 .vault-app {
   ul {
     .draft-info {
