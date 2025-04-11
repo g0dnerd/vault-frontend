@@ -27,7 +27,7 @@ export const appRoutes: Route[] = [
       provideState({ name: 'users', reducer: usersReducer }),
       provideState({ name: 'cubes', reducer: cubesReducer }),
     ],
-    data: { breadcrumb: null },
+    data: { breadcrumb: 'Home' },
   },
   {
     path: 'account',
@@ -64,6 +64,7 @@ export const appRoutes: Route[] = [
       },
       {
         path: ':cubeId',
+        data: { breadcrumb: 'Detail' },
         component: CubeDetailComponent,
       },
     ],
@@ -80,7 +81,7 @@ export const appRoutes: Route[] = [
       },
       {
         path: 'edit',
-        data: { breadcrumb: 'edit' },
+        data: { breadcrumb: 'Edit' },
         component: EditProfileComponent,
       },
     ],

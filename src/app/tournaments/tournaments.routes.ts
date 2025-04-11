@@ -100,7 +100,7 @@ export const TOURNAMENT_ROUTES: Routes = [
     ],
   },
   {
-    path: ':tournamentId',
+    path: 'dashboard/:tournamentId',
     component: TournamentDashboardComponent,
     data: { breadcrumb: 'Tournament Dashboard' },
   },

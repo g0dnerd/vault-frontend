@@ -1,1 +1,12 @@
-<p>breadcrumb works!</p>
+<ng-container *ngIf="breadcrumbs$ | async as breadcrumbs">
+  @if (breadcrumbs.length > 1) {
+    <ng-container *ngFor="let breadcrumb of breadcrumbs; let last = last">
+      <ng-container *ngIf="!last; else lastLabel">
+        <a [routerLink]="breadcrumb.url">{{ breadcrumb.label }}</a> >
+      </ng-container>
+      <ng-template #lastLabel>
+        {{ breadcrumb.label }}
+      </ng-template>
+    </ng-container>
+  }
+</ng-container>
