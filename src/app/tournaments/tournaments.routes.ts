@@ -32,6 +32,7 @@ import { CreateTournamentComponent } from './admin/create-tournament/create-tour
 export const TOURNAMENT_ROUTES: Routes = [
   {
     path: '',
+    data: { breadcrumb: 'My Tournaments' },
     component: MyTournamentsComponent,
     providers: [
       provideEffects(
@@ -56,30 +57,42 @@ export const TOURNAMENT_ROUTES: Routes = [
   },
   {
     path: 'available',
+    data: { breadcrumb: 'Available Tournaments' },
     component: AvailableTournamentsComponent,
   },
   {
     path: 'admin',
+    data: { breadcrumb: null },
     children: [
       {
         path: 'create',
         component: CreateTournamentComponent,
-        data: { requiredRoles: [Role.Admin, Role.PlayerAdmin] },
+        data: {
+          requiredRoles: [Role.Admin, Role.PlayerAdmin],
+          breadcrumb: 'Create',
+        },
         canActivate: [RolesGuard],
       },
       {
         path: ':tournamentId/draft',
+        data: { breadcrumb: 'Draft' },
         children: [
           {
             path: 'create',
             component: CreateDraftComponent,
             canActivate: [RolesGuard],
-            data: { requiredRoles: [Role.Admin, Role.PlayerAdmin] },
+            data: {
+              requiredRoles: [Role.Admin, Role.PlayerAdmin],
+              breadcrumb: 'Create',
+            },
           },
           {
             path: ':draftId',
             component: AdminDraftPanelComponent,
-            data: { requiredRoles: [Role.Admin, Role.PlayerAdmin] },
+            data: {
+              requiredRoles: [Role.Admin, Role.PlayerAdmin],
+              breadcrumb: 'Edit',
+            },
             canActivate: [RolesGuard],
           },
         ],
@@ -89,9 +102,11 @@ export const TOURNAMENT_ROUTES: Routes = [
   {
     path: ':tournamentId',
     component: TournamentDashboardComponent,
+    data: { breadcrumb: 'Tournament Dashboard' },
   },
   {
     path: 'league/:leagueId',
     component: LeagueDetailComponent,
+    data: { breadcrumb: 'League Dashboard' },
   },
 ];

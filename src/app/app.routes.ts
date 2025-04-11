@@ -27,6 +27,7 @@ export const appRoutes: Route[] = [
       provideState({ name: 'users', reducer: usersReducer }),
       provideState({ name: 'cubes', reducer: cubesReducer }),
     ],
+    data: { breadcrumb: null },
   },
   {
     path: 'account',
@@ -34,24 +35,31 @@ export const appRoutes: Route[] = [
       {
         path: 'login',
         component: LoginComponent,
+        data: { breadcrumb: null },
       },
       {
         path: 'register',
         component: RegisterComponent,
+        data: { breadcrumb: null },
       },
     ],
   },
   {
     path: 'cubes',
+    data: { breadcrumb: 'Cubes' },
     children: [
       {
         path: '',
         component: CubeListComponent,
+        data: { breadcrumb: null },
       },
       {
         path: 'create',
         component: CreateCubeComponent,
-        data: { requiredRoles: [Role.Admin, Role.PlayerAdmin] },
+        data: {
+          requiredRoles: [Role.Admin, Role.PlayerAdmin],
+          breadcrumb: 'Create',
+        },
         canActivate: [RolesGuard],
       },
       {
@@ -63,13 +71,16 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'profile',
+    data: { breadcrumb: 'Profile' },
     children: [
       {
         path: '',
         component: ProfileComponent,
+        data: { breadcrumb: null },
       },
       {
         path: 'edit',
+        data: { breadcrumb: 'edit' },
         component: EditProfileComponent,
       },
     ],
@@ -82,6 +93,7 @@ export const appRoutes: Route[] = [
         (m) => m.TOURNAMENT_ROUTES,
       ),
     canActivate: [AuthGuard],
+    data: { breadcrumb: 'Tournaments' },
   },
   { path: '**', redirectTo: '' },
 ];
