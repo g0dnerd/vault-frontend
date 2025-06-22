@@ -1,0 +1,12 @@
+{
+  "$schema": "https://schema.railpack.com",
+  "provider": "node",
+  "packages": {
+    "node": "24.2.0"
+  },
+  "steps": {
+    "install": {
+      "commands": ["npm install --legacy-peer-deps"]
+    }
+  }
+}
