@@ -1,4 +1,4 @@
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import {
   Component,
   computed,
@@ -44,10 +44,9 @@ import { User } from '../../../_types';
     MatSelectModule,
     MatStepperModule,
     NgClass,
-    NgIf,
     PushPipe,
-    ReactiveFormsModule,
-  ],
+    ReactiveFormsModule
+],
   templateUrl: './create-tournament.component.html',
   styleUrl: './create-tournament.component.scss',
 })

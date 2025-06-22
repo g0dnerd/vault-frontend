@@ -1,34 +1,35 @@
 <h1>My Tournaments</h1>
-<ng-container *ngIf="loading$ | ngrxPush; else showContent">
+@if (loading$ | ngrxPush) {
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-</ng-container>
-<ng-template #showContent>
-  <p *ngIf="(tournaments$ | ngrxPush)?.length === 0; else showTournaments">
-    You are not yet registered for any tournaments.
-  </p>
-  <ng-template #showTournaments>
-    <mat-card
-      *ngFor="let tournament of tournaments$ | ngrxPush"
-      class="event-list"
-      appearance="outlined"
-    >
-      <mat-card-header>
-        <mat-card-title id="tournament-name">{{
-          tournament.name
-        }}</mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <a
-          routerLink="/tournaments/league/{{ tournament!.id }}"
-          *ngIf="tournament.isLeague; else noLeague"
-          >Go to league dashboard
-        </a>
-        <ng-template #noLeague>
-          <a routerLink="/tournaments/{{ tournament.id }}"
-            >Go to tournament dashboard
-          </a>
-        </ng-template>
-      </mat-card-content>
-    </mat-card>
-  </ng-template>
-</ng-template>
+} @else {
+  @if ((tournaments$ | ngrxPush)?.length === 0) {
+    <p>
+      You are not yet registered for any tournaments.
+    </p>
+  } @else {
+    @for (tournament of tournaments$ | ngrxPush; track tournament) {
+      <mat-card
+        class="event-list"
+        appearance="outlined"
+        >
+        <mat-card-header>
+          <mat-card-title id="tournament-name">{{
+            tournament.name
+          }}</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          @if (tournament.isLeague) {
+            <a
+              routerLink="/tournaments/league/{{ tournament!.id }}"
+              >Go to league dashboard
+            </a>
+          } @else {
+            <a routerLink="/tournaments/{{ tournament.id }}"
+              >Go to tournament dashboard
+            </a>
+          }
+        </mat-card-content>
+      </mat-card>
+    }
+  }
+}

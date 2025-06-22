@@ -1,4 +1,4 @@
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import {
   FormBuilder,
@@ -33,11 +33,10 @@ import { distinctUntilChanged, tap } from 'rxjs';
     MatProgressBarModule,
     MatTooltipModule,
     NgClass,
-    NgIf,
     PushPipe,
     ReactiveFormsModule,
-    RouterLink,
-  ],
+    RouterLink
+],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
   standalone: true,

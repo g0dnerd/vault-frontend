@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+
 import { Component, inject, input, OnInit, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatExpansionModule } from '@angular/material/expansion';
@@ -29,9 +29,8 @@ import { initializeCurrentDraft } from '../../../../_store/actions/drafts.action
     MatExpansionModule,
     MatIconModule,
     MatProgressBarModule,
-    NgIf,
-    PushPipe,
-  ],
+    PushPipe
+],
   templateUrl: './my-pool.component.html',
   styleUrl: './my-pool.component.scss',
 })

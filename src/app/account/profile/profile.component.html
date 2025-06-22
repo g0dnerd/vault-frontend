@@ -1,82 +1,94 @@
-<mat-card
-  class="profile-card"
-  appearance="outlined"
-  *ngIf="user$ | ngrxPush as user"
->
-  <mat-card-header>
-    <mat-card-title-group>
-      <mat-card-title>{{ user.username }}</mat-card-title>
-      <mat-card-subtitle
-        >{{ user.email }}
-        <a
-          class="edit-profile-button"
-          mat-stroked-button
-          routerLink="/profile/edit"
-          >Edit Profile</a
-        ></mat-card-subtitle
-      >
-      <img mat-card-md-image src="/images/frogger.jpeg" alt="Profile Picture" />
-    </mat-card-title-group>
-  </mat-card-header>
-  <mat-card-actions class="profile-header">
-    <mat-chip-set aria-label="Profile facts">
-      <mat-chip>
-        <mat-icon
-          matChipAvatar
-          aria-label="pronouns"
-          class="material-symbols-outlined"
-        >
-          person </mat-icon
-        >he/him</mat-chip
-      >
-      <ng-container *ngIf="user.numTournaments as numTournaments">
-        <mat-chip *ngIf="numTournaments > 0">
-          <mat-icon
-            matChipAvatar
-            aria-label="tournament count"
-            class="material-symbols-outlined"
-          >
-            event_available
-          </mat-icon>
-          {{ user.numTournaments }} Tournaments
-        </mat-chip>
-      </ng-container>
-      <ng-container *ngIf="user.numCubes as numCubes">
-        <mat-chip *ngIf="numCubes > 0">
-          <mat-icon
-            matChipAvatar
-            aria-label="cube count"
-            class="material-symbols-outlined"
-          >
-            deployed_code
-          </mat-icon>
-          <ng-container *ngIf="user.numCubes == 1; else manyCubes">
-            {{ user.numCubes }} Cube
-          </ng-container>
-          <ng-template #manyCubes> {{ user.numCubes }} Cubes </ng-template>
-        </mat-chip>
-      </ng-container>
-      <mat-chip *ngIf="isAdmin$ | ngrxPush">
-        <mat-icon
-          matChipAvatar
-          aria-label="staff_member"
-          class="material-symbols-outlined"
-        >
-          shield_person </mat-icon
-        >Staff Member</mat-chip
-      >
-      <mat-chip *ngIf="isPlayerAdmin$ | ngrxPush">
-        <mat-icon
-          matChipAvatar
-          aria-label="player_admin"
-          class="material-symbols-outlined"
-        >
-          admin_panel_settings</mat-icon
-        >Player Admin</mat-chip
-      >
-    </mat-chip-set>
-  </mat-card-actions>
-  <mat-card-content>
-    <p *ngIf="user.bio">{{ user.bio }}</p>
-  </mat-card-content>
-</mat-card>
+@if (user$ | ngrxPush; as user) {
+  <mat-card
+    class="profile-card"
+    appearance="outlined"
+    >
+    <mat-card-header>
+      <mat-card-title-group>
+        <mat-card-title>{{ user.username }}</mat-card-title>
+        <mat-card-subtitle
+          >{{ user.email }}
+          <a
+            class="edit-profile-button"
+            mat-stroked-button
+            routerLink="/profile/edit"
+            >Edit Profile</a
+            ></mat-card-subtitle
+            >
+            <img mat-card-md-image src="/images/frogger.jpeg" alt="Profile Picture" />
+          </mat-card-title-group>
+        </mat-card-header>
+        <mat-card-actions class="profile-header">
+          <mat-chip-set aria-label="Profile facts">
+            <mat-chip>
+              <mat-icon
+                matChipAvatar
+                aria-label="pronouns"
+                class="material-symbols-outlined"
+                >
+                person </mat-icon
+                >he/him</mat-chip
+                >
+                @if (user.numTournaments; as numTournaments) {
+                  @if (numTournaments > 0) {
+                    <mat-chip>
+                      <mat-icon
+                        matChipAvatar
+                        aria-label="tournament count"
+                        class="material-symbols-outlined"
+                        >
+                        event_available
+                      </mat-icon>
+                      {{ user.numTournaments }} Tournaments
+                    </mat-chip>
+                  }
+                }
+                @if (user.numCubes; as numCubes) {
+                  @if (numCubes > 0) {
+                    <mat-chip>
+                      <mat-icon
+                        matChipAvatar
+                        aria-label="cube count"
+                        class="material-symbols-outlined"
+                        >
+                        deployed_code
+                      </mat-icon>
+                      @if (user.numCubes == 1) {
+                        {{ user.numCubes }} Cube
+                      } @else {
+                        {{ user.numCubes }} Cubes
+                      }
+                    </mat-chip>
+                  }
+                }
+                @if (isAdmin$ | ngrxPush) {
+                  <mat-chip>
+                    <mat-icon
+                      matChipAvatar
+                      aria-label="staff_member"
+                      class="material-symbols-outlined"
+                      >
+                      shield_person </mat-icon
+                      >Staff Member</mat-chip
+                      >
+                    }
+                    @if (isPlayerAdmin$ | ngrxPush) {
+                      <mat-chip>
+                        <mat-icon
+                          matChipAvatar
+                          aria-label="player_admin"
+                          class="material-symbols-outlined"
+                          >
+                          admin_panel_settings</mat-icon
+                          >Player Admin</mat-chip
+                          >
+                        }
+                      </mat-chip-set>
+                    </mat-card-actions>
+                    <mat-card-content>
+                      @if (user.bio) {
+                        <p>{{ user.bio }}</p>
+                      }
+                    </mat-card-content>
+                  </mat-card>
+                }

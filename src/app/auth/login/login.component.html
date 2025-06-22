@@ -13,11 +13,11 @@
             [formControl]="emailFormControl"
             placeholder="chaos@orb.com"
             class="form-control"
-          />
+            />
           @if (
             emailFormControl.hasError("email") &&
             !emailFormControl.hasError("required")
-          ) {
+            ) {
             <mat-error>Please enter a valid email address</mat-error>
           }
           @if (emailFormControl.hasError("required")) {
@@ -31,7 +31,7 @@
             [type]="hide() ? 'password' : 'text'"
             [formControl]="passwordFormControl"
             [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
-          />
+            />
           <button
             mat-icon-button
             matSuffix
@@ -40,7 +40,7 @@
             (click)="clickEvent($event)"
             [attr.aria-label]="'Hide password'"
             [attr.aria-pressed]="hide()"
-          >
+            >
             <mat-icon>{{ hide() ? "visibility_off" : "visibility" }}</mat-icon>
           </button>
           @if (passwordFormControl.hasError("required")) {
@@ -48,15 +48,19 @@
           }
         </mat-form-field>
       </div>
-      <mat-error *ngIf="errorMessage$ | ngrxPush as msg">
-        {{ msg }}
-      </mat-error>
+      @if (errorMessage$ | ngrxPush; as msg) {
+        <mat-error>
+          {{ msg }}
+        </mat-error>
+      }
       <button mat-stroked-button [disabled]="loading">Login</button>
       <a mat-stroked-button routerLink="../register" class="register-button"
         >Register</a
-      >
-    </form>
-    <div id="google_btn"></div>
-    <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
-  </mat-card-content>
-</mat-card>
+        >
+      </form>
+      <div id="google_btn"></div>
+      @if (loading) {
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+      }
+    </mat-card-content>
+  </mat-card>

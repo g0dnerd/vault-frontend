@@ -18,11 +18,13 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let player of players$ | ngrxPush; index as i">
-          <td>{{ i + 1 }}</td>
-          <td>{{ player?.user?.username }}</td>
-          <td>{{ player?.elo }}</td>
-        </tr>
+        @for (player of players$ | ngrxPush; track player; let i = $index) {
+          <tr>
+            <td>{{ i + 1 }}</td>
+            <td>{{ player?.user?.username }}</td>
+            <td>{{ player?.elo }}</td>
+          </tr>
+        }
       </tbody>
     </table>
   </mat-card-content>

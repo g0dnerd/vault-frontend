@@ -1,4 +1,4 @@
-import { NgFor } from '@angular/common';
+
 import { Component, inject, input, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { PushPipe } from '@ngrx/component';
@@ -18,7 +18,7 @@ import { initializeEnrollments } from '../../../_store/actions/enrollments.actio
 @Component({
   selector: 'app-league-detail',
   standalone: true,
-  imports: [MatCardModule, PushPipe, NgFor],
+  imports: [MatCardModule, PushPipe],
   templateUrl: './league-detail.component.html',
   styleUrl: './league-detail.component.scss',
 })

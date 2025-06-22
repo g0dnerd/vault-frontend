@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+
 import { Component, inject, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -23,10 +23,9 @@ import { initRoles, initProfile } from '../../_store/actions/auth.actions';
     MatCardModule,
     MatChipsModule,
     MatIconModule,
-    NgIf,
     PushPipe,
-    RouterLink,
-  ],
+    RouterLink
+],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
 })

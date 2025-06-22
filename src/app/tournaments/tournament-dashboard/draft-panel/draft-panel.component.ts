@@ -1,5 +1,5 @@
 import { Component, inject, input } from '@angular/core';
-import { NgIf } from '@angular/common';
+
 import { MatCardModule } from '@angular/material/card';
 import { RouterLink } from '@angular/router';
 import { PushPipe } from '@ngrx/component';
@@ -16,10 +16,9 @@ import { MyPoolComponent } from '../pool/my-pool/my-pool.component';
     MatCardModule,
     MatchPanelComponent,
     MyPoolComponent,
-    NgIf,
     PushPipe,
-    RouterLink,
-  ],
+    RouterLink
+],
   templateUrl: './draft-panel.component.html',
   styleUrl: './draft-panel.component.scss',
 })

@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+
 import { Component, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -25,10 +25,9 @@ import { initProfile, updateUser } from '../../_store/actions/auth.actions';
     MatCardModule,
     MatFormFieldModule,
     MatInputModule,
-    NgIf,
     PushPipe,
-    ReactiveFormsModule,
-  ],
+    ReactiveFormsModule
+],
   templateUrl: './edit-profile.component.html',
   styleUrl: './edit-profile.component.scss',
 })

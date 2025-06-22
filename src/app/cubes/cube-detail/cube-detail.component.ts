@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+
 import { Component, inject, input, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
@@ -26,9 +26,8 @@ import { Cube } from '../../_types';
     MatIconModule,
     MatListModule,
     MatProgressSpinnerModule,
-    NgIf,
-    PushPipe,
-  ],
+    PushPipe
+],
   templateUrl: './cube-detail.component.html',
   styleUrl: './cube-detail.component.scss',
 })

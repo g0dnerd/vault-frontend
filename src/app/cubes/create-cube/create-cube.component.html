@@ -13,11 +13,11 @@
           class="form-control"
           placeholder="Banding Halloween Cube"
           [ngClass]="{ 'is-invalid': submitted && f['name'].errors }"
-        />
+          />
         @if (
           cubeNameFormControl.hasError("pattern") &&
           !cubeNameFormControl.hasError("required")
-        ) {
+          ) {
           <mat-error>Cube name can only contain letters and spaces</mat-error>
         }
         @if (cubeNameFormControl.hasError("required")) {
@@ -32,7 +32,7 @@
           type="text"
           [formControl]="cubeUrlFormControl"
           [ngClass]="{ 'is-invalid': submitted && f['url'].errors }"
-        />
+          />
       </mat-form-field>
       <mat-form-field>
         <mat-label># of cards</mat-label>
@@ -45,7 +45,7 @@
           maxLength="4"
           [formControl]="numCardsFormControl"
           [ngClass]="{ 'is-invalid': submitted && f['numCards'].errors }"
-        />
+          />
         @if (f["numCards"].value) {
           <button
             matSuffix
@@ -53,14 +53,14 @@
             aria-label="Clear"
             class="reset-form-button"
             (click)="clearNumCards()"
-          >
+            >
             <mat-icon>close</mat-icon>
           </button>
         }
         @if (
           numCardsFormControl.hasError("min") ||
           numCardsFormControl.hasError("max")
-        ) {
+          ) {
           <mat-error>Must be between 90 and 9999</mat-error>
         }
       </mat-form-field>
@@ -74,39 +74,43 @@
           [ngClass]="{
             'is-invalid': submitted && f['shortDescription'].errors,
           }"
-        />
+          />
         <mat-hint align="start">A short, one-line description</mat-hint>
-        <mat-hint align="end" *ngIf="f['shortDescription'].value"
-          >{{ f["shortDescription"].value.length }} / 90</mat-hint
-        >
-      </mat-form-field>
-      <mat-form-field class="form-field-full-width">
-        <mat-label>Long Description</mat-label>
-        <textarea
-          matInput
-          type="text"
-          [formControl]="longDescriptionFormControl"
-          placeholder="This cube was designed with the following goals in mind: ..."
+        @if (f['shortDescription'].value) {
+          <mat-hint align="end"
+            >{{ f["shortDescription"].value.length }} / 90</mat-hint
+            >
+          }
+        </mat-form-field>
+        <mat-form-field class="form-field-full-width">
+          <mat-label>Long Description</mat-label>
+          <textarea
+            matInput
+            type="text"
+            [formControl]="longDescriptionFormControl"
+            placeholder="This cube was designed with the following goals in mind: ..."
           [ngClass]="{
             'is-invalid': submitted && f['longDescription'].errors,
           }"
-        ></textarea>
-        <mat-hint align="end"
-          >{{ f["longDescription"].value.length }} / 900</mat-hint
-        >
-      </mat-form-field>
-      <div class="image-upload-container">
-        <label class="image-upload-label">Cube Thumbnail Image</label>
-        <input
-          type="file"
-          class="file-input"
-          accept="image/jpeg"
-          (change)="onFileSelected($event)"
-          #fileUpload
-        />
-      </div>
-      <button mat-stroked-button [disabled]="loading">Create</button>
-    </form>
-    <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
-  </mat-card-content>
-</mat-card>
+          ></textarea>
+          <mat-hint align="end"
+            >{{ f["longDescription"].value.length }} / 900</mat-hint
+            >
+          </mat-form-field>
+          <div class="image-upload-container">
+            <label class="image-upload-label">Cube Thumbnail Image</label>
+            <input
+              type="file"
+              class="file-input"
+              accept="image/jpeg"
+              (change)="onFileSelected($event)"
+              #fileUpload
+              />
+          </div>
+          <button mat-stroked-button [disabled]="loading">Create</button>
+        </form>
+        @if (loading) {
+          <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        }
+      </mat-card-content>
+    </mat-card>

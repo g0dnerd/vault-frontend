@@ -1,81 +1,89 @@
-<ng-container *ngIf="draft$ | ngrxPush as draft">
-  <mat-expansion-panel
-    class="pool-panel"
-    *ngIf="poolStatus$ | ngrxPush as poolStatus"
-    [disabled]="!draft?.seated"
-  >
-    <mat-expansion-panel-header>
-      <mat-panel-title>Decklist</mat-panel-title>
-      <mat-panel-description *ngIf="!draft?.seated">
-        Waiting for draft to start
-      </mat-panel-description>
-      <ng-container *ngIf="needsCheckIn()">
-        <ng-container *ngIf="!poolStatus.checkedIn; else notCheckedIn">
-          <mat-panel-description class="checkin-prompt"
-            >Please check in</mat-panel-description
-          >
-        </ng-container>
-        <ng-template #notCheckedIn>
-          <mat-panel-description class="checkin-success"
-            >Checked in</mat-panel-description
-          >
-        </ng-template>
-      </ng-container>
-      <ng-container *ngIf="needsCheckOut()">
-        <ng-container *ngIf="!poolStatus.checkedOut; else notCheckedOut">
-          <mat-panel-description class="checkout-prompt"
-            >Please check out</mat-panel-description
-          >
-        </ng-container>
-        <ng-template #notCheckedOut>
-          <mat-panel-description class="checkout-success"
-            >Checked out</mat-panel-description
-          >
-        </ng-template>
-      </ng-container>
-    </mat-expansion-panel-header>
-    <input
-      type="file"
-      class="file-input"
-      accept="image/jpeg"
-      (change)="onFileSelected($event)"
-      #fileUpload
-    />
-    <button [disabled]="loading" class="btn btn-primary" (click)="onSubmit()">
-      <span
-        *ngIf="loading"
-        class="spinner-border spinner-border-sm me-1"
-      ></span>
-      Upload file
-    </button>
-    <p *ngIf="loading">Loading...</p>
-    <mat-progress-bar mode="indeterminate" *ngIf="loading"></mat-progress-bar>
-    <div *ngIf="imgFile">
-      <section class="file-info">
-        File details:
-        <ul>
-          <li>Name: {{ imgFile.name }}</li>
-          <li>Type: {{ imgFile.type }}</li>
-          <li>Size: {{ imgFile.size }} bytes</li>
-        </ul>
-      </section>
-    </div>
-    <section class="image-list">
-      @for (image of images$ | ngrxPush; track image.id) {
-        <div class="deck-image-container">
-          <img class="deck-image" src="{{ image.url }}" />
-          <div class="delete-button-container">
-            <button
-              class="button-delete-image"
-              mat-fab
-              aria-label="Icon button with a delete icon"
-              (click)="deleteImage(image.id)"
-            >
-              <mat-icon>delete</mat-icon>
-            </button>
-          </div>
-        </div>
-      }
-    </section>
-  </mat-expansion-panel>
-</ng-container>
+@if (draft$ | ngrxPush; as draft) {
+  @if (poolStatus$ | ngrxPush; as poolStatus) {
+    <mat-expansion-panel
+      class="pool-panel"
+      [disabled]="!draft?.seated"
+      >
+      <mat-expansion-panel-header>
+        <mat-panel-title>Decklist</mat-panel-title>
+        @if (!draft?.seated) {
+          <mat-panel-description>
+            Waiting for draft to start
+          </mat-panel-description>
+        }
+        @if (needsCheckIn()) {
+          @if (!poolStatus.checkedIn) {
+            <mat-panel-description class="checkin-prompt"
+              >Please check in</mat-panel-description
+              >
+            } @else {
+              <mat-panel-description class="checkin-success"
+                >Checked in</mat-panel-description
+                >
+              }
+            }
+            @if (needsCheckOut()) {
+              @if (!poolStatus.checkedOut) {
+                <mat-panel-description class="checkout-prompt"
+                  >Please check out</mat-panel-description
+                  >
+                } @else {
+                  <mat-panel-description class="checkout-success"
+                    >Checked out</mat-panel-description
+                    >
+                  }
+                }
+              </mat-expansion-panel-header>
+              <input
+                type="file"
+                class="file-input"
+                accept="image/jpeg"
+                (change)="onFileSelected($event)"
+                #fileUpload
+                />
+              <button [disabled]="loading" class="btn btn-primary" (click)="onSubmit()">
+                @if (loading) {
+                  <span
+                    class="spinner-border spinner-border-sm me-1"
+                  ></span>
+                }
+                Upload file
+              </button>
+              @if (loading) {
+                <p>Loading...</p>
+              }
+              @if (loading) {
+                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+              }
+              @if (imgFile) {
+                <div>
+                  <section class="file-info">
+                    File details:
+                    <ul>
+                      <li>Name: {{ imgFile.name }}</li>
+                      <li>Type: {{ imgFile.type }}</li>
+                      <li>Size: {{ imgFile.size }} bytes</li>
+                    </ul>
+                  </section>
+                </div>
+              }
+              <section class="image-list">
+                @for (image of images$ | ngrxPush; track image.id) {
+                  <div class="deck-image-container">
+                    <img class="deck-image" src="{{ image.url }}" />
+                    <div class="delete-button-container">
+                      <button
+                        class="button-delete-image"
+                        mat-fab
+                        aria-label="Icon button with a delete icon"
+                        (click)="deleteImage(image.id)"
+                        >
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                  </div>
+                }
+              </section>
+            </mat-expansion-panel>
+          }
+        }

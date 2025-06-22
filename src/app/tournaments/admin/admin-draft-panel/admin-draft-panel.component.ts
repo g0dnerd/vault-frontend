@@ -1,4 +1,4 @@
-import { NgFor, NgIf } from '@angular/common';
+
 import { Component, inject, input, OnInit, signal } from '@angular/core';
 import {
   FormBuilder,
@@ -46,12 +46,10 @@ import { Match } from '../../../_types';
     MatExpansionModule,
     MatIconModule,
     MatListModule,
-    NgFor,
-    NgIf,
     PushPipe,
     ReactiveFormsModule,
-    RouterLink,
-  ],
+    RouterLink
+],
   templateUrl: './admin-draft-panel.component.html',
   styleUrl: './admin-draft-panel.component.scss',
 })

@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+
 import { Component, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -23,10 +23,9 @@ import { State, selectCurrentMatch } from '../../../_store';
   imports: [
     MatButtonToggleModule,
     MatInputModule,
-    NgIf,
     PushPipe,
-    ReactiveFormsModule,
-  ],
+    ReactiveFormsModule
+],
   templateUrl: './report-result-form.component.html',
   styleUrl: './report-result-form.component.scss',
 })

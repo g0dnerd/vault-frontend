@@ -1,47 +1,56 @@
-<form [formGroup]="form" *ngIf="form" (ngSubmit)="onSubmit()">
-  <div class="form-input player-wins">
-    <mat-label>
-      {{ (currentMatch$ | ngrxPush)?.player1?.enrollment?.user?.username }}
-      wins
-    </mat-label>
-    <mat-button-toggle-group
-      [formControl]="player1WinsFormControl"
-      aria-label="Player 1 Wins"
-      exclusive
-    >
-      <mat-button-toggle [value]="0">0</mat-button-toggle>
-      <mat-button-toggle [value]="1">1</mat-button-toggle>
-      <mat-button-toggle [value]="2">2</mat-button-toggle>
-    </mat-button-toggle-group>
-  </div>
-  <div *ngIf="submitted && f['player1Wins'].errors" class="invalid-feedback">
-    <div *ngIf="f['player1Wins'].errors['required']">
-      Player 1 wins are required
+@if (form) {
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="form-input player-wins">
+      <mat-label>
+        {{ (currentMatch$ | ngrxPush)?.player1?.enrollment?.user?.username }}
+        wins
+      </mat-label>
+      <mat-button-toggle-group
+        [formControl]="player1WinsFormControl"
+        aria-label="Player 1 Wins"
+        exclusive
+        >
+        <mat-button-toggle [value]="0">0</mat-button-toggle>
+        <mat-button-toggle [value]="1">1</mat-button-toggle>
+        <mat-button-toggle [value]="2">2</mat-button-toggle>
+      </mat-button-toggle-group>
     </div>
-  </div>
-  <div class="form-input player-wins">
-    <mat-label>
-      {{ (currentMatch$ | ngrxPush)?.player2?.enrollment?.user?.username }}
-      wins
-    </mat-label>
-    <mat-button-toggle-group
-      [formControl]="player2WinsFormControl"
-      aria-label="Player 2 Wins"
-      exclusive
-    >
-      <mat-button-toggle [value]="0">0</mat-button-toggle>
-      <mat-button-toggle [value]="1">1</mat-button-toggle>
-      <mat-button-toggle [value]="2">2</mat-button-toggle>
-    </mat-button-toggle-group>
-  </div>
-  <div
-    *ngIf="form.hasError('sumExceeded')"
-    class="cross-validation-error-message alert alert-danger"
-  >
-    Total games in match cannot exceed 3
-  </div>
-  <button [disabled]="loading" class="btn btn-primary">
-    <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
-    Report result
-  </button>
-</form>
+    @if (submitted && f['player1Wins'].errors) {
+      <div class="invalid-feedback">
+        @if (f['player1Wins'].errors['required']) {
+          <div>
+            Player 1 wins are required
+          </div>
+        }
+      </div>
+    }
+    <div class="form-input player-wins">
+      <mat-label>
+        {{ (currentMatch$ | ngrxPush)?.player2?.enrollment?.user?.username }}
+        wins
+      </mat-label>
+      <mat-button-toggle-group
+        [formControl]="player2WinsFormControl"
+        aria-label="Player 2 Wins"
+        exclusive
+        >
+        <mat-button-toggle [value]="0">0</mat-button-toggle>
+        <mat-button-toggle [value]="1">1</mat-button-toggle>
+        <mat-button-toggle [value]="2">2</mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+    @if (form.hasError('sumExceeded')) {
+      <div
+        class="cross-validation-error-message alert alert-danger"
+        >
+        Total games in match cannot exceed 3
+      </div>
+    }
+    <button [disabled]="loading" class="btn btn-primary">
+      @if (loading) {
+        <span class="spinner-border spinner-border-sm me-1"></span>
+      }
+      Report result
+    </button>
+  </form>
+}

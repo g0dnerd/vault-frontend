@@ -1,25 +1,26 @@
 <mat-card class="draft-card" appearance="outlined">
   <mat-card-header>
     <mat-card-title-group>
-      <mat-card-title *ngIf="draft$ | ngrxPush as draft">
-        Draft
-        <mat-card-subtitle>
-          Playing the
-          <a routerLink="/cubes/{{ draft.cube?.id }}" class="card-link">{{
-            draft.cube?.name
-          }}</a>
-          cube</mat-card-subtitle
-        >
-      </mat-card-title></mat-card-title-group
-    >
-  </mat-card-header>
-  <mat-card-content>
-    <ng-container *ngIf="draft$ | ngrxPush; else noDraft">
-      <app-my-pool [tournamentId]="tournamentId()" />
-      <app-match-panel />
-    </ng-container>
-    <ng-template #noDraft>
-      <p class="no-draft">Waiting for a draft to start</p>
-    </ng-template>
-  </mat-card-content>
-</mat-card>
+      @if (draft$ | ngrxPush; as draft) {
+        <mat-card-title>
+          Draft
+          <mat-card-subtitle>
+            Playing the
+            <a routerLink="/cubes/{{ draft.cube?.id }}" class="card-link">{{
+              draft.cube?.name
+            }}</a>
+            cube</mat-card-subtitle
+            >
+          </mat-card-title>
+          }</mat-card-title-group
+          >
+        </mat-card-header>
+        <mat-card-content>
+          @if (draft$ | ngrxPush) {
+            <app-my-pool [tournamentId]="tournamentId()" />
+            <app-match-panel />
+          } @else {
+            <p class="no-draft">Waiting for a draft to start</p>
+          }
+        </mat-card-content>
+      </mat-card>

@@ -1,4 +1,4 @@
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import {
   Component,
   computed,
@@ -69,10 +69,9 @@ import { initializeEnrollments } from '../../../_store/actions/enrollments.actio
     MatStepperModule,
     MatTooltipModule,
     NgClass,
-    NgIf,
     PushPipe,
-    ReactiveFormsModule,
-  ],
+    ReactiveFormsModule
+],
   templateUrl: './create-draft.component.html',
   styleUrl: './create-draft.component.scss',
 })

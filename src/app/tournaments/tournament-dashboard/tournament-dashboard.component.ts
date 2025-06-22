@@ -1,4 +1,4 @@
-import { NgFor, NgIf } from '@angular/common';
+
 import { Component, inject, input, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -46,12 +46,10 @@ import { TournamentStandingsComponent } from './tournament-standings/tournament-
     MatListModule,
     MatProgressBarModule,
     MatTabsModule,
-    NgFor,
-    NgIf,
     PushPipe,
     RouterLink,
-    TournamentStandingsComponent,
-  ],
+    TournamentStandingsComponent
+],
   templateUrl: './tournament-dashboard.component.html',
   styleUrl: './tournament-dashboard.component.scss',
 })

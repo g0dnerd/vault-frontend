@@ -1,4 +1,4 @@
-import { NgFor, NgIf } from '@angular/common';
+
 import { Component, inject, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
@@ -28,11 +28,9 @@ import { Role } from '../../_types';
     MatIconModule,
     MatListModule,
     MatProgressBarModule,
-    NgFor,
-    NgIf,
     PushPipe,
-    RouterLink,
-  ],
+    RouterLink
+],
   templateUrl: './cube-list.component.html',
   styleUrl: './cube-list.component.scss',
 })

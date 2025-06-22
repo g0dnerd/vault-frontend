@@ -1,18 +1,19 @@
 <h1>Tournament Dashboard</h1>
-<ng-container *ngIf="loading$ | ngrxPush; else showContent">
+@if (loading$ | ngrxPush) {
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-</ng-container>
-<ng-template #showContent>
-  <h5 *ngIf="tournament$ | ngrxPush as tournament">{{ tournament.name }}</h5>
-  <ng-container *ngIf="tournament$ | ngrxPush as tournament">
-    <ng-container *ngIf="isAdmin; else noAdmin">
+} @else {
+  @if (tournament$ | ngrxPush; as tournament) {
+    <h5>{{ tournament.name }}</h5>
+  }
+  @if (tournament$ | ngrxPush; as tournament) {
+    @if (isAdmin) {
       <mat-tab-group animationDuration="0ms">
         <mat-tab label="Player View">
-          <ng-container *ngIf="enrollment$ | ngrxPush as enrollment">
+          @if (enrollment$ | ngrxPush; as enrollment) {
             <app-draft-panel [tournamentId]="tournamentId()"></app-draft-panel>
             <app-tournament-standings [tournamentId]="tournament.id">
             </app-tournament-standings>
-          </ng-container>
+          }
         </mat-tab>
         <mat-tab label="Admin View">
           <mat-card class="edit-tournament-card admin">
@@ -24,63 +25,64 @@
                 mat-fab
                 extended
                 routerLink="/tournaments/admin/{{ tournament.id }}/draft/create"
-              >
+                >
                 <mat-icon>add</mat-icon>
                 Add a draft
               </a>
             </mat-card-content>
           </mat-card>
           <div class="draft-list admin">
-            <mat-card
-              class="draft-preview-card admin"
-              *ngFor="let draft of drafts$ | ngrxPush; index as i"
-            >
-              <mat-card-header>
-                <mat-card-title>
-                  Draft
-                  <mat-card-subtitle>
-                    Playing the
-                    <a
-                      routerLink="/cubes/{{ draft.cube?.id }}"
-                      class="card-link"
-                      >{{ draft.cube?.name }}</a
-                    >
-                    cube</mat-card-subtitle
-                  >
-                </mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                <mat-expansion-panel class="admin-player-list">
-                  <mat-expansion-panel-header>
-                    <mat-panel-title>Players</mat-panel-title>
-                  </mat-expansion-panel-header>
-                  <mat-list class="admin-player-list" role="list">
-                    <mat-list-item
-                      *ngFor="let player of draft?.players; index as i"
-                    >
-                      {{ player.enrollment?.user?.username }}
-                    </mat-list-item>
-                  </mat-list>
-                </mat-expansion-panel>
-                <a
+            @for (draft of drafts$ | ngrxPush; track draft; let i = $index) {
+              <mat-card
+                class="draft-preview-card admin"
+                >
+                <mat-card-header>
+                  <mat-card-title>
+                    Draft
+                    <mat-card-subtitle>
+                      Playing the
+                      <a
+                        routerLink="/cubes/{{ draft.cube?.id }}"
+                        class="card-link"
+                        >{{ draft.cube?.name }}</a
+                        >
+                        cube</mat-card-subtitle
+                        >
+                      </mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                      <mat-expansion-panel class="admin-player-list">
+                        <mat-expansion-panel-header>
+                          <mat-panel-title>Players</mat-panel-title>
+                        </mat-expansion-panel-header>
+                        <mat-list class="admin-player-list" role="list">
+                          @for (player of draft?.players; track player; let i = $index) {
+                            <mat-list-item
+                              >
+                              {{ player.enrollment?.user?.username }}
+                            </mat-list-item>
+                          }
+                        </mat-list>
+                      </mat-expansion-panel>
+                      <a
                   routerLink="/tournaments/admin/{{ tournament.id }}/draft/{{
                     draft.id
                   }}"
-                  class="dashboard-link"
-                  >Draft Dashboard
-                </a>
-              </mat-card-content>
-            </mat-card>
-          </div>
-        </mat-tab>
-      </mat-tab-group>
-    </ng-container>
-    <ng-template #noAdmin>
-      <ng-container *ngIf="enrollment$ | ngrxPush as enrollment">
-        <app-draft-panel [tournamentId]="tournamentId()"></app-draft-panel>
-        <app-tournament-standings [tournamentId]="tournament.id">
-        </app-tournament-standings>
-      </ng-container>
-    </ng-template>
-  </ng-container>
-</ng-template>
+                        class="dashboard-link"
+                        >Draft Dashboard
+                      </a>
+                    </mat-card-content>
+                  </mat-card>
+                }
+              </div>
+            </mat-tab>
+          </mat-tab-group>
+        } @else {
+          @if (enrollment$ | ngrxPush; as enrollment) {
+            <app-draft-panel [tournamentId]="tournamentId()"></app-draft-panel>
+            <app-tournament-standings [tournamentId]="tournament.id">
+            </app-tournament-standings>
+          }
+        }
+      }
+    }

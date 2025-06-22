@@ -1,4 +1,4 @@
-import { NgFor, NgIf } from '@angular/common';
+
 import { Component, inject, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
@@ -21,11 +21,9 @@ import {
   imports: [
     MatCardModule,
     MatProgressBarModule,
-    NgFor,
-    NgIf,
     RouterLink,
-    PushPipe,
-  ],
+    PushPipe
+],
   templateUrl: './my-tournaments.component.html',
   styleUrl: './my-tournaments.component.scss',
 })

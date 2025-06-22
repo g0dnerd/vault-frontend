@@ -1,4 +1,4 @@
-import { NgFor, NgIf } from '@angular/common';
+
 import { Component, inject, input, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { PushPipe } from '@ngrx/component';
@@ -9,7 +9,7 @@ import { initializeTournamentStandings } from '../../../_store/actions/standings
 
 @Component({
   selector: 'app-tournament-standings',
-  imports: [MatCardModule, NgFor, NgIf, PushPipe],
+  imports: [MatCardModule, PushPipe],
   templateUrl: './tournament-standings.component.html',
   styleUrl: './tournament-standings.component.scss',
 })

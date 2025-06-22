@@ -1,4 +1,4 @@
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import {
   FormBuilder,
@@ -36,11 +36,10 @@ import { distinctUntilChanged, tap } from 'rxjs';
     MatInputModule,
     MatProgressBarModule,
     NgClass,
-    NgIf,
     PushPipe,
     RouterLink,
-    ReactiveFormsModule,
-  ],
+    ReactiveFormsModule
+],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
 })

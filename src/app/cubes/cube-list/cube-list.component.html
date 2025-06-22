@@ -1,32 +1,36 @@
 <h1>Cubes</h1>
-<ng-container *ngIf="loading$ | ngrxPush; else showContent">
+@if (loading$ | ngrxPush) {
   <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-</ng-container>
-<ng-template #showContent>
+} @else {
   <mat-card class="cube-list-card" appearance="outlined">
     <mat-card-content>
       <mat-list class="cube-list">
-        <mat-list-item
-          *ngFor="let cube of cubes$ | ngrxPush; index as i"
-          class="cube-detail-preview"
-        >
-          <span matListItemTitle>
-            <a class="cube-link-internal" routerLink="/cubes/{{ cube.id }}">{{
-              cube.name
-            }}</a>
-          </span>
-          <span matListItemLine
-            >{{ cube.numCards }} card cube
-            <span *ngIf="cube.creator">by {{ cube.creator.username }}</span>
-          </span>
-        </mat-list-item>
+        @for (cube of cubes$ | ngrxPush; track cube; let i = $index) {
+          <mat-list-item
+            class="cube-detail-preview"
+            >
+            <span matListItemTitle>
+              <a class="cube-link-internal" routerLink="/cubes/{{ cube.id }}">{{
+                cube.name
+              }}</a>
+            </span>
+            <span matListItemLine
+              >{{ cube.numCards }} card cube
+              @if (cube.creator) {
+                <span>by {{ cube.creator.username }}</span>
+              }
+            </span>
+          </mat-list-item>
+        }
       </mat-list>
     </mat-card-content>
-    <mat-card-actions *ngIf="isAdmin">
-      <a mat-stroked-button class="regular-button" routerLink="./create">
-        <mat-icon>add</mat-icon>
-        Create a cube
-      </a>
-    </mat-card-actions>
+    @if (isAdmin) {
+      <mat-card-actions>
+        <a mat-stroked-button class="regular-button" routerLink="./create">
+          <mat-icon>add</mat-icon>
+          Create a cube
+        </a>
+      </mat-card-actions>
+    }
   </mat-card>
-</ng-template>
+}

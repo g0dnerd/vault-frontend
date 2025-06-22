@@ -1,62 +1,61 @@
 <div class="mb-1">
-  <nav
-    class="navbar navbar-expand-md navbar-light bg-light"
-    *ngIf="authState$ | ngrxPush"
-  >
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <a class="navbar-brand" routerLink="/">MtG Cube</a>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <ng-container *ngIf="isAdmin$ | ngrxPush; else noAdmin">
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/tournaments">Tournaments</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/tournaments/admin/create"
-              >Create a Tournament</a
-            >
-          </li>
-        </ng-container>
-        <ng-template #noAdmin>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/tournaments">My Tournaments</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="/tournaments/available"
-              >Available Tournaments</a
-            >
-          </li>
-          <ng-container *ngIf="isPlayerAdmin$ | ngrxPush">
+  @if (authState$ | ngrxPush) {
+    <nav
+      class="navbar navbar-expand-md navbar-light bg-light"
+      >
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+        >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" routerLink="/">MtG Cube</a>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          @if (isAdmin$ | ngrxPush) {
+            <li class="nav-item">
+              <a class="nav-link" routerLink="/tournaments">Tournaments</a>
+            </li>
             <li class="nav-item">
               <a class="nav-link" routerLink="/tournaments/admin/create"
                 >Create a Tournament</a
-              >
-            </li>
-          </ng-container>
-        </ng-template>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/cubes">Cubes</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/profile">Profile</a>
-        </li>
-        <li class="nav-item">
-          <button class="btn btn-link nav-link" (click)="logout()">
-            Logout
-          </button>
-        </li>
-      </ul>
-    </div>
-  </nav>
-</div>
+                >
+              </li>
+            } @else {
+              <li class="nav-item">
+                <a class="nav-link" routerLink="/tournaments">My Tournaments</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" routerLink="/tournaments/available"
+                  >Available Tournaments</a
+                  >
+                </li>
+                @if (isPlayerAdmin$ | ngrxPush) {
+                  <li class="nav-item">
+                    <a class="nav-link" routerLink="/tournaments/admin/create"
+                      >Create a Tournament</a
+                      >
+                    </li>
+                  }
+                }
+                <li class="nav-item">
+                  <a class="nav-link" routerLink="/cubes">Cubes</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" routerLink="/profile">Profile</a>
+                </li>
+                <li class="nav-item">
+                  <button class="btn btn-link nav-link" (click)="logout()">
+                    Logout
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </nav>
+        }
+      </div>

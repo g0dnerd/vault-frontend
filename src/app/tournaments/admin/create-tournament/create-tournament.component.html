@@ -4,7 +4,7 @@
     [stepControl]="tournamentForm"
     [completed]="skipInitial()"
     [editable]="false"
-  >
+    >
     <form [formGroup]="tournamentForm" (ngSubmit)="createTournament()">
       <ng-template matStepLabel>Enter tournament data</ng-template>
       <mat-form-field>
@@ -15,11 +15,15 @@
           formControlName="name"
           class="form-control"
           [ngClass]="{ 'is-invalid': submitted && f['name'].errors }"
-        />
+          />
       </mat-form-field>
-      <div *ngIf="submitted && f['name'].errors" class="invalid-feedback">
-        <div *ngIf="f['name'].errors['required']">Name is required</div>
-      </div>
+      @if (submitted && f['name'].errors) {
+        <div class="invalid-feedback">
+          @if (f['name'].errors['required']) {
+            <div>Name is required</div>
+          }
+        </div>
+      }
       <mat-form-field>
         <mat-label>Player Capacity</mat-label>
         <input
@@ -30,16 +34,19 @@
           [ngClass]="{
             'is-invalid': submitted && f['playerCapacity'].errors,
           }"
-        />
+          />
       </mat-form-field>
-      <div
-        *ngIf="submitted && f['playerCapacity'].errors"
-        class="invalid-feedback"
-      >
-        <div *ngIf="f['playerCapacity'].errors['required']">
-          Player Capacity is required
+      @if (submitted && f['playerCapacity'].errors) {
+        <div
+          class="invalid-feedback"
+          >
+          @if (f['playerCapacity'].errors['required']) {
+            <div>
+              Player Capacity is required
+            </div>
+          }
         </div>
-      </div>
+      }
       <mat-form-field>
         <mat-label>Description</mat-label>
         <textarea
@@ -49,65 +56,76 @@
           [ngClass]="{ 'is-invalid': submitted && f['description'].errors }"
         ></textarea>
       </mat-form-field>
-      <div
-        *ngIf="submitted && f['description'].errors"
-        class="invalid-feedback"
-      >
-        <div *ngIf="f['description'].errors['required']">
-          Description is required
+      @if (submitted && f['description'].errors) {
+        <div
+          class="invalid-feedback"
+          >
+          @if (f['description'].errors['required']) {
+            <div>
+              Description is required
+            </div>
+          }
         </div>
-      </div>
+      }
       <section class="checkbox-section">
         <p>
           <mat-checkbox
             formControlName="public"
             [ngClass]="{ 'is-invalid': submitted && f['public'].errors }"
             >Public</mat-checkbox
-          >
-        </p>
-        <div *ngIf="submitted && f['public'].errors" class="invalid-feedback">
-          <div *ngIf="f['public'].errors['required']">
-            Public setting is required
-          </div>
-        </div>
-        <p>
-          <mat-checkbox
-            formControlName="league"
-            [ngClass]="{ 'is-invalid': submitted && f['league'].errors }"
-            >League</mat-checkbox
-          >
-        </p>
-        <div *ngIf="submitted && f['league'].errors" class="invalid-feedback">
-          <div *ngIf="f['league'].errors['required']">
-            League setting is required
-          </div>
-        </div>
-      </section>
-      <button mat-button matStepperNext>Create and continue</button>
-    </form>
-  </mat-step>
-  <mat-step
-    [stepControl]="enrollForm"
-    label="Enroll players"
-    [editable]="false"
-  >
-    <form [formGroup]="enrollForm" (ngSubmit)="enrollUsers()">
-      <mat-form-field>
-        <mat-label>Players</mat-label>
-        <mat-select
-          formControlName="users"
-          multiple
-          (ngModelChange)="enrollmentsChanged($event)"
-          [ngClass]="{ 'is-invalid': submitted && ef['users'].errors }"
-        >
-          @for (user of availableUsers$ | ngrxPush; track user.id) {
-            <mat-option [value]="user.id">{{ user.username }}</mat-option>
+            >
+          </p>
+          @if (submitted && f['public'].errors) {
+            <div class="invalid-feedback">
+              @if (f['public'].errors['required']) {
+                <div>
+                  Public setting is required
+                </div>
+              }
+            </div>
           }
-        </mat-select>
-      </mat-form-field>
-      <button mat-button>Enroll players</button>
-      <button mat-button matStepperPrevious type="button">Back</button>
-      <button mat-button matStepperNext type="button">Next</button>
-    </form>
-  </mat-step>
-</mat-stepper>
+          <p>
+            <mat-checkbox
+              formControlName="league"
+              [ngClass]="{ 'is-invalid': submitted && f['league'].errors }"
+              >League</mat-checkbox
+              >
+            </p>
+            @if (submitted && f['league'].errors) {
+              <div class="invalid-feedback">
+                @if (f['league'].errors['required']) {
+                  <div>
+                    League setting is required
+                  </div>
+                }
+              </div>
+            }
+          </section>
+          <button mat-button matStepperNext>Create and continue</button>
+        </form>
+      </mat-step>
+      <mat-step
+        [stepControl]="enrollForm"
+        label="Enroll players"
+        [editable]="false"
+        >
+        <form [formGroup]="enrollForm" (ngSubmit)="enrollUsers()">
+          <mat-form-field>
+            <mat-label>Players</mat-label>
+            <mat-select
+              formControlName="users"
+              multiple
+              (ngModelChange)="enrollmentsChanged($event)"
+              [ngClass]="{ 'is-invalid': submitted && ef['users'].errors }"
+              >
+              @for (user of availableUsers$ | ngrxPush; track user.id) {
+                <mat-option [value]="user.id">{{ user.username }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          <button mat-button>Enroll players</button>
+          <button mat-button matStepperPrevious type="button">Back</button>
+          <button mat-button matStepperNext type="button">Next</button>
+        </form>
+      </mat-step>
+    </mat-stepper>

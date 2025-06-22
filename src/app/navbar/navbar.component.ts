@@ -1,4 +1,4 @@
-import { NgIf } from '@angular/common';
+
 import { PushPipe } from '@ngrx/component';
 import { Component, inject } from '@angular/core';
 import { RouterLink, RouterModule } from '@angular/router';
@@ -14,7 +14,7 @@ import { logout } from '../_store/actions/auth.actions';
 
 @Component({
   selector: 'app-navbar',
-  imports: [NgIf, PushPipe, RouterLink, RouterModule],
+  imports: [PushPipe, RouterLink, RouterModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
 })

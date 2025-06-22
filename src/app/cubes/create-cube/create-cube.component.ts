@@ -1,4 +1,4 @@
-import { NgClass, NgIf } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
@@ -37,9 +37,8 @@ const cobraBaseUrl = 'https://cubecobra.com/cube/overview/';
     MatInputModule,
     MatProgressBarModule,
     NgClass,
-    NgIf,
-    ReactiveFormsModule,
-  ],
+    ReactiveFormsModule
+],
   templateUrl: './create-cube.component.html',
   styleUrl: './create-cube.component.scss',
 })
