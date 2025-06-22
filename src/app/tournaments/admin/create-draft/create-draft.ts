@@ -28,7 +28,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { ActivatedRoute } from '@angular/router';
 import { PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
-import { catchError, Observable, of, switchMap } from 'rxjs';
+import { catchError, map, Observable, of, switchMap } from 'rxjs';
 
 import {
   selectAllCubes,
@@ -56,6 +56,7 @@ import {
   PhasesService,
 } from '../../../_services';
 import { initializeEnrollments } from '../../../_store/actions/enrollments.actions';
+import { initializePlayers } from '../../../_store/actions/players.actions';
 
 @Component({
   selector: 'app-create-draft',
@@ -159,6 +160,7 @@ export class CreateDraft implements OnInit {
     this.store$.dispatch(initializeEnrollments());
     this.store$.dispatch(initializeTournaments());
     this.store$.dispatch(initializeCubes());
+    this.store$.dispatch(initializePlayers());
     this.store$.dispatch(initializePhasesForTournament({ tournamentId }));
 
     this.tournament$ = this.store$.select(selectTournamentById(tournamentId));
@@ -176,20 +178,26 @@ export class CreateDraft implements OnInit {
       this.store$.dispatch(initializeSingleDraft({ draftId }));
     }
 
-    this.draft$.subscribe((draft) => {
-      if (draft) {
-        this.form.setValue({
-          cubeId: draft.cube?.id,
-          phaseId: draft.phase?.id,
-          numRounds: draft.phase?.roundAmount,
-          tableFirst: this.f['tableFirst'].value,
-          tableLast: this.f['tableLast'].value,
-        });
-      }
-    });
+    this.draft$
+      .pipe(
+        map((draft) => {
+          if (draft) {
+            this.form.patchValue({
+              cubeId: draft.cube?.id,
+              phaseId: draft.phase?.id,
+              numRounds: draft.phase?.roundAmount,
+              tableFirst: this.f['tableFirst'].value,
+              tableLast: this.f['tableLast'].value,
+            });
+          }
+        }),
+      )
+      .subscribe();
 
     this.alreadyEnrolled$.subscribe((enrolled) => {
-      this.alreadyEnrolledIds.set(enrolled.map((e) => e.id));
+      this.alreadyEnrolledIds.set(enrolled.map((e) => e.enrollmentId));
+      console.log('Already enrolled IDs:', this.alreadyEnrolledIds());
+      this.playersFormControl.patchValue(this.alreadyEnrolledIds());
     });
     this.tournament$.subscribe((tournament) => {
       // TODO: What's the default max table?
@@ -221,47 +229,49 @@ export class CreateDraft implements OnInit {
     const tableFirst = this.f['tableFirst'].value;
     const tableLast = this.f['tableLast'].value;
 
-    if (!this.useExistingPhase) {
-      const tournamentId = this.tournamentId();
-      // FIXME: read out numRounds
-      const roundAmount = 3;
-      const phaseData: CreatePhaseDto = { tournamentId, roundAmount };
+    if (!this.draftId) {
+      if (!this.useExistingPhase) {
+        const tournamentId = this.tournamentId();
+        // FIXME: read out numRounds
+        const roundAmount = 3;
+        const phaseData: CreatePhaseDto = { tournamentId, roundAmount };
 
-      this.phasesService
-        .createPhase(phaseData)
-        .pipe(
-          switchMap((phase) => {
-            const draftData: CreateDraftDto = {
-              cubeId,
-              phaseId: phase.id,
-              tableFirst,
-              tableLast,
-            };
-            if (!this.edit()) {
-              return this.draftsService.createDraft(draftData);
-            } else {
-              return this.draftsService.editDraft(draftData);
+        this.phasesService
+          .createPhase(phaseData)
+          .pipe(
+            switchMap((phase) => {
+              const draftData: CreateDraftDto = {
+                cubeId,
+                phaseId: phase.id,
+                tableFirst,
+                tableLast,
+              };
+              if (!this.edit()) {
+                return this.draftsService.createDraft(draftData);
+              } else {
+                return this.draftsService.editDraft(draftData);
+              }
+            }),
+            catchError((error) => {
+              console.error(error);
+              return of(null);
+            }),
+          )
+          .subscribe((draft) => {
+            if (draft) {
+              const enrollmentIds = this.pf['players'].value;
+              if (enrollmentIds.length > 0) {
+                this.enrollmentsService
+                  .enrollMany(tournamentId, enrollmentIds)
+                  .pipe(
+                    catchError((error) => {
+                      return of(console.error(error));
+                    }),
+                  );
+              }
             }
-          }),
-          catchError((error) => {
-            console.error(error);
-            return of(null);
-          }),
-        )
-        .subscribe((draft) => {
-          if (draft) {
-            const enrollmentIds = this.pf['players'].value;
-            if (enrollmentIds.length > 0) {
-              this.enrollmentsService
-                .enrollMany(tournamentId, enrollmentIds)
-                .pipe(
-                  catchError((error) => {
-                    return of(console.error(error));
-                  }),
-                );
-            }
-          }
-        });
+          });
+      }
     }
   }
 

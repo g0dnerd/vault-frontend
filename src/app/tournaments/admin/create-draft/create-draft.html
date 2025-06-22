@@ -1,7 +1,7 @@
 @if (edit()) {
-  <h1>Edit draft</h1>
+<h1>Edit draft</h1>
 } @else {
-  <h1>Create a draft</h1>
+<h1>Create a draft</h1>
 }
 
 <mat-stepper #stepper linear>
@@ -13,11 +13,11 @@
         <mat-select [formControl]="cubeFormControl" required>
           <mat-option>--</mat-option>
           @for (cube of cubes$ | ngrxPush; track cube.id) {
-            <mat-option [value]="cube.id">{{ cube.name }}</mat-option>
+          <mat-option [value]="cube.id">{{ cube.name }}</mat-option>
           }
         </mat-select>
         @if (cubeFormControl.hasError("required")) {
-          <mat-error>Cube is <strong>required</strong></mat-error>
+        <mat-error>Cube is <strong>required</strong></mat-error>
         }
       </mat-form-field>
       <section class="form-checkbox-container">
@@ -26,119 +26,112 @@
             (change)="changePhaseControl()"
             matTooltip="If selected, this draft will run parallel to other drafts. Select this option if you are organizing a larger tournament."
             matTooltipPosition="after"
-            >
+          >
             Parallel draft
           </mat-checkbox>
         </p>
-        @if (phases$ | ngrxPush; as phases) {
-          @if (phases.length > 0) {
-            <mat-form-field class="form-field-75">
-              <mat-label>Phase</mat-label>
-              <mat-select
-                [formControl]="phaseFormControl"
-                [required]="useExistingPhase"
-                >
-                @for (phase of phases; track phase.id) {
-                  <mat-option [value]="phase.id"
-                    >{{ phase.tournament.name }} - Phase
-                    {{ phase.phaseIndex }}</mat-option
-                    >
-                  }
-                </mat-select>
-              </mat-form-field>
+        @if (phases$ | ngrxPush; as phases) { @if (phases.length > 0) {
+        <mat-form-field class="form-field-75">
+          <mat-label>Phase</mat-label>
+          <mat-select
+            [formControl]="phaseFormControl"
+            [required]="useExistingPhase"
+          >
+            @for (phase of phases; track phase.id) {
+            <mat-option [value]="phase.id"
+              >{{ phase.tournament.name }} - Phase {{ phase.phaseIndex
+              }}</mat-option
+            >
             }
+          </mat-select>
+        </mat-form-field>
+        } }
+      </section>
+      <section class="form-checkbox-container">
+        <div class="table-number-section">
+          <mat-checkbox
+            (change)="changeTableControl()"
+            matTooltip="If selected, this draft will only assign table numbers within the selected range to all its matches."
+            matTooltipPosition="above"
+          >
+            Specify table numbers</mat-checkbox
+          >
+        </div>
+        <mat-form-field class="form-field-75">
+          <div class="slider-label-container">
+            <mat-label id="first-table-name-label" class="tables-name-label"
+              >First table:</mat-label
+            >
+            <mat-label class="tables-value-label"
+              >{{ sliderStart.value }}</mat-label
+            >
+            <mat-label id="last-table-name-label" class="tables-name-label"
+              >Last table:</mat-label
+            >
+            <mat-label class="tables-value-label"
+              >{{ sliderEnd.value }}</mat-label
+            >
+          </div>
+          <mat-slider
+            min="1"
+            [max]="maxTable()"
+            [disabled]="!tableSliderEnabled"
+            discrete
+            showTickMarks
+            class="table-slider"
+          >
+            <input
+              matInput
+              matSliderStartThumb
+              [formControl]="tableFirstFormControl"
+              #sliderStart
+            />
+            <input
+              matInput
+              matSliderEndThumb
+              [formControl]="tableLastFormControl"
+              #sliderEnd
+            />
+          </mat-slider>
+          @if (tableFirstFormControl.hasError("min")) {
+          <mat-error>Table number has to be at least 1</mat-error>
+          } @if (tableFirstFormControl.hasError("max")) {
+          <mat-error>Invalid table number</mat-error>
+          } @if (tableLastFormControl.hasError("min")) {
+          <mat-error>Table number has to be at least 1</mat-error>
+          } @if (tableLastFormControl.hasError("max")) {
+          <mat-error>Invalid table number</mat-error>
           }
-        </section>
-        <section class="form-checkbox-container">
-          <div class="table-number-section">
-            <mat-checkbox
-              (change)="changeTableControl()"
-              matTooltip="If selected, this draft will only assign table numbers within the selected range to all its matches."
-              matTooltipPosition="above"
-              >
-              Specify table numbers</mat-checkbox
-              >
-            </div>
-            <mat-form-field class="form-field-75">
-              <div class="slider-label-container">
-                <mat-label id="first-table-name-label" class="tables-name-label"
-                  >First table:</mat-label
-                  >
-                  <mat-label class="tables-value-label">{{
-                    sliderStart.value
-                  }}</mat-label>
-                  <mat-label id="last-table-name-label" class="tables-name-label"
-                    >Last table:</mat-label
-                    >
-                    <mat-label class="tables-value-label">{{
-                      sliderEnd.value
-                    }}</mat-label>
-                  </div>
-                  <mat-slider
-                    min="1"
-                    [max]="maxTable()"
-                    [disabled]="!tableSliderEnabled"
-                    discrete
-                    showTickMarks
-                    class="table-slider"
-                    >
-                    <input
-                      matInput
-                      matSliderStartThumb
-                      [formControl]="tableFirstFormControl"
-                      #sliderStart
-                      />
-                    <input
-                      matInput
-                      matSliderEndThumb
-                      [formControl]="tableLastFormControl"
-                      #sliderEnd
-                      />
-                  </mat-slider>
-                  @if (tableFirstFormControl.hasError("min")) {
-                    <mat-error>Table number has to be at least 1</mat-error>
-                  }
-                  @if (tableFirstFormControl.hasError("max")) {
-                    <mat-error>Invalid table number</mat-error>
-                  }
-                  @if (tableLastFormControl.hasError("min")) {
-                    <mat-error>Table number has to be at least 1</mat-error>
-                  }
-                  @if (tableLastFormControl.hasError("max")) {
-                    <mat-error>Invalid table number</mat-error>
-                  }
-                </mat-form-field>
-              </section>
-              <button mat-button matStepperNext type="button">Next</button>
-            </form>
-          </mat-step>
-          <mat-step [stepControl]="playerForm" label="Enroll players">
-            <form [formGroup]="playerForm">
-              @if (availableEnrollments$ | ngrxPush; as availableEnrollments) {
-                @if (availableEnrollments.length > 0) {
-                  <mat-form-field>
-                    <mat-label>Players</mat-label>
-                    <mat-select
-                      [formControl]="playersFormControl"
-                      [(value)]="alreadyEnrolledIds"
-                      multiple
-                      [ngClass]="{ 'is-invalid': submitted && pf['players'].errors }"
-                      >
-                      @for (enrollment of availableEnrollments; track enrollment.id) {
-                        <mat-option [value]="enrollment.id">{{
-                          enrollment.user.username
-                        }}</mat-option>
-                      }
-                    </mat-select>
-                  </mat-form-field>
-                }
-              }
-              <button mat-button matStepperPrevious type="button">Back</button>
-              @if (edit()) {
-                <button mat-button>Submit Changes</button>
-              } @else {
-                <button mat-button>Submit and create draft</button>
-              }
-            </form>
-          </mat-step>
-        </mat-stepper>
+        </mat-form-field>
+      </section>
+      <button mat-button matStepperNext type="button">Next</button>
+    </form>
+  </mat-step>
+  <mat-step [stepControl]="playerForm" label="Enroll players">
+    <form [formGroup]="playerForm">
+      @if (availableEnrollments$ | ngrxPush; as availableEnrollments) { @if
+      (availableEnrollments.length > 0) {
+      <mat-form-field class="form-field-mg-top">
+        <mat-label>Players</mat-label>
+        <mat-select
+          [formControl]="playersFormControl"
+          multiple
+          [ngClass]="{ 'is-invalid': submitted && pf['players'].errors }"
+        >
+          @for (enrollment of availableEnrollments; track enrollment.id) {
+          <mat-option [value]="enrollment.id"
+            >{{ enrollment.user.username }}</mat-option
+          >
+          }
+        </mat-select>
+      </mat-form-field>
+      } }
+      <button mat-button matStepperPrevious type="button">Back</button>
+      @if (edit()) {
+      <button mat-button>Submit Changes</button>
+      } @else {
+      <button mat-button>Submit and create draft</button>
+      }
+    </form>
+  </mat-step>
+</mat-stepper>
