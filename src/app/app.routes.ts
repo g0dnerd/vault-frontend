@@ -7,20 +7,20 @@ import { CubesEffects } from './_store/effects/cubes.effects';
 import { UsersEffects } from './_store/effects/users.effects';
 import { cubesReducer } from './_store/reducers/cubes.reducer';
 import { usersReducer } from './_store/reducers/users.reducer';
-import { LoginComponent } from './auth/login/login.component';
-import { RegisterComponent } from './auth/register/register.component';
-import { ProfileComponent } from './account/profile/profile.component';
-import { EditProfileComponent } from './account/edit-profile/edit-profile.component';
-import { HomeComponent } from './home/home.component';
-import { CubeListComponent } from './cubes/cube-list/cube-list.component';
-import { CubeDetailComponent } from './cubes/cube-detail/cube-detail.component';
-import { CreateCubeComponent } from './cubes/create-cube/create-cube.component';
+import { Login } from './auth/login/login';
+import { Register } from './auth/register/register';
+import { Profile } from './account/profile/profile';
+import { EditProfile } from './account/edit-profile/edit-profile';
+import { Home } from './home/home';
+import { CubeList } from './cubes/cube-list/cube-list';
+import { CubeDetail } from './cubes/cube-detail/cube-detail';
+import { CreateCube } from './cubes/create-cube/create-cube';
 import { Role } from './_types';
 
 export const appRoutes: Route[] = [
   {
     path: '',
-    component: HomeComponent,
+    component: Home,
     canActivate: [AuthGuard],
     providers: [
       provideEffects(CubesEffects, UsersEffects),
@@ -33,11 +33,11 @@ export const appRoutes: Route[] = [
     children: [
       {
         path: 'login',
-        component: LoginComponent,
+        component: Login,
       },
       {
         path: 'register',
-        component: RegisterComponent,
+        component: Register,
       },
     ],
   },
@@ -46,17 +46,17 @@ export const appRoutes: Route[] = [
     children: [
       {
         path: '',
-        component: CubeListComponent,
+        component: CubeList,
       },
       {
         path: 'create',
-        component: CreateCubeComponent,
+        component: CreateCube,
         data: { requiredRoles: [Role.Admin, Role.PlayerAdmin] },
         canActivate: [RolesGuard],
       },
       {
         path: ':cubeId',
-        component: CubeDetailComponent,
+        component: CubeDetail,
       },
     ],
     canActivate: [AuthGuard],
@@ -66,11 +66,11 @@ export const appRoutes: Route[] = [
     children: [
       {
         path: '',
-        component: ProfileComponent,
+        component: Profile,
       },
       {
         path: 'edit',
-        component: EditProfileComponent,
+        component: EditProfile,
       },
     ],
     canActivate: [AuthGuard],

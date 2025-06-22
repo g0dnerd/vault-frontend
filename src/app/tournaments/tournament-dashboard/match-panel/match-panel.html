@@ -1,0 +1,54 @@
+@if (currentMatch$ | ngrxPush; as game) {
+<mat-expansion-panel
+  class="match-panel"
+  [disabled]="!game.player1 && !game.player2"
+>
+  <mat-expansion-panel-header>
+    <mat-panel-title>My Opponent</mat-panel-title>
+    <mat-panel-description>
+      @if (game.player1) { {{ game.opponentName | ngrxPush }} @if
+      (game.tableNumber > 0) { at Table
+      <span class="my-table">{{ game.tableNumber }}</span>
+      } > }@else { Waiting for pairings }
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+
+  @defer {
+  <div class="match-result-forms">
+    @if (result() === -1) {
+    <app-report-result-form />
+
+    } @else if (result() === 0) {
+    <p>
+      It's a {{ game.player1Wins }}-{{ game.player2Wins }} draw @if
+      (game.resultConfirmed) {
+      <span>(Result confirmed)</span>
+      }
+    </p>
+    } @else if (result() === 1) {
+    <p>
+      {{ game.player1?.enrollment?.user?.username }} wins {{ game.player1Wins
+      }}-{{ game.player2Wins }} @if (game.resultConfirmed) {
+      <span>(Result confirmed)</span>
+      }
+    </p>
+    } @else {
+    <p>
+      {{ game.player2?.enrollment?.user?.username }} wins {{ game.player2Wins
+      }}-{{ game.player1Wins }} @if (game.resultConfirmed) {
+      <span>(Result confirmed)</span>
+      }
+    </p>
+    } @if (!game.resultConfirmed) { @if (game.reportedById != 1) {
+    <button [disabled]="loading" (click)="onConfirm()" class="btn btn-primary">
+      @if (loading) {
+      <span class="spinner-border spinner-border-sm me-1"></span>
+      } Confirm result
+    </button>
+    } @else {
+    <span>(Awaiting confirmation)</span>
+    } }
+  </div>
+  }
+</mat-expansion-panel>
+}

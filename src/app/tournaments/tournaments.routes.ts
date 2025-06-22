@@ -21,18 +21,18 @@ import { standingsReducer } from '../_store/reducers/standings.reducer';
 import { tournamentsReducer } from '../_store/reducers/tournaments.reducer';
 import { Role } from '../_types';
 
-import { AvailableTournamentsComponent } from './available-tournaments/available-tournaments.component';
-import { MyTournamentsComponent } from './my-tournaments/my-tournaments.component';
-import { TournamentDashboardComponent } from './tournament-dashboard/tournament-dashboard.component';
-import { AdminDraftPanelComponent } from './admin/admin-draft-panel/admin-draft-panel.component';
+import { AvailableTournaments } from './available-tournaments/available-tournaments';
+import { MyTournaments } from './my-tournaments/my-tournaments';
+import { TournamentDashboard } from './tournament-dashboard/tournament-dashboard';
+import { AdminDraftPanel } from './admin/admin-draft-panel/admin-draft-panel';
 import { LeagueDetailComponent } from './leagues/league-detail/league-detail.component';
-import { CreateDraftComponent } from './admin/create-draft/create-draft.component';
-import { CreateTournamentComponent } from './admin/create-tournament/create-tournament.component';
+import { CreateDraft } from './admin/create-draft/create-draft';
+import { CreateTournament } from './admin/create-tournament/create-tournament';
 
 export const TOURNAMENT_ROUTES: Routes = [
   {
     path: '',
-    component: MyTournamentsComponent,
+    component: MyTournaments,
     providers: [
       provideEffects(
         DraftsEffects,
@@ -56,14 +56,14 @@ export const TOURNAMENT_ROUTES: Routes = [
   },
   {
     path: 'available',
-    component: AvailableTournamentsComponent,
+    component: AvailableTournaments,
   },
   {
     path: 'admin',
     children: [
       {
         path: 'create',
-        component: CreateTournamentComponent,
+        component: CreateTournament,
         data: { requiredRoles: [Role.Admin, Role.PlayerAdmin] },
         canActivate: [RolesGuard],
       },
@@ -72,13 +72,13 @@ export const TOURNAMENT_ROUTES: Routes = [
         children: [
           {
             path: 'create',
-            component: CreateDraftComponent,
+            component: CreateDraft,
             canActivate: [RolesGuard],
             data: { requiredRoles: [Role.Admin, Role.PlayerAdmin] },
           },
           {
             path: ':draftId',
-            component: AdminDraftPanelComponent,
+            component: AdminDraftPanel,
             data: { requiredRoles: [Role.Admin, Role.PlayerAdmin] },
             canActivate: [RolesGuard],
           },
@@ -88,7 +88,7 @@ export const TOURNAMENT_ROUTES: Routes = [
   },
   {
     path: ':tournamentId',
-    component: TournamentDashboardComponent,
+    component: TournamentDashboard,
   },
   {
     path: 'league/:leagueId',
