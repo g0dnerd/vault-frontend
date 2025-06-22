@@ -196,7 +196,6 @@ export class CreateDraft implements OnInit {
 
     this.alreadyEnrolled$.subscribe((enrolled) => {
       this.alreadyEnrolledIds.set(enrolled.map((e) => e.enrollmentId));
-      console.log('Already enrolled IDs:', this.alreadyEnrolledIds());
       this.playersFormControl.patchValue(this.alreadyEnrolledIds());
     });
     this.tournament$.subscribe((tournament) => {
