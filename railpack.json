@@ -6,7 +6,10 @@
   },
   "steps": {
     "install": {
-      "commands": ["npm install --legacy-peer-deps"]
+      "commands": [
+        { "src": "package.json", "dest": "package.json" },
+        { "cmd": "npm install --legacy-peer-deps" }
+      ]
     }
   }
 }
