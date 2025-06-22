@@ -110,7 +110,7 @@ export class CreateCube implements OnInit {
       )
       .subscribe();
 
-    this.form.controls['name'].valueChanges
+    this.f['name'].valueChanges
       .pipe(
         tap((name) => {
           if (name) {
