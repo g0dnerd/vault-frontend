@@ -47,7 +47,7 @@ export class Login implements OnInit {
   private readonly store$ = inject(Store<State>);
   readonly errorMessage$ = this.store$.select(selectAuthErrorMessage);
 
-  form!: FormGroup;
+  form: FormGroup;
   loading = false;
   submitted = false;
 
@@ -55,10 +55,13 @@ export class Login implements OnInit {
   hide = signal(true);
 
   emailControl = new FormControl('', [Validators.required, Validators.email]);
-  passwordControl = new FormControl('', [Validators.required]);
+  passwordControl = new FormControl('', [
+    Validators.required,
+    Validators.minLength(8),
+  ]);
 
   constructor(
-    private formBuilder: FormBuilder,
+    private readonly formBuilder: FormBuilder,
     private readonly route: ActivatedRoute,
   ) {
     this.form = this.formBuilder.group({
