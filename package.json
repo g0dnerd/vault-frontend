@@ -10,9 +10,6 @@
     "test": "ng test",
     "serve:ssr:vault-frontend": "node dist/vault-frontend/server/server.mjs"
   },
-  "engines": {
-    "node": ">=24"
-  },
   "private": true,
   "dependencies": {
     "@angular/animations": "^20.0.4",
