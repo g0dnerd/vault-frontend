@@ -1,36 +1,35 @@
 <h1>Cubes</h1>
 @if (loading$ | ngrxPush) {
-  <mat-progress-bar mode="indeterminate"></mat-progress-bar>
-} @else {
-  <mat-card class="cube-list-card" appearance="outlined">
-    <mat-card-content>
-      <mat-list class="cube-list">
-        @for (cube of cubes$ | ngrxPush; track cube; let i = $index) {
-          <mat-list-item
-            class="cube-detail-preview"
-            >
-            <span matListItemTitle>
-              <a class="cube-link-internal" routerLink="/cubes/{{ cube.id }}">{{
-                cube.name
-              }}</a>
-            </span>
-            <span matListItemLine
-              >{{ cube.numCards }} card cube
-              @if (cube.creator) {
-                <span>by {{ cube.creator.username }}</span>
-              }
-            </span>
-          </mat-list-item>
-        }
-      </mat-list>
-    </mat-card-content>
-    @if (isAdmin) {
-      <mat-card-actions>
-        <a mat-stroked-button class="regular-button" routerLink="./create">
-          <mat-icon>add</mat-icon>
-          Create a cube
-        </a>
-      </mat-card-actions>
-    }
-  </mat-card>
-}
+<mat-progress-bar mode="indeterminate"></mat-progress-bar>
+} @else { @for (cube of cubes$ | ngrxPush; track cube; let i = $index) {
+<mat-card class="cube-list-card" appearance="outlined">
+  <mat-card-header>
+    <div
+      mat-card-avatar
+      style="background-image: url({{ cube.imageUrl }}); background-size: cover;"
+      alt="Cube Thumbnail"
+    ></div>
+    <mat-card-title> {{ cube.name }} </mat-card-title>
+    <mat-card-subtitle>
+      {{ cube.numCards }} card cube @if (cube.creator) {
+      <span>by {{ cube.creator.username }}</span>
+      }
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content class="cube-list-content">
+    <a class="cube-link-internal" routerLink="/cubes/{{ cube.id }}"
+      >View cube</a
+    >
+  </mat-card-content>
+</mat-card>
+} @if (isAdmin) {
+<button
+  matMiniFab
+  extended
+  routerLink="./create"
+  class="button-cube-add"
+  matTooltip="Create a cube"
+>
+  <mat-icon>add</mat-icon>
+</button>
+} }

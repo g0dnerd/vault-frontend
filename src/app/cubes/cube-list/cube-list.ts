@@ -4,6 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterLink } from '@angular/router';
 import { PushPipe } from '@ngrx/component';
 import { Store } from '@ngrx/store';
@@ -27,6 +28,7 @@ import { Role } from '../../_types';
     MatIconModule,
     MatListModule,
     MatProgressBarModule,
+    MatTooltipModule,
     PushPipe,
     RouterLink,
   ],
@@ -35,9 +37,9 @@ import { Role } from '../../_types';
 })
 export class CubeList implements OnInit {
   private readonly store$ = inject(Store<State>);
+  private readonly roles$ = this.store$.select(selectCurrentUserRoles);
   readonly cubes$ = this.store$.select(selectAllCubes);
   readonly loading$ = this.store$.select(selectCubesLoading);
-  private readonly roles$ = this.store$.select(selectCurrentUserRoles);
 
   isAdmin = false;
 

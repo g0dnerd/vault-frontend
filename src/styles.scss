@@ -16,8 +16,8 @@ $color_11: #9da4b2;
 $color_12: #f7f8f9;
 $color_13: var(--yellow);
 $color_14: #eee;
-$font-family_1: "GeneralSans-Variable", "Helvetica Neue", Helvetica, Arial,
-  sans-serif;
+$font-family_1:
+  "GeneralSans-Variable", "Helvetica Neue", Helvetica, Arial, sans-serif;
 $background-color_1: var(--yellow);
 $background-color_2: var(--main-color);
 $background-color_3: white;
@@ -244,6 +244,48 @@ body.vault-app {
       }
     }
   }
+  .cube-list-content {
+    a {
+      border: var(--border);
+      border-radius: var(--radius);
+      padding: var(--inner-padding);
+      text-align: center;
+      display: block;
+      text-decoration: none;
+      color: $color_1;
+      color: $color_2;
+      background-color: $background-color_1;
+      background-color: $background-color_2;
+      padding: 7px 5px;
+      font-weight: 500;
+      font-size: 1em;
+      &:hover {
+        background-color: $background-color_3;
+        color: $color_4;
+      }
+      &:active {
+        background-color: $background-color_3;
+        color: $color_4;
+      }
+      &:focus {
+        background-color: $background-color_3;
+        color: $color_4;
+      }
+      &:after {
+        content: "";
+        display: inline-block;
+        margin-left: 15px;
+        left: 0;
+        position: relative;
+        width: 25px;
+        height: 10px;
+        transform: translateX(0);
+        background: url("/images/sprite-arrows.svg") 0 0px/25px no-repeat;
+      }
+    }
+    border: none;
+    margin-top: 10px;
+  }
   .event-list {
     a {
       border: var(--border);
@@ -285,6 +327,35 @@ body.vault-app {
     }
     border: none;
     margin-top: 10px;
+  }
+  .create-cube-container {
+    a {
+      border: var(--border);
+      border-radius: var(--radius);
+      padding: var(--inner-padding);
+      text-align: center;
+      display: flex;
+      text-decoration: none;
+      color: $color_1;
+      color: $color_2;
+      background-color: $background-color_1;
+      background-color: $background-color_2;
+      padding: 7px 5px;
+      font-weight: 500;
+      font-size: 1em;
+      &:hover {
+        background-color: $background-color_3;
+        color: $color_4;
+      }
+      &:active {
+        background-color: $background-color_3;
+        color: $color_4;
+      }
+      &:focus {
+        background-color: $background-color_3;
+        color: $color_4;
+      }
+    }
   }
   .mb-1 {
     .navbar-brand {
@@ -710,7 +781,8 @@ button {
       .mat-button-toggle-button,
       .show-password-button,
       .reset-form-button,
-      .button-delete-image
+      .button-delete-image,
+      .button-cube-add
     ) {
     font-weight: 500;
     border: var(--border);
@@ -731,14 +803,20 @@ button {
         .navbar-toggler,
         .show-password-button,
         .button-delete-image,
-        .reset-form-button
+        .reset-form-button,
+        .button-cube-add
       ) {
       background: var(--main-color);
       color: $color_2;
     }
   }
   &:hover {
-    &:not(.navbar-toggler, .show-password-button, .button-delete-image) {
+    &:not(
+        .navbar-toggler,
+        .show-password-button,
+        .button-delete-image,
+        .button-cube-add
+      ) {
       background: var(--main-color);
       color: $color_2;
     }
@@ -983,6 +1061,10 @@ select {
 .standings-table {
   border-bottom: var(--border);
   margin-bottom: 10px;
+  width: 100%;
+  table-layout: fixed;
+  text-align: center;
+  font-size: 0.9rem;
   thead {
     background-color: $background-color_2;
     border-bottom: var(--border);
@@ -993,6 +1075,12 @@ select {
     }
   }
   tbody {
+    td {
+      width: 20%;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
     tr {
       &:nth-child(odd) {
         background-color: $background-color_7;
@@ -1299,20 +1387,31 @@ img {
         .navbar-toggler,
         .show-password-button,
         .button-delete-image,
-        .reset-form-button
+        .reset-form-button,
+        .button-cube-add
       ) {
       border: none;
       color: $color_2;
       background: #444;
     }
     &:active {
-      &:not(.navbar-toggler, .show-password-button, .reset-form-button) {
+      &:not(
+          .navbar-toggler,
+          .show-password-button,
+          .reset-form-button,
+          .button-cube-add
+        ) {
         background: var(--main-color);
         color: $color_2;
       }
     }
     &:hover {
-      &:not(.navbar-toggler, .show-password-button, .reset-form-button) {
+      &:not(
+          .navbar-toggler,
+          .show-password-button,
+          .reset-form-button,
+          .button-cube-add
+        ) {
         background: var(--main-color);
         color: $color_2;
       }
